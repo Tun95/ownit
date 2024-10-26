@@ -43,7 +43,8 @@ export const isAuth = (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  // Check if the user's role is "admin"
+  if (req.user && req.user.role === "admin") {
     next();
   } else {
     return res

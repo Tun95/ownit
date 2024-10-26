@@ -32,7 +32,6 @@
   justify-content: center;
   align-items: center;
   margin-top: 5px;
-  margin-bottom: 10px;
 }
 
 ._loading_overlay_content {
@@ -54,7 +53,7 @@
 }
 .page_not_found .header {
   text-align: center;
-  color: var(--color-red);
+  color: var(--color-primary);
   line-height: 70px;
 }
 .page_not_found .found_text p {

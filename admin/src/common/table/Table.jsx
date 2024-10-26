@@ -18,7 +18,7 @@ const Button = ({ type }) => (
 );
 
 Button.propTypes = {
-  type: PropTypes.oneOf(["Pending", "Approved", "Disapproved"]).isRequired,
+  type: PropTypes.oneOf(["Verified", "Unverified"]).isRequired,
 };
 
 const reducer = (state, action) => {
@@ -26,7 +26,7 @@ const reducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, loading: false, users: action.payload.orders };
+      return { ...state, loading: false, users: action.payload };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
@@ -38,7 +38,7 @@ const TableData = () => {
   const { userInfo } = appState;
 
   const [{ users, error }, dispatch] = useReducer(reducer, {
-    loading: true,
+    loading: false,
     error: "",
   });
 
@@ -51,14 +51,13 @@ const TableData = () => {
         });
         dispatch({ type: "FETCH_SUCCESS", payload: { users: data } });
       } catch (error) {
-        dispatch({
-          type: "FETCH_FAIL",
-          payload: getError(error),
-        });
+        dispatch({ type: "FETCH_FAIL", payload: getError(error) });
       }
     };
     fetchData();
   }, [userInfo]);
+
+  console.log("USER:", users);
 
   return (
     <>
@@ -67,38 +66,27 @@ const TableData = () => {
           <TableHead>
             <TableRow>
               <TableCell className="tableCell">ID</TableCell>
-              <TableCell className="tableCell">User</TableCell>
+              <TableCell className="tableCell">Email</TableCell>
               <TableCell className="tableCell">Date</TableCell>
               <TableCell className="tableCell">Role</TableCell>
-              <TableCell className="tableCell">Approval Status</TableCell>
+              <TableCell className="tableCell">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody className="tableCenter p_flex">
-            {users?.slice(0, 10)?.map((user) => (
+            {users?.users?.map((user) => (
               <TableRow key={user._id}>
                 <TableCell className="tableCell">{user._id}</TableCell>
-                <TableCell className="tableCell">
-                  {user.firstName && user.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : "DELETED USER"}
-                </TableCell>
+                <TableCell className="tableCell">{user.email}</TableCell>
                 <TableCell className="tableCell">
                   {new Date(user.createdAt)?.toISOString()?.substring(0, 10)}
                 </TableCell>
                 <TableCell className="tableCell">{user.role}</TableCell>
                 <TableCell className="tableCell">
-                  {(() => {
-                    switch (user.approvalStatus) {
-                      case "pending":
-                        return <Button type="Pending" />;
-                      case "approved":
-                        return <Button type="Approved" />;
-                      case "disapproved":
-                        return <Button type="Disapproved" />;
-                      default:
-                        return null;
-                    }
-                  })()}
+                  {user.isAccountVerified ? (
+                    <Button type="Verified" />
+                  ) : (
+                    <Button type="Unverified" />
+                  )}
                 </TableCell>
               </TableRow>
             ))}

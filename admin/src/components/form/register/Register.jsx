@@ -18,7 +18,6 @@ const initialRegisterValues = {
   firstName: "",
   lastName: "",
   email: "",
-
   password: "",
   confirmPassword: "",
 };
