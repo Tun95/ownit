@@ -1,0 +1,16 @@
+.featured {
+  flex: 2;
+  padding: 10px;
+
+  max-width: 400px;
+  // max-height: 500px;
+  .tableCell {
+    text-wrap: nowrap;
+  }
+
+  /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+  @media screen and (max-width: 900px) {
+    max-width: 100%;
+    width: 100%;
+  }
+}

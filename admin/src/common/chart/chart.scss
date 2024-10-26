@@ -1,0 +1,11 @@
+.chart__box {
+  padding: 10px;
+  color: var(--color-gray);
+  width: 100%;
+  .title {
+    margin-bottom: 20px;
+  }
+  .chartGrid {
+    stroke: #b4b4b48e;
+  }
+}
