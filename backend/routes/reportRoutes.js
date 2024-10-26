@@ -42,6 +42,62 @@ reportRouter.get(
   })
 );
 
+//=================
+// Filter reports
+//=================
+reportRouter.get(
+  "/filters",
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+
+    const searchQuery = query.searchQuery || "all";
+    const status = query.status || "all";
+    const issueType = query.issueType || "all";
+    const privacyPreference = query.privacyPreference || "all";
+    const page = parseInt(query.page) || 1; // Page number
+    const limit = parseInt(query.limit) || 10; // Limit per page
+
+    // Filters
+    const schoolNameFilter =
+      searchQuery !== "all"
+        ? { schoolName: { $regex: searchQuery, $options: "i" } }
+        : {};
+
+    const statusFilter = status !== "all" ? { status } : {};
+
+    const issueTypeFilter = issueType !== "all" ? { issueType } : {};
+
+    const privacyPreferenceFilter =
+      privacyPreference !== "all" ? { privacyPreference } : {};
+
+    // Combine all filters
+    const filters = {
+      ...schoolNameFilter,
+      ...statusFilter,
+      ...issueTypeFilter,
+      ...privacyPreferenceFilter,
+    };
+
+    try {
+      // Fetch reports matching the filters with pagination
+      const reports = await Report.find(filters)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean();
+
+      // Count the total number of reports matching the filters
+      const countReports = await Report.countDocuments(filters).exec();
+
+      // Send the reports data and the count to the frontend
+      res.send({ reports, countReports });
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  })
+);
+
 //====================
 // Fetch a report by ID
 //====================

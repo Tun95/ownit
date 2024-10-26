@@ -51,32 +51,41 @@
     border-radius: 5px;
     position: relative;
     top: 13px;
-    &.active,
-    &.approved {
+    .verified,
+    .active,
+    .approved {
       color: green;
-
+      height: 23px;
+      padding: 5px 10px;
+      border-radius: 5px;
       background-color: rgba(0, 128, 0, 0.151);
     }
 
-    &.pending {
+    .pending {
       color: goldenrod;
       background-color: rgba(189, 189, 3, 0.103);
+      height: 23px;
+      padding: 5px 10px;
+      border-radius: 5px;
     }
 
-    &.blocked,
-    &.disapproved {
+    .blocked,
+    .disapproved {
       color: red;
       background-color: rgba(255, 0, 0, 0.2);
+      height: 23px;
+      padding: 5px 10px;
+      border-radius: 5px;
     }
 
     &.false {
-      color: green;
-      background-color: rgba(0, 128, 0, 0.151);
+      color: red;
+      background-color: rgba(255, 0, 0, 0.2);
     }
 
     &.true {
-      color: red;
-      background-color: rgba(255, 0, 0, 0.2);
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
     }
   }
 

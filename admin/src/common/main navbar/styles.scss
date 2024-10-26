@@ -75,6 +75,7 @@
     position: relative;
     .content {
       position: relative;
+      bottom: 34px;
       .logo_box {
         position: relative;
         .logo {
@@ -86,7 +87,7 @@
           .img {
             position: relative;
             width: 200px;
-            bottom: 34px;
+            // bottom: 34px;
             left: -50px;
             img {
               width: 100%;

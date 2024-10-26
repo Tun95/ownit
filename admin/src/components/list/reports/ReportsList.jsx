@@ -165,7 +165,7 @@ function ReportsListComponent() {
     <div className="admin_page_all admin_page_screen">
       <div className="">
         <div className="productTitleContainer">
-          <h3 className="productTitle light_shadow uppercase">All Event</h3>
+          <h3 className="productTitle light_shadow uppercase">All Report</h3>
         </div>
         <div className="datatable">
           <span className="c_flex">

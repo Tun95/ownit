@@ -59,7 +59,7 @@ function App() {
               </AdminRoute>
             }
           />
-          {/* EVENTS */}
+          {/* REPORTS */}
           <Route
             path="/reports"
             element={

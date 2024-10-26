@@ -20,7 +20,6 @@ const roleList = [
 const initialState = {
   loading: true,
   loadingUpdate: false,
-  loadingImageUpload: false,
   error: "",
   user: undefined,
 };
@@ -62,11 +61,13 @@ function UserEdit() {
   const { state: appState } = useAppContext(); // Assuming you have a custom hook for app context
   const { userInfo } = appState;
 
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(
+  const [{ user, loading, error, loadingUpdate }, dispatch] = useReducer(
     reducer,
     initialState
   );
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
@@ -74,12 +75,13 @@ function UserEdit() {
   const fetchData = async () => {
     try {
       dispatch({ type: "FETCH_REQUEST" });
-      const { data } = await axios.get(`${request}/api/users/${userId}`, {
+      const { data } = await axios.get(`${request}/api/users/info/${userId}`, {
         headers: { Authorization: `Bearer ${userInfo?.token}` },
       });
 
+      setFirstName(data.firstName);
+      setLastName(data.lastName);
       setEmail(data.email);
-
       setRole(data.role || "");
 
       dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -101,6 +103,8 @@ function UserEdit() {
         `${request}/api/users/${userId}`,
         {
           _id: userId,
+          firstName,
+          lastName,
           email,
           role,
         },
@@ -110,7 +114,7 @@ function UserEdit() {
       );
       dispatch({ type: "UPDATE_SUCCESS" });
       fetchData();
-      toast.success("User updated successfully or/and Email sent successfully");
+      toast.success("User updated successfully");
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: "UPDATE_FAIL" });
@@ -137,10 +141,27 @@ function UserEdit() {
                   <form action="" onSubmit={submitHandler}>
                     <div className="form_group">
                       <div className="formInput">
+                        <label htmlFor="">First Name</label>
+                        <input
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          type="firstName"
+                          placeholder="tunji"
+                        />
+                      </div>
+                      <div className="formInput">
+                        <label htmlFor="">Last Name</label>
+                        <input
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          type="lastName"
+                          placeholder="akande"
+                        />
+                      </div>
+                      <div className="formInput">
                         <label htmlFor="">Email</label>
                         <input
                           value={email}
-                          // disabled={user?.isAdmin}
                           onChange={(e) => setEmail(e.target.value)}
                           type="email"
                           placeholder="tunji@gmail.com"
@@ -155,6 +176,7 @@ function UserEdit() {
                           className="select"
                           id="role"
                           value={role}
+                          disabled={user.role === "admin"}
                           onChange={(e) => setRole(e.target.value)}
                         >
                           <option value="" disabled>
@@ -169,7 +191,7 @@ function UserEdit() {
                       </div>
                     </div>
 
-                    <div className="bottom_btn a_flex">
+                    <div className="bottom_btn mt a_flex">
                       {" "}
                       <button
                         className="cancel a_flex"
@@ -189,8 +211,7 @@ function UserEdit() {
                           </span>
                         ) : (
                           <>
-                            <DescriptionOutlinedIcon className="icon" /> Save &
-                            Send
+                            <DescriptionOutlinedIcon className="icon" /> Save
                           </>
                         )}
                       </button>

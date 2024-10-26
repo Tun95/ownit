@@ -31,17 +31,35 @@ const columns = [
     },
   },
   {
+    field: "isAccountVerified",
+    headerName: "Verification Status",
+    width: 160,
+    renderCell: (params) => {
+      return (
+        <>
+          <div className={`cellWithStatus `}>
+            {params.row.isAccountVerified === true ? (
+              <span className="verified l_flex">Verified</span>
+            ) : (
+              <span className="unverified l_flex">UnVerified</span>
+            )}
+          </div>
+        </>
+      );
+    },
+  },
+  {
     field: "status",
     headerName: "Status",
     width: 160,
     renderCell: (params) => {
       return (
         <>
-          <div className={`cellWithStatus  ${params.row.isBlocked}`}>
-            {params.row.isBlocked === true ? (
-              <span className="blocked">Blocked</span>
+          <div className={`cellWithStatus`}>
+            {params.row.isBlocked == false ? (
+              <span className="blocked l_flex">Blocked</span>
             ) : (
-              <span className="active">Active</span>
+              <span className="active l_flex">Active</span>
             )}
           </div>
         </>
@@ -154,23 +172,19 @@ function UserListComponent() {
   //BLOCK HANDLER
   //==============
   const blockHandler = async (user) => {
-    if (user.isAdmin === true) {
-      toast.error("Can Not Block Admin User");
-    } else {
-      try {
-        await axios.put(
-          `${request}/api/users/block/${user.id}`,
-          {},
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        dispatch({ type: "BLOCK_SUCCESS" });
-        toast.success("user successfully blocked");
-      } catch (err) {
-        toast.error(getError(err), { position: "bottom-center" });
-        dispatch({ type: "BLOCK_FAIL" });
-      }
+    try {
+      await axios.put(
+        `${request}/api/users/block/${user.id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: "BLOCK_SUCCESS" });
+      toast.success("user successfully blocked");
+    } catch (err) {
+      toast.error(getError(err), { position: "bottom-center" });
+      dispatch({ type: "BLOCK_FAIL" });
     }
   };
 
@@ -244,7 +258,7 @@ function UserListComponent() {
             >
               Delete
             </div>
-            <Link to={`/admin/user/${params.row._id}`}>
+            <Link to={`/user/${params.row._id}`}>
               <div className="viewButton">View</div>
             </Link>
           </div>

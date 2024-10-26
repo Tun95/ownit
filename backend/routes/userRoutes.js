@@ -322,7 +322,7 @@ userRouter.get(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     try {
-      const user = await User.findById(req.params.id).populate("reports");
+      const user = await User.findById(req.params.id);
 
       if (user) {
         res.send(user);
@@ -367,7 +367,7 @@ userRouter.delete(
       return res.status(404).send({ message: "User Not Found" });
     }
 
-    if (user.isAdmin) {
+    if (user.role === "admin") {
       return res.status(400).send({ message: "Cannot Delete Admin User" });
     }
 
@@ -391,52 +391,59 @@ userRouter.put(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(req.params.id);
-    if (user.isAdmin) {
-      res.status(400).send({ message: "Cannot Block Admin User" });
-    } else {
-      try {
-        const user = await User.findByIdAndUpdate(
-          id,
-          {
-            isBlocked: true,
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-        res.send(user);
-      } catch {
-        res.send({ message: "Fail to block user" });
-      }
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send({ message: "User Not Found" });
+    }
+
+    if (user.role === "admin") {
+      return res.status(400).send({ message: "Cannot Block Admin User" });
+    }
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { isBlocked: true },
+        { new: true, runValidators: true }
+      );
+      res.send(updatedUser);
+    } catch (error) {
+      console.error("Error blocking user:", error);
+      res.status(500).send({ message: "Internal Server Error" });
     }
   })
 );
 
 //==================
-//ADMIN UNBLOCK USER
-//=================
+// ADMIN UNBLOCK USER
+//==================
 userRouter.put(
   "/unblock/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send({ message: "User Not Found" });
+    }
+
+    if (user.role === "admin") {
+      return res.status(400).send({ message: "Cannot Unblock Admin User" });
+    }
+
     try {
-      const user = await User.findByIdAndUpdate(
+      const updatedUser = await User.findByIdAndUpdate(
         id,
-        {
-          isBlocked: false,
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
+        { isBlocked: false },
+        { new: true, runValidators: true }
       );
-      res.send(user);
-    } catch {
-      res.send({ message: "Fail to unblock user" });
+      res.send(updatedUser);
+    } catch (error) {
+      console.error("Error unblocking user:", error);
+      res.status(500).send({ message: "Internal Server Error" });
     }
   })
 );

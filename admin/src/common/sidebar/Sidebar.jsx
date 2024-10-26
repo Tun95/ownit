@@ -96,11 +96,11 @@ function Sidebar() {
                   <li>
                     <Link
                       onClick={toggleDrawer(anchor, false)}
-                      to="/events"
+                      to="/reports"
                       className="a_flex"
                     >
                       <ReceiptOutlinedIcon className="icon" />
-                      <span>Events</span>
+                      <span>Reports</span>
                     </Link>
                   </li>
                   <li>
