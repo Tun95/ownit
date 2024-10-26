@@ -43,12 +43,4 @@ function MainNavBar() {
   );
 }
 
-// MainNavBar.propTypes = {
-//   state: PropTypes.shape({
-//     userInfo: PropTypes.shape({
-//       image: PropTypes.string,
-//     }),
-//   }),
-// };
-
 export default MainNavBar;

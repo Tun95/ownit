@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     padding: 20px;
-    padding-top: 10px;
+    padding-top: 15px;
     background-color: var(--color-background-bg);
     .logo_span {
       position: relative;
@@ -19,13 +19,12 @@
       width: 100%;
       justify-content: space-between;
       border-bottom: 2px solid var(--color-light-gray);
-      padding-bottom: 10px;
+      padding-bottom: 15px;
       .logo_text {
         gap: 10px;
         img {
-          width: 35px;
-          //height: ;
-          cursor: pointer;
+          width: 120px;
+          height: 30px;
         }
         h2 {
           color: var(--color-white);
@@ -36,7 +35,7 @@
         font-size: 25px;
         position: relative;
         font-weight: 500;
-        bottom: -9px;
+        bottom: -4px;
         left: 3px;
         cursor: pointer;
         color: var(--color-white);
@@ -127,7 +126,7 @@
     }
 
     .list_info {
-      padding: 15px 20px;
+      padding: 6px 20px;
       color: var(--color-white);
       font-size: 14px;
       font-weight: 600;

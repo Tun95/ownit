@@ -63,7 +63,6 @@ function Sidebar() {
                 <span className="logo_span d_flex">
                   <div className="logo_text a_flex">
                     <img src={logo} alt="logo" className="logo" />
-                    <h2>#OSYR24</h2>
                   </div>
                   <CloseIcon
                     className="icon"
