@@ -53,19 +53,6 @@ export const otpSchema = yup.object().shape({
 
 // Email Message validation schema
 export const emailMessageSchema = yup.object().shape({
-  approvalStatus: yup.string().required("Approval status is required"),
-  participationType: yup.string().when("approvalStatus", {
-    is: (approvalStatus) => approvalStatus === "approved",
-    then: (schema) =>
-      schema.required(
-        "Participation type is required when the status is approved"
-      ),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  competitionType: yup.string().when("participationType", {
-    is: "Physical Participant",
-    then: (schema) => schema.notRequired(),
-  }),
   subject: yup.string().required("Subject is required"),
   emailMessage: yup
     .string()

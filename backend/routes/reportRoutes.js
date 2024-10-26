@@ -63,12 +63,20 @@ reportRouter.get(
         ? { schoolName: { $regex: searchQuery, $options: "i" } }
         : {};
 
-    const statusFilter = status !== "all" ? { status } : {};
+    const statusFilter =
+      status !== "all"
+        ? { status: { $in: status.split(",") } } // Multi-select handling
+        : {};
 
-    const issueTypeFilter = issueType !== "all" ? { issueType } : {};
+    const issueTypeFilter =
+      issueType !== "all"
+        ? { issueType: { $in: issueType.split(",") } } // Multi-select handling
+        : {};
 
     const privacyPreferenceFilter =
-      privacyPreference !== "all" ? { privacyPreference } : {};
+      privacyPreference !== "all"
+        ? { privacyPreference: { $in: privacyPreference.split(",") } } // Multi-select handling
+        : {};
 
     // Combine all filters
     const filters = {
@@ -81,11 +89,11 @@ reportRouter.get(
     try {
       // Fetch reports matching the filters with pagination
       const reports = await Report.find(filters)
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: -1 }) // Sort by latest records
         .skip((page - 1) * limit)
         .limit(limit)
         .lean();
-
+        
       // Count the total number of reports matching the filters
       const countReports = await Report.countDocuments(filters).exec();
 
