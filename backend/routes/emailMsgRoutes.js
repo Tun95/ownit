@@ -39,9 +39,7 @@ sendEmailRouter.post(
         },
       });
 
-      // Add unsubscribe link to the end of the email message
-      const unsubscribeLink = `${process.env.SUB_DOMAIN}/unsubscribe`;
-      const shopName = process.env.SHOP_NAME;
+      const webname = process.env.WEB_NAME;
 
       // Your email template
       const emailMessageWithUnsubscribe = `
@@ -84,19 +82,22 @@ sendEmailRouter.post(
                   margin: 0 5px;
                   font-size: 24px;
                   color: #333;
+                  display: flex;
+                  gap: 10px;
                 }
                 .icons{
-                  width:25px;
-                  height: 25px;
+                  width:23px;
+                  height: 23px;
                 }
                 .instagram{
                   margin-top:2px;
-                  width:22px;
-                  height: 22px;
+                  width:20px;
+                  height: 20px;
+                  padding:0px 6px;
                   }
                 .tik{
-                  width: 26px;
-                  height: 26px;
+                  width: 23px;
+                  height: 23px;
                   }
           </style>
         </head>
@@ -107,14 +108,9 @@ sendEmailRouter.post(
                 
               </div>
               <hr/>
-              <div class="footer">
-                <p>If you wish to unsubscribe from our newsletter, <a href="${unsubscribeLink}">click here</a>.</p>
-              <div class="unsubscribe">
-                <p><a href="${unsubscribeLink}">Unsubscribe</a> from our newsletter</p>
-              </div>
                 <p class="footer_info">For more information, visit our website:</p>
                 <p class="footer_info url_link"><a href="${process.env.SUB_DOMAIN}">${process.env.SUB_DOMAIN}</a></p>
-                <div class="social-icons">
+                <div class="social-icons d_flex">
                 <a href=${facebook} class="social-icon">
                   <img
                     class="icons"
@@ -146,7 +142,7 @@ sendEmailRouter.post(
       const mailOptions = {
         to: [], // Add your "to" email addresses here if needed
         bcc: mailList, // Use bcc for sending to multiple recipients
-        from: `${shopName} ${process.env.EMAIL_ADDRESS}`,
+        from: `${webname} ${process.env.EMAIL_ADDRESS}`,
         subject,
         html: emailMessageWithUnsubscribe,
       };
