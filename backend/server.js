@@ -57,48 +57,6 @@ app.use((err, req, res, next) => {
 });
 
 const server = createServer(app);
-// const io = new Server(server, {
-//   cors: {
-//     origin: "*",
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// // Namespace for events
-// const eventsNamespace = io.of("/events");
-// eventsNamespace.on("connection", (socket) => {
-//   console.log("A user connected to events namespace");
-
-//   // Handle initial data loading if necessary
-// });
-
-// // Check for starting date in real-time
-// const handleUpcomingEvents = async () => {
-//   try {
-//     const now = new Date();
-
-//     // Find and update events that should start now
-//     const upcomingEvents = await Event.find({
-//       startingDate: { $lte: now },
-//     });
-
-//     for (const event of upcomingEvents) {
-//       try {
-//         // Emit update for the event
-//         eventsNamespace.emit("eventUpdate", { event });
-//       } catch (saveError) {
-//         console.error("Error handling event update:", saveError);
-//       }
-//     }
-//   } catch (error) {
-//     console.error("Error handling upcoming events:", error);
-//   }
-// };
-
-// // Check for upcoming events every minute
-// setInterval(() => {
-//   handleUpcomingEvents();
-// }, 60000);
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => {

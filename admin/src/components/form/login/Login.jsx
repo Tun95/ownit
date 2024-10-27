@@ -11,7 +11,7 @@ import axios from "axios";
 import { request } from "../../../base url/BaseUrl";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Initial values for the LOGIN form
 const initialLoginValues = {
@@ -20,10 +20,14 @@ const initialLoginValues = {
 };
 
 function LoginComponent() {
-  const navigate = useNavigate();
-
-  const { state: appState, dispatch: ctxDispatch } = useAppContext();
+  const { state: appState } = useAppContext();
   const { userInfo } = appState;
+
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get("redirect") || "/";
+  const final = sp.get("final") || "/";
 
   const [passwordType, setPasswordType] = useState("password");
   const [passwordIcon, setPasswordIcon] = useState(eyeOff);
@@ -41,13 +45,36 @@ function LoginComponent() {
         password: values.password,
       });
 
-      ctxDispatch({ type: "USER_SIGNIN", payload: data });
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      toast.success("Login successfully");
-      setTimeout(() => {
-        actions.resetForm();
-      }, 2000);
-      navigate("/");
+      localStorage.setItem("temporaryUserInfo", JSON.stringify(data));
+
+      // Send OTP verification email
+      const otpResponse = await axios.post(
+        `${request}/api/users/otp-verification`,
+        {
+          email: values.email,
+        }
+      );
+
+      if (otpResponse.status === 200) {
+        // Redirect to OTP verification screen
+        setTimeout(() => {
+          actions.resetForm();
+        }, 1000);
+
+        // Pass mode as "login" in query parameters
+        navigate(`/otp?mode=login&redirect=${redirect}&final=${final}`);
+        toast.success(
+          "An OTP Verification email has been sent to your email.",
+          {
+            position: "bottom-center",
+          }
+        );
+      } else {
+        // Handle error
+        toast.error("Failed to send verification email", {
+          position: "bottom-center",
+        });
+      }
     } catch (err) {
       toast.error(getError(err));
     }
@@ -55,9 +82,9 @@ function LoginComponent() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate(redirect);
     }
-  }, [navigate, userInfo]);
+  }, [navigate, redirect, userInfo]);
 
   return (
     <div>

@@ -70,7 +70,8 @@ function RegisterComponent() {
         setTimeout(() => {
           actions.resetForm();
         }, 1000);
-        navigate("/otp");
+        // Pass mode as "register" in query parameters
+        navigate(`/otp?mode=register`);
         toast.success(
           "An OTP Verification email has been sent to your email.",
           {

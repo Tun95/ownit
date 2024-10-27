@@ -176,7 +176,7 @@ function UserEdit() {
                           className="select"
                           id="role"
                           value={role}
-                          disabled={user.role === "admin"}
+                          disabled={userInfo._id === user._id}
                           onChange={(e) => setRole(e.target.value)}
                         >
                           <option value="" disabled>

@@ -12,24 +12,7 @@ import MessageBox from "../../../utilities/message loading/MessageBox";
 const columns = [
   { field: "_id", headerName: "ID", width: 230 },
   { field: "email", headerName: "Email", width: 230 },
-  {
-    field: "role",
-    headerName: "Role",
-    width: 100,
-    renderCell: (params) => {
-      return (
-        <>
-          <div className={`cellWithAdminSellerStatus ${params.row.isBlocked}`}>
-            {params.row.role === "admin" ? (
-              <span className="yes">YES</span>
-            ) : (
-              <span className="no">NO</span>
-            )}
-          </div>
-        </>
-      );
-    },
-  },
+  { field: "role", headerName: "Role", width: 100 },
   {
     field: "isAccountVerified",
     headerName: "Verification Status",
@@ -56,7 +39,7 @@ const columns = [
       return (
         <>
           <div className={`cellWithStatus`}>
-            {params.row.isBlocked == false ? (
+            {params.row.isBlocked ? (
               <span className="blocked l_flex">Blocked</span>
             ) : (
               <span className="active l_flex">Active</span>
@@ -138,15 +121,15 @@ function UserListComponent() {
   const { state: appState } = useAppContext();
   const { userInfo } = appState;
 
-  const [{ loading, error, users, successDelete }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: "",
-      users: [],
-      countUsers: 0,
-    }
-  );
+  const [
+    { loading, error, users, successBlock, successUnBlock, successDelete },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+    users: [],
+    countUsers: 0,
+  });
 
   // Fetching Data
   useEffect(() => {
@@ -162,11 +145,13 @@ function UserListComponent() {
         dispatch({ type: "FETCH_FAIL", payload: error });
       }
     };
-    if (successDelete) {
+    if (successUnBlock || successBlock || successDelete) {
+      dispatch({ type: "UNBLOCK_RESET" });
+      dispatch({ type: "BLOCK_RESET" });
       dispatch({ type: "DELETE_RESET" });
     }
     fetchData();
-  }, [successDelete, userInfo]);
+  }, [successBlock, successDelete, successUnBlock, userInfo]);
 
   //==============
   //BLOCK HANDLER

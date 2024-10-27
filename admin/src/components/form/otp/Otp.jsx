@@ -9,7 +9,8 @@ import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { request } from "../../../base url/BaseUrl";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 // Initial values for the OTP form
 const initialOtpValues = {
@@ -46,6 +47,14 @@ const formatTime = (seconds) => {
 
 function OtpVerificationComponent() {
   const navigate = useNavigate();
+  const { state: appState, dispatch: ctxDispatch } = useAppContext();
+  const { userInfo } = appState;
+
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const mode = sp.get("mode") || "login";
+  const final = sp.get("final") || "/";
+
   const [, dispatch] = useReducer(reducer, initialState);
 
   // Calculate initial countdown based on the stored end time
@@ -86,6 +95,12 @@ function OtpVerificationComponent() {
       localStorage.getItem("temporaryUserInfo") || "{}"
     );
     temporaryUserInfo.isAccountVerified = isAccountVerified;
+
+    if (mode === "login") {
+      ctxDispatch({ type: "USER_SIGNIN", payload: temporaryUserInfo });
+      localStorage.setItem("userInfo", JSON.stringify(temporaryUserInfo));
+    }
+
     localStorage.removeItem("temporaryUserInfo");
   };
 
@@ -115,7 +130,13 @@ function OtpVerificationComponent() {
 
       // Call the function here and pass the isAccountVerified value
       handleVerifiedOTP(data.isAccountVerified);
-      navigate("/created");
+
+      // Redirect to the final destination
+      if (mode === "register") {
+        navigate("/created");
+      } else {
+        navigate(final);
+      }
     } catch (err) {
       dispatch({
         type: "SUBMIT_FAIL",
@@ -162,9 +183,6 @@ function OtpVerificationComponent() {
       });
     }
   };
-
-  const { state: appState } = useAppContext();
-  const { userInfo } = appState;
 
   useEffect(() => {
     if (userInfo) {
@@ -272,4 +290,9 @@ function OtpVerificationComponent() {
     </Box>
   );
 }
+
+OtpVerificationComponent.propTypes = {
+  mode: PropTypes.oneOf(["register", "login"]).isRequired,
+};
+
 export default OtpVerificationComponent;
