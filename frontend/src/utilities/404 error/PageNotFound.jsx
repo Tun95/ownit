@@ -1,15 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
-import MainNav from "../../common/navbar/mainnav/MainNav";
-import Footer from "../../common/footer/Footer";
+// import MainNav from "../../common/navbar/mainnav/MainNav";
+// import Footer from "../../common/footer/Footer";
+import "../style/style.css";
 
 function NotFoundScreen() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="main_nav">
-        <MainNav />
-      </div>
+      <div className="main_nav">{/* <MainNav /> */}</div>
       <div className="container">
         <Helmet>
           <title>Page Not Found</title>
@@ -35,9 +34,7 @@ function NotFoundScreen() {
           </div>
         </div>
       </div>
-      <div className="footer">
-        <Footer />
-      </div>
+      <div className="footer">{/* <Footer /> */}</div>
     </>
   );
 }

@@ -15,17 +15,14 @@
   --color-light-light-gray: #f6f6f6;
   --color-yellow: #d6ab14;
   --color-plan: #fdba3d;
-  --color-primary: #d75420;
-  --color-hover: #cc4611;
+  --color-primary: #00eacd;
+  --color-hover: #00dbc2;
   --color-reddish-brown: #9d5252;
   --color-red: #ff0000;
   --color-green: #00634f;
   --color-disabled-btn: #b3e4da;
   --color-bg-green: #109635;
   --color-light-green: #0eac8c;
-  --color-card-one: #771919;
-  --color-card-two: #18717e;
-  --color-card-third: #10c09c;
   --color-light-light-green: #0d9a7d26;
   --color-light-bg-green: #f0fffc;
   --color-blue: #3462fa;
@@ -43,14 +40,7 @@
   --color-light: #bfe5df;
   --color-light-bg: #e7f9f5;
   --color-tag: #15bc9a;
-  --color-tag-bg: #d7fff7;
-  --color-yea-progress: #dfffe8;
-  --color-nay-progress: #ffebeb;
-  --color-yellow-progress: #f4efde;
-  --color-brown-progress: #ffe1e1;
-  --color-light-yellow-progress: #fff1d4;
-  --color-neutral-progress: #dae7ff;
-  --color-default-progress: #d7fff7;
+
   --color-short: #e1e1e1;
   --color-filter: #e6e6e6;
   --color-bg-card: #f6f6f6;
@@ -159,7 +149,11 @@ input {
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   width: 100%;
+
   /* width: 100%; */
+}
+select {
+  background: transparent;
 }
 
 textarea {
@@ -295,7 +289,7 @@ button:disabled {
   color: var(--color-red);
 }
 .green {
-  color: var(--color-primary);
+  color: var(--color-green);
 }
 .gray {
   color: var(--color-gray);

@@ -53,7 +53,7 @@
 }
 .page_not_found .header {
   text-align: center;
-  color: var(--color-primary);
+  color: var(--color-red);
   line-height: 70px;
 }
 .page_not_found .found_text p {
@@ -74,7 +74,7 @@
 }
 .page_not_found a:hover {
   transition: var(--transition);
-  color: var(--color-link-hover);
+  color: var(--color-blue);
 }
 
 /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
