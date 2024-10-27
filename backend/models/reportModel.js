@@ -13,7 +13,7 @@ const reportSchema = new mongoose.Schema(
     },
 
     schoolLocation: { type: String },
-    issueType: { type: String },
+    issueType: [String],
     description: { type: String },
     comment: { type: String },
     user: {
@@ -38,6 +38,13 @@ const reportSchema = new mongoose.Schema(
   }
 );
 
+//Virtual method to populate created product
+reportSchema.virtual("reports", {
+  ref: "Report",
+  foreignField: "user",
+  localField: "_id",
+});
+
 // Pre-save middleware to generate slug from schoolName
 reportSchema.pre("save", async function (next) {
   if (this.isModified("schoolName") || !this.slug) {
@@ -46,14 +53,15 @@ reportSchema.pre("save", async function (next) {
       .replace(/ /g, "-")
       .replace(/[^\w-]+/g, "");
 
-    // Check for duplicate slugs
-    const existingReport = await this.constructor.findOne({ slug: baseSlug });
+    // If slug exists with the same baseSlug, append a counter
+    const existingSlugs = await this.constructor
+      .find({ slug: new RegExp(`^${baseSlug}(-\\d+)?$`, "i") })
+      .select("slug");
 
-    if (existingReport) {
+    if (existingSlugs.length > 0) {
+      const slugs = existingSlugs.map((doc) => doc.slug);
       let counter = 1;
-      while (
-        await this.constructor.findOne({ slug: `${baseSlug}-${counter}` })
-      ) {
+      while (slugs.includes(`${baseSlug}-${counter}`)) {
         counter++;
       }
       this.slug = `${baseSlug}-${counter}`;

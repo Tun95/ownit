@@ -92,8 +92,9 @@ reportRouter.get(
         .sort({ createdAt: -1 }) // Sort by latest records
         .skip((page - 1) * limit)
         .limit(limit)
-        .lean();
-        
+        .lean()
+        .populate("user");
+
       // Count the total number of reports matching the filters
       const countReports = await Report.countDocuments(filters).exec();
 
@@ -138,6 +139,40 @@ reportRouter.get(
       } else {
         res.status(404).json({ message: "Report not found" });
       }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  })
+);
+
+//====================
+// Update an existing report
+//====================
+reportRouter.put(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const reportId = req.params.id;
+
+      // Find the report by ID and update it with the request body
+      const updatedReport = await Report.findByIdAndUpdate(
+        reportId,
+        {
+          ...req.body,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+      if (!updatedReport) {
+        return res.status(404).json({ message: "Report not found" });
+      }
+
+      res.status(200).json(updatedReport);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

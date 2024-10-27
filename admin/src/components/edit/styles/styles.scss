@@ -157,11 +157,17 @@
                   border: 1px solid var(--color-border);
                   border-radius: 10px;
                   flex-wrap: wrap;
+                  align-items: flex-start;
+                  flex-direction: column;
                   div {
                     display: flex;
                     align-items: baseline !important;
                     gap: 5px;
                     flex-wrap: wrap;
+                    margin-bottom: 10px;
+                    label {
+                      font-weight: 600;
+                    }
                     span {
                       color: var(--color-gray);
                       font-size: 14px;
@@ -310,6 +316,9 @@
           padding: 20px;
         }
       }
+    }
+    .status_box {
+      padding: 0px 20px;
     }
   }
   .bottom_btn {

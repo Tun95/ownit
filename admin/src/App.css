@@ -40,7 +40,7 @@
   --color-light: #bfe5df;
   --color-light-bg: #e7f9f5;
   --color-tag: #15bc9a;
- 
+
   --color-short: #e1e1e1;
   --color-filter: #e6e6e6;
   --color-bg-card: #f6f6f6;
@@ -149,7 +149,11 @@ input {
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   width: 100%;
+
   /* width: 100%; */
+}
+select {
+  background: transparent;
 }
 
 textarea {
