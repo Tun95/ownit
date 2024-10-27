@@ -2,6 +2,8 @@ import "./styles.scss";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo/logo.png";
 import { useAppContext } from "../../utilities/utils/Utils";
+import me from "../../assets/others/me.png";
+import Sidebar from "../sidebar/Sidebar";
 
 function NavBar() {
   const { state: appState } = useAppContext();
@@ -29,31 +31,34 @@ function NavBar() {
             </ul>
           </div>
           <div className="register_login a_flex">
-            {userInfo ? (
+            {!userInfo ? (
               <>
                 <div className="img">
-                  <img src="" alt="" />
+                  <img src={me} alt="user" />
                 </div>
                 <div className="link a_flex">
-                  <Link to="signin">
+                  <Link to="/signin">
                     <small>Sign in</small>
                   </Link>
-                  /
-                  <Link to="signin">
-                    <small>Sign in</small>
+                  <span className="slash">/</span>
+                  <Link to="/register">
+                    <small>Register</small>
                   </Link>
                 </div>
               </>
             ) : (
               <>
                 <div className="img">
-                  <img src="" alt="" />
+                  <img src={me} alt="user" />
                 </div>
                 <div className="link a_flex">
                   <small>{userInfo && userInfo.email}</small>
                 </div>
               </>
             )}
+          </div>
+          <div className="main_sidebar">
+            <Sidebar />
           </div>
         </div>
       </div>

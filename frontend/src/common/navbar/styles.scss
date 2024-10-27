@@ -1,0 +1,58 @@
+.nav_bar {
+  background-color: var(--color-green);
+  color: var(--color-white);
+  .content {
+    padding: 10px 0px;
+    a {
+      color: var(--color-white);
+      &:hover {
+        transition: var(--transition);
+        color: var(--color-border);
+      }
+    }
+    .logo {
+      .img {
+        img {
+          width: 100px;
+        }
+      }
+    }
+    .nav_links {
+      ul {
+        gap: 25px;
+        a {
+          font-size: 15px;
+        }
+      }
+    }
+    .register_login {
+      column-gap: 10px;
+      .img {
+        position: relative;
+        top: 3px;
+        img {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+      .slash {
+        font-size: 14px;
+      }
+    }
+    .main_sidebar {
+      display: none;
+    }
+    /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+    @media screen and (max-width: 900px) {
+      .nav_links,
+      .register_login {
+        display: none;
+      }
+      .main_sidebar {
+        display: block;
+      }
+    }
+  }
+}
