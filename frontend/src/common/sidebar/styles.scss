@@ -149,7 +149,7 @@
         color: inherit; /* Inherit the color from parent */
         transition: var(--transition);
         &:hover {
-          color: var(--color-yellow);
+          color: var(--color-hover);
         }
       }
     }
@@ -187,7 +187,8 @@
           align-items: center;
 
           &:hover {
-            color: var(--color-yellow);
+            transition: var(--transition);
+            color: var(--color-hover);
           }
         }
         a {

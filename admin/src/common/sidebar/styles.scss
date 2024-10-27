@@ -10,13 +10,14 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    // padding: 20px;
     padding-top: 15px;
     background-color: var(--color-background-bg);
     .logo_span {
       position: relative;
       display: flex;
       width: 100%;
+      padding: 0px 20px;
       justify-content: space-between;
       border-bottom: 2px solid var(--color-light-gray);
       padding-bottom: 15px;
@@ -148,7 +149,7 @@
         color: inherit; /* Inherit the color from parent */
         transition: var(--transition);
         &:hover {
-          color: var(--color-yellow);
+          color: var(--color-hover);
         }
       }
     }
@@ -186,7 +187,8 @@
           align-items: center;
 
           &:hover {
-            color: var(--color-yellow);
+            transition: var(--transition);
+            color: var(--color-hover);
           }
         }
         a {
