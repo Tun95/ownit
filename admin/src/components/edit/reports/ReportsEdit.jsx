@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import photo from "../../../assets/others/photo.jpg";
 import { request } from "../../../base url/BaseUrl";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
+import ReactPlayer from 'react-player';
 
 const statusListOptions = ["pending", "approved", "disapproved"];
 
@@ -193,6 +194,14 @@ function ReportsEdit() {
                             </table>
                           </div>
                         </div>{" "}
+                        <div className="video_content">
+                          <ReactPlayer
+                            url={report.video} // Your video link here
+                            controls={true} // Show play, pause, etc.
+                            width="100%"
+                            height="auto"
+                          />
+                        </div>
                         <div className="status_box box">
                           <div className="form-group">
                             <label htmlFor="status">Status: </label>
