@@ -24,7 +24,7 @@ const Chart = ({ aspect, title, data, dataKeys, CustomTooltip, grid }) => {
               <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="name" stroke="gray" />
+          <XAxis dataKey="date" stroke="gray" /> {/* Update this line */}
           {grid && (
             <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
           )}
