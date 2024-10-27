@@ -9,14 +9,13 @@ import Chart from "../../common/chart/Chart";
 import { getError, useAppContext } from "../../utilities/utils/Utils";
 import { request } from "../../base url/BaseUrl";
 import TableData from "../../common/table/Table";
-import Featured from "../../common/featured/Featured";
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, loading: false, summary: action.payload.users };
+      return { ...state, loading: false, summary: action.payload };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
@@ -32,12 +31,13 @@ function Dashboard() {
     loading: true,
     summary: {
       totalUsers: 0,
-      totalApprovedUsers: 0,
-      totalEvents: 0,
-      last10DaysRegisteredUsers: [],
-      dailyCheckIns: 0,
-      dailyCheckOuts: 0,
-      localGovernmentStats: [],
+      totalReports: 0,
+      reportStatusCounts: {
+        approved: 0,
+        pending: 0,
+        disapproved: 0,
+      },
+      last10DaysData: [],
     },
     error: "",
   });
@@ -60,18 +60,19 @@ function Dashboard() {
     fetchData();
   }, [userInfo]);
 
-  const [userStats, setUserStats] = useState([]);
+  const [dataStats, setDataStats] = useState([]);
 
   useEffect(() => {
     const getStats = () => {
-      const stats = summary.last10DaysRegisteredUsers.map((item) => ({
-        name: item.date,
-        "Registered Users": item.count,
+      const stats = summary.last10DaysData.map((item) => ({
+        date: item.date,
+        "Registered Users": item.totalUsers,
+        "Submitted Reports": item.totalReports,
       }));
-      setUserStats(stats);
+      setDataStats(stats);
     };
     getStats();
-  }, [summary.last10DaysRegisteredUsers]);
+  }, [summary.last10DaysData]);
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -81,11 +82,15 @@ function Dashboard() {
           <p className="" style={{ color: "#5550bd", marginTop: "3px" }}>
             Registered Users: {payload[0]?.payload["Registered Users"] ?? 0}
           </p>
+          <p className="" style={{ color: "#5550bd", marginTop: "3px" }}>
+            Submitted Reports: {payload[0]?.payload["Submitted Reports"] ?? 0}
+          </p>
         </div>
       );
     }
     return null;
   };
+
   // Prop types for CustomTooltip
   CustomTooltip.propTypes = {
     active: PropTypes.bool,
@@ -93,6 +98,7 @@ function Dashboard() {
       PropTypes.shape({
         payload: PropTypes.shape({
           "Registered Users": PropTypes.number,
+          "Submitted Reports": PropTypes.number,
         }),
       })
     ),
@@ -100,10 +106,10 @@ function Dashboard() {
   };
 
   const TotalUsers = summary.totalUsers;
-  const TotalApproved = summary.totalApprovedUsers;
-  const TotalEvents = summary.totalEvents;
-  const TotalDailyCheckIns = summary.dailyCheckIns;
-  const TotalDailyCheckOuts = summary.dailyCheckOuts;
+  const TotalReports = summary.totalReports;
+  const TotalApproved = summary.reportStatusCounts.approved;
+  const TotalPending = summary.reportStatusCounts.pending;
+  const TotalDisapproved = summary.reportStatusCounts.disapproved;
 
   return (
     <div className="admin_page_all admin_page_screen">
@@ -115,22 +121,18 @@ function Dashboard() {
         <>
           <div className="widgets">
             <Widget TotalUsers={TotalUsers} type="user" />
+            <Widget TotalReports={TotalReports} type="reports" />
             <Widget TotalApproved={TotalApproved} type="approved" />
-            <Widget TotalEvents={TotalEvents} type="events" />
-            <Widget TotalDailyCheckIns={TotalDailyCheckIns} type="checkIns" />
-            <Widget
-              TotalDailyCheckOuts={TotalDailyCheckOuts}
-              type="checkOuts"
-            />
+            <Widget TotalPending={TotalPending} type="pending" />
+            <Widget TotalDisapproved={TotalDisapproved} type="disapproved" />
           </div>
 
           <div className="charts">
-            <Featured localGovernmentStats={summary.localGovernmentStats} />
             <Chart
-              title="Last 10 Days Registered Users"
-              data={userStats}
+              title="Last 10 Days User Registrations and Submitted Reports"
+              data={dataStats}
               grid
-              dataKeys={["Registered Users"]}
+              dataKeys={["Registered Users", "Submitted Reports"]}
               aspect={2 / 1}
               CustomTooltip={CustomTooltip}
             />

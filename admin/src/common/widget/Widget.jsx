@@ -14,8 +14,10 @@ const formatNumberWithCommas = (num) => {
 const Widget = ({
   type,
   TotalUsers = 0,
+  TotalReports = 0,
   TotalApproved = 0,
-  TotalEvents = 0,
+  TotalPending = 0,
+  TotalDisapproved = 0,
   TotalDailyCheckIns = 0,
   TotalDailyCheckOuts = 0,
 }) => {
@@ -25,10 +27,14 @@ const Widget = ({
   const dataType =
     type === "user"
       ? TotalUsers
+      : type === "reports"
+      ? TotalReports
       : type === "approved"
       ? TotalApproved
-      : type === "events"
-      ? TotalEvents
+      : type === "pending"
+      ? TotalPending
+      : type === "disapproved"
+      ? TotalDisapproved
       : type === "checkIns"
       ? TotalDailyCheckIns
       : type === "checkOuts"
@@ -50,11 +56,27 @@ const Widget = ({
         ),
       };
       break;
+    case "reports":
+      data = {
+        title: "REPORTS",
+        isMoney: false,
+        link: "Total reports submitted",
+        icon: (
+          <EventNoteIcon
+            className="icon"
+            style={{
+              color: "goldenrod",
+              backgroundColor: "rgba(218,165,32,0.2)",
+            }}
+          />
+        ),
+      };
+      break;
     case "approved":
       data = {
-        title: "APPROVED USERS",
+        title: "APPROVED REPORTS",
         isMoney: false,
-        link: "All approved users",
+        link: "All approved reports",
         icon: (
           <VerifiedUserIcon
             className="icon"
@@ -63,18 +85,28 @@ const Widget = ({
         ),
       };
       break;
-    case "events":
+    case "pending":
       data = {
-        title: "EVENTS",
+        title: "PENDING REPORTS",
         isMoney: false,
-        link: "All events",
+        link: "All pending reports",
         icon: (
-          <EventNoteIcon
+          <FactCheckIcon
             className="icon"
-            style={{
-              color: "goldenrod",
-              backgroundColor: "rgba(218,165,32,0.2)",
-            }}
+            style={{ color: "orange", backgroundColor: "rgba(255,165,0,0.2)" }}
+          />
+        ),
+      };
+      break;
+    case "disapproved":
+      data = {
+        title: "DISAPPROVED REPORTS",
+        isMoney: false,
+        link: "All disapproved reports",
+        icon: (
+          <FactCheckIcon
+            className="icon"
+            style={{ color: "red", backgroundColor: "rgba(255,0,0,0.2)" }}
           />
         ),
       };
@@ -134,11 +166,20 @@ const Widget = ({
 };
 
 Widget.propTypes = {
-  type: PropTypes.oneOf(["user", "approved", "events", "checkIns", "checkOuts"])
-    .isRequired,
+  type: PropTypes.oneOf([
+    "user",
+    "reports",
+    "approved",
+    "pending",
+    "disapproved",
+    "checkIns",
+    "checkOuts",
+  ]).isRequired,
   TotalUsers: PropTypes.number,
+  TotalReports: PropTypes.number,
   TotalApproved: PropTypes.number,
-  TotalEvents: PropTypes.number,
+  TotalPending: PropTypes.number,
+  TotalDisapproved: PropTypes.number,
   TotalDailyCheckIns: PropTypes.number,
   TotalDailyCheckOuts: PropTypes.number,
 };

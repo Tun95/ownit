@@ -9,6 +9,7 @@ import uploadRouter from "./routes/uploadRoutes.js";
 import sendEmailRouter from "./routes/emailMsgRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import reportRouter from "./routes/reportRoutes.js";
+import generalRouter from "./routes/generalRoutes.js";
 
 dotenv.config();
 
@@ -43,8 +44,7 @@ app.use("/api/upload", uploadRouter);
 app.use("/api/message", sendEmailRouter);
 app.use("/api/users", userRouter);
 app.use("/api/reports", reportRouter);
-
-//app.use("/api/generals", generalRouter);
+app.use("/api/generals", generalRouter);
 
 const _dirname = path.resolve();
 app.use(express.static(path.join(_dirname, "/frontend/build")));
