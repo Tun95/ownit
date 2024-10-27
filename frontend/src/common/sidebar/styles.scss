@@ -10,16 +10,17 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    // padding: 20px;
     padding-top: 15px;
     background-color: var(--color-background-bg);
     .logo_span {
       position: relative;
       display: flex;
       width: 100%;
+      padding: 0px 20px;
       justify-content: space-between;
       border-bottom: 2px solid var(--color-light-gray);
-      padding-bottom: 15px;
+      padding-bottom: 11px;
       .logo_text {
         gap: 10px;
         img {
