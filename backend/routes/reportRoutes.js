@@ -114,7 +114,7 @@ reportRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {
     try {
-      const report = await Report.findById(req.params.id);
+      const report = await Report.findById(req.params.id).populate("user");
       if (report) {
         res.json(report);
       } else {

@@ -8,10 +8,28 @@ import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import { request } from "../../../base url/BaseUrl";
 import LoadingBox from "../../../utilities/message loading/LoadingBox";
 import MessageBox from "../../../utilities/message loading/MessageBox";
+import ReactTimeAgo from "react-time-ago";
 
 const columns = [
   { field: "_id", headerName: "ID", width: 230 },
   { field: "email", headerName: "Email", width: 230 },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    width: 130,
+    renderCell: (params) => {
+      return (
+        <>
+          <div className="cellWidthImg">
+            <ReactTimeAgo
+              date={Date.parse(params.row.createdAt)}
+              locale="en-US"
+            />
+          </div>
+        </>
+      );
+    },
+  },
   { field: "role", headerName: "Role", width: 100 },
   {
     field: "isAccountVerified",

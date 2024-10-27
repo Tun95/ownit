@@ -8,6 +8,7 @@ import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import { request } from "../../../base url/BaseUrl";
 import LoadingBox from "../../../utilities/message loading/LoadingBox";
 import MessageBox from "../../../utilities/message loading/MessageBox";
+import ReactTimeAgo from "react-time-ago";
 
 import SearchIcon from "@mui/icons-material/Search";
 // Format numbers with commas (e.g., 2,300,454)
@@ -39,6 +40,23 @@ const columns = [
       return (
         <>
           <div className="cellWidthImg">{params.row?.user?.email}</div>
+        </>
+      );
+    },
+  },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    width: 180,
+    renderCell: (params) => {
+      return (
+        <>
+          <div className="cellWidthImg">
+            <ReactTimeAgo
+              date={Date.parse(params.row.createdAt)}
+              locale="en-US"
+            />
+          </div>
         </>
       );
     },

@@ -10,7 +10,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import photo from "../../../assets/others/photo.jpg";
 import { request } from "../../../base url/BaseUrl";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
-import ReactPlayer from 'react-player';
+import ReactPlayer from "react-player";
+import PhotoViewer from "photoviewer";
+import SearchIcon from "@mui/icons-material/Search";
 
 const statusListOptions = ["pending", "approved", "disapproved"];
 
@@ -108,6 +110,22 @@ function ReportsEdit() {
     }
   };
 
+  // Function to open the PhotoViewer
+  const openPhotoViewer = (imageUrl) => {
+    const items = [
+      {
+        src: imageUrl,
+        title: "Image",
+      },
+    ];
+
+    const options = {
+      index: 0,
+    };
+
+    new PhotoViewer(items, options);
+  };
+
   return (
     <>
       <Helmet>
@@ -149,14 +167,27 @@ function ReportsEdit() {
                               <tbody>
                                 <tr className="product_img_text f_flex">
                                   <td className="imageCell l_flex">
-                                    <div className="productImg ">
-                                      <img
-                                        src={
-                                          report?.image ? report?.image : photo
-                                        }
-                                        alt=""
-                                        className="img"
-                                      />
+                                    <div
+                                      className="drop_zone running_mate l_flex"
+                                      onClick={() =>
+                                        report?.image &&
+                                        openPhotoViewer(report?.image)
+                                      }
+                                    >
+                                      <div className="productImg ">
+                                        <img
+                                          src={
+                                            report?.image
+                                              ? report?.image
+                                              : photo
+                                          }
+                                          alt=""
+                                          className="img"
+                                        />
+                                      </div>
+                                      <div className="icon_bg l_flex">
+                                        <SearchIcon className="icon" />
+                                      </div>
                                     </div>
                                   </td>
                                   <td className="textCell f_flex">
@@ -188,6 +219,12 @@ function ReportsEdit() {
                                       <label htmlFor="status">Status:</label>
                                       <span>{report?.status}</span>
                                     </div>
+                                    <div>
+                                      <label htmlFor="user">
+                                        Submitted By:
+                                      </label>
+                                      <span>{report?.user?.email}</span>
+                                    </div>
                                   </td>
                                 </tr>
                               </tbody>
@@ -196,8 +233,8 @@ function ReportsEdit() {
                         </div>{" "}
                         <div className="video_content">
                           <ReactPlayer
-                            url={report.video} // Your video link here
-                            controls={true} // Show play, pause, etc.
+                            url={report.video} 
+                            controls={true} 
                             width="100%"
                             height="auto"
                           />
