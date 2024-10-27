@@ -353,6 +353,23 @@ userRouter.get(
   })
 );
 
+//=====================
+// ADMIN USER LIST FETCHING - ONLY 10 USERS
+//=====================
+userRouter.get(
+  "/limited",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const users = await User.find({}).sort("-createdAt").limit(10); // Limit the result to 10 users
+      res.send(users);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+  })
+);
+
 //==================
 // ADMIN USER DELETE
 //==================

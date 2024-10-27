@@ -46,7 +46,7 @@ const TableData = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const { data } = await axios.get(`${request}/api/users`, {
+        const { data } = await axios.get(`${request}/api/users/limited`, {
           headers: { Authorization: `Bearer ${userInfo?.token}` },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: { users: data } });
