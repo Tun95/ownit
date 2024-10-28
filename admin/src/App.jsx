@@ -6,7 +6,6 @@ import ru from "javascript-time-ago/locale/ru.json";
 import "./App.css";
 import "photoviewer/dist/photoviewer.css";
 
-
 import { Route, Routes } from "react-router-dom";
 import NotFoundScreen from "./utilities/404 error/PageNotFound";
 import AdminRoute from "./utilities/protectedRoute/AdminRoute";
@@ -20,6 +19,7 @@ import UserEditScreen from "./screens/userscreen/editscreen/UserEditScreen";
 import ReportsListScreen from "./screens/reportscreen/listscreen/ReportsListScreen";
 import ReportsEditScreen from "./screens/reportscreen/editscreen/ReportsEditScreen";
 import MessageScreen from "./screens/messagescreen/MessageScreen";
+import AddNewUserScreen from "./screens/userscreen/addscreen/AddNewUserScreen";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -50,6 +50,14 @@ function App() {
             element={
               <AdminRoute>
                 <UserListScreen />
+              </AdminRoute>
+            }
+          />{" "}
+          <Route
+            path="/user/new"
+            element={
+              <AdminRoute>
+                <AddNewUserScreen />
               </AdminRoute>
             }
           />{" "}

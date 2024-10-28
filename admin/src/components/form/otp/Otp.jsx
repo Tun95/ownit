@@ -121,9 +121,7 @@ function OtpVerificationComponent() {
       );
 
       dispatch({ type: "SUBMIT_SUCCESS", payload: data });
-      toast.success("OTP verified, account created successfully", {
-        position: "bottom-center",
-      });
+
       setTimeout(() => {
         actions.resetForm();
       }, 2000);
@@ -134,8 +132,14 @@ function OtpVerificationComponent() {
       // Redirect to the final destination
       if (mode === "register") {
         navigate("/created");
+        toast.success("OTP verified, account created successfully", {
+          position: "bottom-center",
+        });
       } else {
         navigate(final);
+        toast.success("OTP verified, login successfully", {
+          position: "bottom-center",
+        });
       }
     } catch (err) {
       dispatch({

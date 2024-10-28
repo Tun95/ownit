@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/styles.scss";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -42,7 +42,7 @@ const columns = [
             {params.row.isAccountVerified === true ? (
               <span className="verified l_flex">Verified</span>
             ) : (
-              <span className="unverified l_flex">UnVerified</span>
+              <span className="unverified l_flex">Unverified</span>
             )}
           </div>
         </>
@@ -136,6 +136,7 @@ const reducer = (state, action) => {
 };
 
 function UserListComponent() {
+  const navigate = useNavigate();
   const { state: appState } = useAppContext();
   const { userInfo } = appState;
 
@@ -276,6 +277,15 @@ function UserListComponent() {
           <h3 className="productTitle light_shadow uppercase">All Users</h3>
         </div>
         <div className="datatable ">
+          <span className="c_flex">
+            <span></span>
+            <i
+              onClick={() => {
+                navigate(`/user/new`);
+              }}
+              className="fa-solid fa-square-plus filterPlus"
+            ></i>
+          </span>
           {loading ? (
             <LoadingBox />
           ) : error ? (

@@ -165,6 +165,129 @@ userRouter.post(
   })
 );
 
+//===================
+// ADMIN ADD NEW USER ROUTE
+//===================
+userRouter.post(
+  "/add-user",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const facebook = process.env.FACEBOOK_PROFILE_LINK;
+    const instagram = process.env.INSTAGRAM_PROFILE_LINK;
+    const tiktok = process.env.TIKTOK_PROFILE_LINK;
+
+    const { firstName, lastName, email, password, role } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).send({ message: "Email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      role,
+      password: hashedPassword,
+    });
+
+    const otp = await newUser.createAccountVerificationOtp();
+    const createdUser = await newUser.save();
+
+    // Prepare the email content
+    const emailMessage = `
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; }
+          h1 { color: #007BFF; }
+          p { margin-bottom: 16px; }
+          a { text-decoration: none; }
+          .anchor {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #FFFFFF !important;
+            text-decoration: none;
+            border-radius: 4px;
+          }
+          .footer_info { color: #666; margin: 10px 0; }
+          .footer { margin-top: 20px; }
+          .social-icons {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+          }
+          .social-icon { margin: 0 5px; font-size: 24px; color: #333; }
+          .icons { width: 25px; height: 25px; }
+          .instagram { margin-top: 2px; width: 22px; height: 22px; }
+          .tik { width: 27px; height: 27px; }
+        </style>
+      </head>
+      <body>
+        <h1>Email Verification</h1>
+        <p>Hello ${newUser.firstName},</p>
+        <p>You have received this email because you have been requested to verify your account.</p>
+        <p>Your verification code is: <strong>${otp}</strong></p>
+        <p>Your password is: <strong>${password}</strong></p>
+        <p>If you did not request this verification, you can safely ignore this email.</p>
+        <p>This verification code is valid for the next 10 minutes.</p>
+        <p>Thank you,</p>
+        <p>${process.env.WEB_NAME} Team</p>
+        <hr/>
+        <div class="footer">
+          <p class="footer_info">For more information, visit our website:</p>
+          <p class="footer_info url_link"><a href="${process.env.SUB_DOMAIN}">${process.env.SUB_DOMAIN}</a></p>
+          <div class="social-icons">
+            <a href="${facebook}" class="social-icon">
+              <img class="icons" src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1693399098/facebook_e2bdv6.png" alt="Facebook" />
+            </a>
+            <a href="${instagram}" class="social-icon">
+              <img class="icons instagram" src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681997/instagram_iznt7t.png" alt="Instagram" />
+            </a>
+            <a href="${tiktok}" class="social-icon">
+              <img class="icons tik" src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681756/tiktok_y8dkwy.png" alt="Tiktok" />
+            </a>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Configure Nodemailer transport
+    const smtpTransport = nodemailer.createTransport({
+      service: process.env.MAIL_SERVICE,
+      auth: {
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    // Email options
+    const mailOptions = {
+      to: createdUser.email,
+      from: `${process.env.WEB_NAME} <${process.env.EMAIL_ADDRESS}>`,
+      subject: "Account Verification",
+      html: emailMessage,
+    };
+
+    try {
+      // Send email with Nodemailer
+      await smtpTransport.sendMail(mailOptions);
+
+      res.status(201).send({
+        message: "User created. Verification email sent.",
+        userId: createdUser._id,
+      });
+    } catch (error) {
+      console.error("Failed to send email", error);
+      res.status(500).json({ message: "Failed to send email" });
+    }
+  })
+);
+
 //=================================
 // Route to handle OTP generation and email verification for user registration and login
 //=================================
