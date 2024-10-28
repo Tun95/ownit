@@ -1,6 +1,9 @@
 .nav_bar {
   background-color: var(--color-green);
   color: var(--color-white);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   .content {
     padding: 10px 0px;
     a {

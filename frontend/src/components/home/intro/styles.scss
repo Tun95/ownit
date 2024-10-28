@@ -1,0 +1,18 @@
+.intro_banner {
+  position: relative;
+  .background_banner {
+    // position: absolute;
+    // top: 0;
+    img {
+      width: 100%;
+      height: 550px;
+    }
+  }
+  .lower_content {
+    position: absolute;
+    top: 0;
+    background-color: #00463e6c;
+    width: 100%;
+    height: 100%;
+  }
+}

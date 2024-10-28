@@ -40,6 +40,17 @@ function Sidebar() {
     window.location.href = "/";
   };
 
+  // Navigate to Register with Drawer Close
+  const navigateToRegister = () => {
+    setState({ left: false }); // Close the drawer first
+    navigate("/register");
+  };
+
+  const navigateToSignin = () => {
+    setState({ left: false }); // Close the drawer first
+    navigate("/signin");
+  };
+
   return (
     <div>
       {["left"].map((anchor, index) => (
@@ -136,18 +147,12 @@ function Sidebar() {
               {!userInfo && (
                 <div className="login_register f_flex">
                   <div className="register">
-                    <button
-                      className="main_btn"
-                      onClick={() => navigate("/register")}
-                    >
+                    <button className="main_btn" onClick={navigateToRegister}>
                       Register
                     </button>
                   </div>
                   <div className="login">
-                    <button
-                      className="main_btn"
-                      onClick={() => navigate("/signin")}
-                    >
+                    <button className="main_btn" onClick={navigateToSignin}>
                       Sign In
                     </button>
                   </div>
