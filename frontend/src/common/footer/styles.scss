@@ -7,5 +7,11 @@
         gap: 8px;
       }
     }
+    /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+    @media screen and (max-width: 420px) {
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 0px;
+    }
   }
 }
