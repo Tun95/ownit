@@ -1,6 +1,6 @@
 import "./styles.scss";
 import banner from "../../../assets/home/banner.jpeg";
-import s1 from "../../../assets/home/s1.png";
+import s1 from "../../../assets/home/s4.png";
 
 function Intro() {
   return (
@@ -9,9 +9,9 @@ function Intro() {
         <div className="container">
           <div className="content c_flex">
             <div className="left">
-              <div className="logo_small_text">
+              {/* <div className="logo_small_text">
                 <h3>OWNIT</h3>
-              </div>
+              </div> */}
               <div className="title">
                 <h1>
                   Own the Change Make Public Schools Better with{" "}

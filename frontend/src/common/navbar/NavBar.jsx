@@ -1,6 +1,6 @@
 import "./styles.scss";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo/logo.png";
+import logo from "../../assets/logo/logo1.png";
 import { useAppContext } from "../../utilities/utils/Utils";
 import me from "../../assets/others/me.png";
 import Sidebar from "../sidebar/Sidebar";

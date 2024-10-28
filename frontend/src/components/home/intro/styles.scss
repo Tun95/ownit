@@ -6,14 +6,14 @@
     width: 100%;
     img {
       width: 100%;
-      height: 550px;
+      height: 600px;
       object-fit: cover;
     }
   }
   .lower_content {
     background-color: #00463e6c;
     width: 100%;
-    height: 550px;
+    height: 600px;
     position: relative;
 
     z-index: 1;
@@ -80,10 +80,10 @@
   }
   /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
   @media screen and (max-width: 720px) {
-    height: 1050px;
+    height: 1150px;
     .background_banner {
       img {
-        height: 1050px;
+        height: 1150px;
       }
     }
     .lower_content {
@@ -96,10 +96,10 @@
   }
   /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
   @media screen and (max-width: 480px) {
-    height: 920px;
+    height: 1000px;
     .background_banner {
       img {
-        height: 920px;
+        height: 1000px;
       }
     }
   }

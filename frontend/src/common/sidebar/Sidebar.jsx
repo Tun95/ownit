@@ -7,7 +7,7 @@ import { Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import logo from "../../assets/logo/logo.png";
+import logo from "../../assets/logo/logo1.png";
 import { useAppContext } from "../../utilities/utils/Utils";
 import SettingsApplicationsOutlinedIcon from "@mui/icons-material/SettingsApplicationsOutlined";
 import AssuredWorkloadOutlinedIcon from "@mui/icons-material/AssuredWorkloadOutlined";
