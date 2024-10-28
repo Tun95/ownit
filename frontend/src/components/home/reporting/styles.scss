@@ -1,0 +1,109 @@
+.reporting {
+  .content {
+    .box {
+      margin: 20px 0px;
+      .left,
+      .right {
+        padding: 20px;
+        border-radius: 15px;
+        position: relative;
+        min-width: 300px;
+        .head {
+          margin-bottom: 8px;
+        }
+        .img {
+          width: 100%;
+          margin-top: 10px;
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+      .top {
+        gap: 20px;
+        height: 100%;
+        margin-bottom: 20px;
+
+        .left {
+          background: linear-gradient(
+            111.95deg,
+            #ffe7fa 35.26%,
+            #eeb4e2 92.97%
+          );
+          position: relative;
+          h3 {
+            color: var(--color-pink);
+          }
+          p {
+            color: var(--color-deep-pink);
+          }
+          .img {
+            position: relative;
+            height: 200px;
+            img {
+              position: absolute;
+            }
+          }
+        }
+        .right {
+          width: 60%;
+
+          background: linear-gradient(
+            111.95deg,
+            #e7fff2 35.26%,
+            #b1e0ca 92.97%
+          );
+          h3 {
+            color: var(--color-deep-green);
+          }
+          p {
+            color: var(--color-deep-deep-green);
+          }
+        }
+      }
+      .bottom {
+        gap: 20px;
+
+        .left {
+          width: 60%;
+          min-width: 300px;
+          background: linear-gradient(132.06deg, #eee7ff 29.2%, #d8cef0 96.66%);
+          h3 {
+            color: var(--color-deep-blue);
+          }
+          p {
+            color: var(--color-deep-deep-blue);
+          }
+        }
+        .right {
+          background: linear-gradient(132.06deg, #fff1e7 29.2%, #f0d2ce 96.66%);
+
+          h3 {
+            color: var(--color-deep-red);
+          }
+          p {
+            color: var(--color-deep-deep-red);
+          }
+        }
+      }
+      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+      @media screen and (max-width: 900px) {
+        .left,
+        .right {
+          width: 100% !important;
+        }
+      }
+      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+      @media screen and (max-width: 650px) {
+        .top,
+        .bottom {
+          flex-direction: column;
+          .left,
+          .right {
+            width: 100% !important;
+            min-width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

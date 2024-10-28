@@ -21,9 +21,10 @@ function Intro() {
               <div className="desc_text">
                 <small>
                   <p>
-                    Spotted an issue in your local school? Whether its broken
-                    infrastructure, overcrowded classrooms, e.t.c Edquity helps
-                    you report it so the right authorities can take action.
+                    Spotted an issue in your local school? Whether it&apos;s
+                    broken infrastructure, overcrowded classrooms, e.t.c Edquity
+                    helps you report it so the right authorities can take
+                    action.
                   </p>
                 </small>
               </div>
