@@ -96,6 +96,15 @@
   }
   /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
   @media screen and (max-width: 480px) {
+    height: 920px;
+    .background_banner {
+      img {
+        height: 920px;
+      }
+    }
+  }
+  /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+  @media screen and (max-width: 420px) {
     height: 800px;
     .background_banner {
       img {
