@@ -1,18 +1,106 @@
 .intro_banner {
   position: relative;
   .background_banner {
-    // position: absolute;
-    // top: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
     img {
       width: 100%;
       height: 550px;
+      object-fit: cover;
     }
   }
   .lower_content {
-    position: absolute;
-    top: 0;
     background-color: #00463e6c;
     width: 100%;
-    height: 100%;
+    height: 550px;
+    position: relative;
+
+    z-index: 1;
+    .content {
+      width: 100%;
+      gap: 30px;
+      .left {
+        width: 90%;
+        .logo_small_text {
+          h3 {
+            color: var(--color-primary);
+          }
+        }
+        .title {
+          color: var(--color-white);
+          padding: 20px 0px;
+          h1 {
+            font-size: 45px;
+            line-height: 60px;
+            /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+            @media screen and (max-width: 420px) {
+              font-size: 30px;
+              line-height: 40px;
+            }
+          }
+          .green {
+            color: var(--color-primary);
+          }
+        }
+        .desc_text {
+          p {
+            color: var(--color-white);
+          }
+        }
+        .btn {
+          margin-top: 30px;
+          .main_btn {
+            padding: 8px 40px;
+          }
+        }
+      }
+      .right {
+        width: 100%;
+        justify-content: flex-end;
+        .img {
+          width: 75%;
+          img {
+            width: 100%;
+          }
+        }
+      }
+      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+      @media screen and (max-width: 900px) {
+        .left {
+          width: 100%;
+        }
+        .right {
+          .img {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+  @media screen and (max-width: 720px) {
+    height: 1050px;
+    .background_banner {
+      img {
+        height: 1050px;
+      }
+    }
+    .lower_content {
+      height: 100%;
+      .content {
+        flex-direction: column;
+        gap: 50px;
+      }
+    }
+  }
+  /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+  @media screen and (max-width: 480px) {
+    height: 800px;
+    .background_banner {
+      img {
+        height: 800px;
+      }
+    }
   }
 }

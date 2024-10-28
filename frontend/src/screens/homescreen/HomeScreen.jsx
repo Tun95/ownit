@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import Intro from "../../components/home/intro/Intro";
+import Citizen from "../../components/home/citizen/Citizen";
 
 function HomeScreen() {
   return (
@@ -9,6 +10,7 @@ function HomeScreen() {
       </Helmet>
       <div className="home_content">
         <Intro />
+        <Citizen />
       </div>
     </div>
   );
