@@ -99,5 +99,18 @@
         }
       }
     }
+
+    /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+    @media screen and (max-width: 545px) {
+      .header {
+        .head_btn {
+          .head_ {
+            h1 {
+              font-size: 24px;
+            }
+          }
+        }
+      }
+    }
   }
 }
