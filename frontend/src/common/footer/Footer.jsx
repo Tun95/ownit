@@ -4,7 +4,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 
 function Footer() {
   return (
-    <div className="footer">
+    <div className="main_footer">
       <div className="container">
         <div className="content c_flex">
           <div className="left">
