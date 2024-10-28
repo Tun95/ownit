@@ -68,6 +68,10 @@ function Sidebar() {
             PaperProps={{
               sx: {
                 backgroundColor: "rgba(0, 0, 0, 0.6)",
+
+                "@media (max-width: 320px)": {
+                  width: "100%",
+                },
               },
             }}
           >
