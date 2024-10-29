@@ -28,7 +28,7 @@ function CreatedAccountComponent() {
             <div className="form_group">
               <div className="text_details l_flex">
                 <h3>
-                  VotersHQ Access <span className="green"> Secured</span>
+                  Edquity Access <span className="green"> Secured</span>
                 </h3>
                 <small className="">
                   Your account has been created successfully, you can now log in

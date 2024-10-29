@@ -3,7 +3,6 @@ import "./styles.scss";
 import { Formik, ErrorMessage, Form, Field } from "formik";
 import { Steps } from "antd";
 import { useEffect, useReducer, useState } from "react";
-import EastIcon from "@mui/icons-material/East";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -180,7 +179,7 @@ function ReportComponent() {
                   >
                     <div className="basic_information">
                       <div className="grid_form">
-                        {/* <div
+                        <div
                           className={`form_group ${
                             touched.firstName && errors.firstName ? "error" : ""
                           }`}
@@ -208,7 +207,7 @@ function ReportComponent() {
                             component="div"
                             className="error"
                           />
-                        </div> */}
+                        </div>
                         MY FIRST STEP
                         {/* Step 1 Next Button */}
                         <div
@@ -225,7 +224,6 @@ function ReportComponent() {
                               }
                             >
                               <span>Next</span>
-                              <EastIcon className="icon" />
                             </button>
                           </div>
                         </div>
@@ -429,7 +427,6 @@ function ReportComponent() {
                               }
                             >
                               <span>Next</span>
-                              <EastIcon className="icon" />
                             </button>
                           </div>
                         </div>
@@ -465,7 +462,6 @@ function ReportComponent() {
                               ) : (
                                 <>
                                   <span>Finish</span>
-                                  <EastIcon className="icon" />
                                 </>
                               )}
                             </button>

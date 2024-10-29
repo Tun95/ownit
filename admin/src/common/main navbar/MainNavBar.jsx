@@ -17,7 +17,7 @@ function MainNavBar() {
           <div className="logo_box">
             <Link to="/" className="logo">
               <div className="img">
-                <img src={logo} alt="voters logo" />
+                <img src={logo} alt="edquity logo" />
               </div>
             </Link>
           </div>

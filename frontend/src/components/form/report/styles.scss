@@ -2,9 +2,11 @@
   padding: 40px 0px;
   margin-top: 50px;
   .content {
+    width: 100%;
     .steps {
       .steps_box {
         padding: 0px 40px;
+        width: 100%;
       }
       /* Custom styles for the active step */
       .steps_box .ant-steps-item-active .ant-steps-item-icon {
@@ -45,11 +47,15 @@
       }
     }
     .inner_form {
+      width: 100%;
       .visible {
         display: block;
       }
       .hidden {
         display: none;
+      }
+      .basic_information {
+        width: 100% !important;
       }
       .grid_form {
         padding: 30px 20px;
@@ -87,10 +93,10 @@
         .btn {
           width: 100%;
           .main_btn {
-            width: 100%;
+            width: 50%;
             gap: 10px;
             font-size: 15px;
-            padding: 15px 20px;
+            padding: 10px 20px;
             .icon {
               font-size: 20px;
             }
