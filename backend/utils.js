@@ -7,6 +7,7 @@ export const generateToken = (user) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      isAdmin: user.isAdmin,
       isBlocked: user.isBlocked,
       participationType: user.participationType,
       isAccountVerified: user.isAccountVerified,
@@ -52,5 +53,3 @@ export const isAdmin = (req, res, next) => {
       .send({ message: "Forbidden: You do not have admin privileges" });
   }
 };
-
-

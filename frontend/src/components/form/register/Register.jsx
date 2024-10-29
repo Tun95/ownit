@@ -16,6 +16,8 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 //REGISTER DROPDOWN MENU
 const initialRegisterValues = {
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -69,6 +71,8 @@ function RegisterComponent() {
   const handleSubmit = async (values, actions) => {
     try {
       const { data } = await axios.post(`${request}/api/users/signup`, {
+        firstName: values.firstName,
+        lastName: values.lastName,
         email: values.email,
         password: values.password,
       });
@@ -143,6 +147,56 @@ function RegisterComponent() {
                   <Form>
                     <div className="inner_form">
                       <div className="grid_form">
+                        <div
+                          className={`form_group ${
+                            touched.firstName && errors.firstName ? "error" : ""
+                          }`}
+                        >
+                          <label htmlFor="firstName">
+                            First Name<span className="red">*</span>
+                          </label>
+                          <Field
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            placeholder="Enter your first name"
+                            className={`input_box ${
+                              touched.firstName && errors.firstName
+                                ? "error-border"
+                                : ""
+                            }`}
+                          />
+                          <ErrorMessage
+                            name="firstName"
+                            component="div"
+                            className="error"
+                          />
+                        </div>
+                        <div
+                          className={`form_group ${
+                            touched.lastName && errors.lastName ? "error" : ""
+                          }`}
+                        >
+                          <label htmlFor="lastName">
+                            Last Name<span className="red">*</span>
+                          </label>
+                          <Field
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            placeholder="Enter your last name"
+                            className={`input_box ${
+                              touched.lastName && errors.lastName
+                                ? "error-border"
+                                : ""
+                            }`}
+                          />
+                          <ErrorMessage
+                            name="lastName"
+                            component="div"
+                            className="error"
+                          />
+                        </div>
                         <div
                           className={`form_group ${
                             touched.email && errors.email ? "error" : ""

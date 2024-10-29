@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     firstName: { type: String },
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
+    isAdmin: { type: Boolean, default: false, required: true },
     role: {
       type: String,
       enum: ["user", "government", "admin"],
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema(
     passwordChangeAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
-    isAccountVerified: { type: Boolean, default: true }, // Assume verified if Google sign-in
+    isAccountVerified: { type: Boolean, default: false }, // Assume verified if Google sign-in
     accountVerificationOtp: { type: String },
     accountVerificationOtpExpires: { type: Date },
   },

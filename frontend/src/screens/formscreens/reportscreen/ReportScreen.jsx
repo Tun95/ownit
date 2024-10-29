@@ -10,7 +10,7 @@ function ReportScreen() {
       </Helmet>
       <div className="container ">
         <BackComponent />
-        <div className="content form_screen_content">
+        <div className="content ">
           <ReportComponent />
         </div>
       </div>

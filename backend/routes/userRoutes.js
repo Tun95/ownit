@@ -106,7 +106,10 @@ userRouter.post(
         console.log("Password Match Successful");
         res.send({
           _id: admin._id,
+          firstName: admin.firstName,
+          lastName: admin.lastName,
           email: admin.email,
+          isAdmin: admin.isAdmin,
           role: admin.role,
           isBlocked: admin.isBlocked,
           isAccountVerified: admin.isAccountVerified,
@@ -134,12 +137,16 @@ userRouter.post(
         return res.status(400).send({ message: "User already exists" });
       }
 
+      // Check if there's an existing admin user
+      const isFirstAdmin = (await User.countDocuments({ role: "admin" })) === 0;
+
       const newAdmin = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
         role: "admin",
+        isAdmin: isFirstAdmin, // Set isAdmin to true if this is the first admin
       });
 
       const admin = await newAdmin.save();
@@ -148,6 +155,7 @@ userRouter.post(
         firstName: admin.firstName,
         lastName: admin.lastName,
         email: admin.email,
+        isAdmin: admin.isAdmin,
         role: admin.role,
         isBlocked: admin.isBlocked,
         isAccountVerified: admin.isAccountVerified,
@@ -183,7 +191,10 @@ userRouter.post(
       if (await user.isPasswordMatch(password)) {
         res.send({
           _id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
+          isAdmin: user.isAdmin,
           role: user.role,
           isBlocked: user.isBlocked,
           isAccountVerified: user.isAccountVerified,
@@ -211,6 +222,8 @@ userRouter.post(
       }
 
       const newUser = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
         role: "user",
@@ -219,7 +232,10 @@ userRouter.post(
       const user = await newUser.save();
       res.send({
         _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        isAdmin: user.isAdmin,
         role: user.role,
         isBlocked: user.isBlocked,
         isAccountVerified: user.isAccountVerified,

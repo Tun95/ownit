@@ -1,6 +1,16 @@
 import * as yup from "yup";
 
 export const registerSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .min(2, "First name is too short!")
+    .max(50, "First name is too long!")
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .min(2, "Last name is too short!")
+    .max(50, "Last name is too long!")
+    .required("Last name is required"),
   email: yup
     .string()
     .email("Invalid email address")
@@ -33,7 +43,8 @@ export const reportSchema = yup.object().shape({
   issueType: yup
     .array()
     .of(yup.string())
-    .required("At least one issue type is required"), // At least one issue type must be provided
+    .min(1, "At least one issue type is required") // Enforces at least one selection
+    .required("At least one issue type is required"),
   description: yup.string().required("Description is required"), // Marked as required
   comment: yup.string().required("Comment is required"), // Marked as required
 
@@ -41,7 +52,8 @@ export const reportSchema = yup.object().shape({
   images: yup
     .array()
     .of(yup.string())
-    .required("At least one image is required"), // At least one image must be provided
+    .min(1, "At least one image is required") // Ensures at least one image is selected
+    .required("At least one image is required"),
   video: yup.string().required("Video URL is required"), // Marked as required
 });
 
