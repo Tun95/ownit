@@ -4,17 +4,26 @@ import logo from "../../assets/logo/logo1.png";
 import { useAppContext } from "../../utilities/utils/Utils";
 import me from "../../assets/others/me.png";
 import Sidebar from "../sidebar/Sidebar";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 function NavBar() {
-  const { state: appState } = useAppContext();
+  const { state: appState, dispatch: ctxDispatch } = useAppContext();
   const { userInfo } = appState;
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+    window.location.href = "/";
+  };
   return (
     <div className="nav_bar">
       <div className="container">
         <div className="content c_flex">
           <div className="logo">
             <div className="img">
-              <img src={logo} alt="logo" />
+              <Link to="/">
+                <img src={logo} alt="logo" />
+              </Link>
             </div>
           </div>
           <div className="nav_links">
@@ -37,7 +46,7 @@ function NavBar() {
                   <img src={me} alt="user" />
                 </div>
                 <div className="link a_flex">
-                  <Link to="/signin">
+                  <Link to="/login">
                     <small>Sign in</small>
                   </Link>
                   <span className="slash">/</span>
@@ -53,6 +62,9 @@ function NavBar() {
                 </div>
                 <div className="link a_flex">
                   <small>{userInfo && userInfo.email}</small>
+                </div>
+                <div className="logout" onClick={signoutHandler}>
+                  <LogoutOutlinedIcon className="icon" />
                 </div>
               </>
             )}

@@ -1,0 +1,8 @@
+.form_screen_content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  @media (max-width: 900px) {
+    display: block;
+  }
+}

@@ -77,6 +77,22 @@
   color: var(--color-blue);
 }
 
+/* BACK */
+.back_icon_component {
+  position: relative;
+  top: 20px;
+  left: 10px;
+}
+.back_icon_component .back_btn {
+  cursor: pointer;
+  width: fit-content;
+}
+.back_icon_component .back_btn .icon {
+  font-size: 17px;
+  position: relative;
+  bottom: 1px;
+}
+
 /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
 @media screen and (max-width: 700px) {
   ._loading_overlay_content {

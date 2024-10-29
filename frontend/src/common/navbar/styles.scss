@@ -43,6 +43,15 @@
       .slash {
         font-size: 14px;
       }
+      .logout {
+        position: relative;
+        top: 2px;
+        width: fit-content;
+        .icon {
+          cursor: pointer;
+          font-size: 20px;
+        }
+      }
     }
     .main_sidebar {
       display: none;

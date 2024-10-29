@@ -48,7 +48,7 @@ function Sidebar() {
 
   const navigateToSignin = () => {
     setState({ left: false }); // Close the drawer first
-    navigate("/signin");
+    navigate("/login");
   };
 
   return (
