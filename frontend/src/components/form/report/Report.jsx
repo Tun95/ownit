@@ -1,31 +1,14 @@
-import { registerSchema } from "../../../schema/Index";
-import {
-  initialRegisterValues,
-  RegisterAction,
-  RegisterState,
-  RegisterValues,
-} from "../../../types/auth/register/types";
+import { reportSchema } from "../../../schema/Index";
 import "./styles.scss";
-import {
-  Formik,
-  ErrorMessage,
-  Form,
-  Field,
-  FormikHelpers,
-  FormikTouched,
-  FormikErrors,
-} from "formik";
-import { Steps, Checkbox } from "antd";
+import { Formik, ErrorMessage, Form, Field } from "formik";
+import { Steps } from "antd";
 import { useEffect, useReducer, useState } from "react";
 import EastIcon from "@mui/icons-material/East";
-import {
-  ErrorResponse,
-  getError,
-  useAppContext,
-} from "../../../utilities/utils/Utils";
+import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { request } from "../../../base url/BaseUrl";
+import { useNavigate } from "react-router-dom";
 
 const issueTypeOptions = [
   "Infrastructure",
@@ -34,32 +17,37 @@ const issueTypeOptions = [
   "Teacher Related",
 ];
 
+const initialRegisterValues = {
+  privacyPreference: "",
+  schoolName: "",
+  schoolLocation: "",
+  issueType: "",
+  description: "",
+  comment: "",
+  images: "",
+  video: "",
+};
 
-const registerReducer = (
-  state: RegisterState,
-  action: RegisterAction
-): RegisterState => {
+const registerReducer = (state, action) => {
   switch (action.type) {
-    case "REGISTER_REQUEST":
+    case "CREATE_REQUEST":
       return { ...state, loading: true, error: "", success: false };
-    case "REGISTER_SUCCESS":
+    case "CREATE_SUCCESS":
       return { ...state, loading: false, success: true };
-    case "REGISTER_FAIL":
+    case "CREATE_FAIL":
       return { ...state, loading: false, error: action.payload || "" };
     default:
       return state;
   }
 };
 function ReportComponent() {
-  const { state: appState, dispatch: ctxDispatch } = useAppContext();
+  const navigate = useNavigate();
+
+  const { state: appState } = useAppContext();
   const { userInfo } = appState;
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  // Step management
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  //const [ticketDownloaded, setTicketDownloaded] = useState(false); // New state for ticket download
+  const [currentStep, setCurrentStep] = useState(0);
 
-  // REGISTER HANDLER
   const [, dispatch] = useReducer(registerReducer, {
     loading: false,
     error: "",
@@ -69,64 +57,50 @@ function ReportComponent() {
   useEffect(() => {
     if (userInfo) {
       setCurrentStep(3); // Set step to 3 if userInfo exists
-      setIsSubmitted(true); // Optionally set isSubmitted to true
     }
   }, [userInfo]);
 
-  // REGISTER HANDLER
-  const handleSubmit = async (
-    values: RegisterValues,
-    actions: FormikHelpers<RegisterValues>
-  ) => {
+  const handleSubmit = async (values, actions) => {
     try {
-      dispatch({ type: "REGISTER_REQUEST" });
+      dispatch({ type: "CREATE_REQUEST" });
 
       const formData = new FormData();
 
-      // Explicitly cast key to the union of RegisterValues keys
+      // Iterate through values and append to formData
       for (const key in values) {
-        const typedKey = key as keyof RegisterValues; // Cast key to keyof RegisterValues
-
-        const value = values[typedKey];
+        const value = values[key];
 
         // Only append non-null values
         if (value !== null && value !== undefined) {
           if (typeof value === "boolean") {
-            formData.append(typedKey, String(value)); // Convert boolean to string
+            formData.append(key, String(value)); // Convert boolean to string
           } else {
-            formData.append(typedKey, value); // Append string or File
+            formData.append(key, value); // Append string or File
           }
         }
       }
 
-      const response = await axios.post(
-        `${request}/api/users/signup`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${request}/api/reports`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      dispatch({ type: "REGISTER_SUCCESS", payload: response.data });
-      ctxDispatch({ type: "USER_SIGNIN", payload: response.data });
-      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      dispatch({ type: "CREATE_SUCCESS", payload: response.data });
 
-      toast.success("Registration successful!", {
+      toast.success("Report Submitted Successfully!", {
         position: "bottom-center",
       });
 
       actions.resetForm();
-
-      setIsSubmitted(true);
       setCurrentStep(3);
+      navigate("/");
     } catch (err) {
       dispatch({
-        type: "REGISTER_FAIL",
-        payload: await getError(err as ErrorResponse),
+        type: "CREATE_FAIL",
+        payload: await getError(err),
       });
-      toast.error(await getError(err as ErrorResponse), {
+      toast.error(await getError(err), {
         position: "bottom-center",
       });
     } finally {
@@ -134,43 +108,24 @@ function ReportComponent() {
     }
   };
 
-
-
-  const handleNext = async (
-    validateForm: () => Promise<FormikErrors<RegisterValues>>,
-    touched: FormikTouched<RegisterValues>,
-    setTouched: (
-      touched: FormikTouched<RegisterValues>,
-      shouldValidate?: boolean
-    ) => void
-  ) => {
+  const handleNext = async (validateForm, touched, setTouched) => {
     // Validate the form
     const errors = await validateForm();
 
     // Filter errors for the current step
     const stepErrors = Object.keys(errors).filter((key) => {
       if (currentStep === 0) {
-        return [
-          "firstName",
-          "lastName",
-          "email",
-          "phone",
-          "occupation",
-          "participationType",
-        ].includes(key);
+        return ["privacyPreference"].includes(key);
       } else if (currentStep === 1) {
         return [
-          "dob",
-          "stateOfOrigin",
-          "affiliation",
-          "localGovernment",
-          "ninNumber",
-          "ninImageFile",
+          "schoolName",
+          "schoolLocation",
+          "issueType",
+          "description",
+          "comment",
         ].includes(key);
       } else if (currentStep === 2) {
-        return ["competitionType", "businessCategory", "confirmation"].includes(
-          key
-        );
+        return ["images", "video"].includes(key);
       }
       return false;
     });
@@ -182,7 +137,7 @@ function ReportComponent() {
       // Show all errors for the current step
       const newTouched = { ...touched };
       stepErrors.forEach((key) => {
-        newTouched[key as keyof RegisterValues] = true;
+        newTouched[key] = true;
       });
       setTouched(newTouched, true);
     }
@@ -202,18 +157,18 @@ function ReportComponent() {
         {!userInfo && (
           <Formik
             initialValues={initialRegisterValues}
-            validationSchema={registerSchema}
+            validationSchema={reportSchema}
             onSubmit={handleSubmit}
           >
             {({
               touched,
-              values,
+              //values,
               errors,
               isSubmitting,
               validateForm,
               setFieldValue,
               setTouched,
-              handleChange,
+              // handleChange,
             }) => (
               <Form>
                 <div className="inner_form">
@@ -224,7 +179,7 @@ function ReportComponent() {
                     }`}
                   >
                     <div className="basic_information">
-                    <div
+                      {/* <div
                           className={`form_group ${
                             touched.firstName && errors.firstName ? "error" : ""
                           }`}
@@ -252,7 +207,27 @@ function ReportComponent() {
                             component="div"
                             className="error"
                           />
+                        </div> */}
+
+                      {/* Step 1 Next Button */}
+                      <div
+                        className={`form_group ${
+                          currentStep === 0 ? "visible" : "hidden"
+                        }`}
+                      >
+                        <div className="btn l_flex">
+                          <button
+                            type="button"
+                            className="main_btn l_flex"
+                            onClick={() =>
+                              handleNext(validateForm, touched, setTouched)
+                            }
+                          >
+                            <span>Next</span>
+                            <EastIcon className="icon" />
+                          </button>
                         </div>
+                      </div>
                     </div>
                   </div>
 
@@ -263,46 +238,196 @@ function ReportComponent() {
                     }`}
                   >
                     <div className="verification_information">
-                       {/* Affiliation state */}
-                       <div
-                          className={`form_group ${
-                            touched.affiliation && errors.affiliation
-                              ? "error"
-                              : ""
-                          }`}
-                        >
-                          <span className="input_span">
-                            <label htmlFor="affiliation">
-                              Affiliation With Ondo State:
-                              <span className="red">*</span>
-                            </label>
-                            <Field
-                              as="select"
-                              id="affiliation"
-                              name="affiliation"
-                              className={`input_box ${
-                                touched.affiliation && errors.affiliation
-                                  ? "error-border"
-                                  : ""
-                              }`}
-                              // onChange={(e) => {
-                              //   handleChange(e); // Update form values
-                              // }}
-                            >
-                              <option value="">Select Affiliation </option>
-                              {issueTypeOptions.map((option, index) => (
-                                <option key={index} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </Field>
-                          </span>
-                          <ErrorMessage
-                            name="affiliation"
-                            component="div"
-                            className="error"
+                      <div
+                        className={`form_group ${
+                          touched.schoolName && errors.schoolName ? "error" : ""
+                        }`}
+                      >
+                        <span className="input_span">
+                          {" "}
+                          <label htmlFor="schoolName">
+                            School Name:
+                            <span className="red">*</span>
+                          </label>
+                          <Field
+                            type="text"
+                            id="schoolName"
+                            name="schoolName"
+                            placeholder="school name"
+                            className={`input_box ${
+                              touched.schoolName && errors.schoolName
+                                ? "error-border"
+                                : ""
+                            }`}
                           />
+                        </span>
+                        <ErrorMessage
+                          name="schoolName"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+                      <div
+                        className={`form_group ${
+                          touched.schoolLocation && errors.schoolLocation
+                            ? "error"
+                            : ""
+                        }`}
+                      >
+                        <span className="input_span">
+                          {" "}
+                          <label htmlFor="schoolLocation">
+                            School Location:
+                            <span className="red">*</span>
+                          </label>
+                          <Field
+                            type="text"
+                            id="schoolLocation"
+                            name="schoolLocation"
+                            placeholder="school location"
+                            className={`input_box ${
+                              touched.schoolLocation && errors.schoolLocation
+                                ? "error-border"
+                                : ""
+                            }`}
+                          />
+                        </span>
+                        <ErrorMessage
+                          name="schoolLocation"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+
+                      {/* ISSUE TYPE */}
+                      <div
+                        className={`form_group ${
+                          touched.issueType && errors.issueType ? "error" : ""
+                        }`}
+                      >
+                        <span className="input_span">
+                          <label htmlFor="issueType">
+                            What type of issue are you reporting?:
+                            <span className="red">*</span>
+                          </label>
+                          <Field
+                            as="select"
+                            id="issueType"
+                            name="issueType"
+                            className={`input_box ${
+                              touched.issueType && errors.issueType
+                                ? "error-border"
+                                : ""
+                            }`}
+                            multiple
+                            // Handle the change event manually
+                            onChange={(event) => {
+                              const options = event.target.options;
+                              const values = [];
+                              for (let i = 0; i < options.length; i++) {
+                                if (options[i].selected) {
+                                  values.push(options[i].value);
+                                }
+                              }
+                              // Update the Formik state
+                              setFieldValue("issueType", values);
+                            }}
+                          >
+                            <option value="">Select Issue Type</option>
+                            {issueTypeOptions.map((option, index) => (
+                              <option key={index} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </Field>
+                        </span>
+                        <ErrorMessage
+                          name="issueType"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+
+                      <div
+                        className={`form_group ${
+                          touched.description && errors.description
+                            ? "error"
+                            : ""
+                        }`}
+                      >
+                        <span className="input_span">
+                          {" "}
+                          <label htmlFor="description">
+                            Provide the issues in detail:
+                            <span className="red">*</span>
+                          </label>
+                          <Field
+                            type="text"
+                            id="description"
+                            name="description"
+                            placeholder="details here"
+                            className={`input_box ${
+                              touched.description && errors.description
+                                ? "error-border"
+                                : ""
+                            }`}
+                          />
+                        </span>
+                        <ErrorMessage
+                          name="description"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+                      <div
+                        className={`form_group ${
+                          touched.comment && errors.comment ? "error" : ""
+                        }`}
+                      >
+                        <span className="input_span">
+                          {" "}
+                          <label htmlFor="comment">
+                            Do you have any suggestion or comment about
+                            improving the state of the school?:
+                            <span className="red">*</span>
+                          </label>
+                          <Field
+                            type="text"
+                            id="comment"
+                            name="comment"
+                            placeholder="details here"
+                            className={`input_box ${
+                              touched.comment && errors.comment
+                                ? "error-border"
+                                : ""
+                            }`}
+                          />
+                        </span>
+                        <ErrorMessage
+                          name="comment"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+                      {/* Step 2 Next Button */}
+                      <div
+                        className={`form_group ${
+                          currentStep === 1 ? "visible" : "hidden"
+                        }`}
+                      >
+                        <div className="btn l_flex">
+                          <button
+                            type="button"
+                            className="main_btn l_flex"
+                            onClick={() =>
+                              handleNext(validateForm, touched, setTouched)
+                            }
+                          >
+                            <span>Next</span>
+                            <EastIcon className="icon" />
+                          </button>
                         </div>
+                      </div>
                     </div>
                   </div>
 
@@ -313,136 +438,33 @@ function ReportComponent() {
                     }`}
                   >
                     <div className="competition _information">
-                      <div className="grid_form">
-                        {" "}
-                        {/* Conditionally Render Competition Type */}
-                        {values.participationType ===
-                          "Physical Participant" && (
-                          <div
-                            className={`form_group ${
-                              touched.competitionType && errors.competitionType
-                                ? "error"
-                                : ""
-                            }`}
+                      
+                      
+                      {/* Step 3 Finish Button */}
+                      <div
+                        className={`form_group ${
+                          currentStep === 2 ? "visible" : "hidden"
+                        }`}
+                      >
+                        <div className="btn l_flex">
+                          <button
+                            type="submit"
+                            className="main_btn l_flex"
+                            disabled={isSubmitting}
                           >
-                            <span className="input_span">
-                              <label htmlFor="competitionType">
-                                Interested In:<span className="red">*</span>
-                              </label>
-                              <Field
-                                as="select"
-                                id="competitionType"
-                                name="competitionType"
-                                className={`input_box ${
-                                  touched.competitionType &&
-                                  errors.competitionType
-                                    ? "error-border"
-                                    : ""
-                                }`}
-                              >
-                                <option value="">Select Interest</option>
-                                {competitionTypeOptions.map((option, index) => (
-                                  <option key={index} value={option}>
-                                    {option}
-                                  </option>
-                                ))}
-                              </Field>
-                            </span>
-                            <ErrorMessage
-                              name="competitionType"
-                              component="div"
-                              className="error"
-                            />
-                          </div>
-                        )}
-                        {/* Conditionally Render Business Category */}
-                        {values.competitionType === "Business Pitch" && (
-                          <div
-                            className={`form_group ${
-                              touched.businessCategory &&
-                              errors.businessCategory
-                                ? "error"
-                                : ""
-                            }`}
-                          >
-                            <span className="input_span">
-                              <label htmlFor="businessCategory">
-                                Business Category:<span className="red">*</span>
-                              </label>
-                              <Field
-                                as="select"
-                                id="businessCategory"
-                                name="businessCategory"
-                                className={`input_box ${
-                                  touched.businessCategory &&
-                                  errors.businessCategory
-                                    ? "error-border"
-                                    : ""
-                                }`}
-                              >
-                                <option value="">
-                                  Select Business Category
-                                </option>
-                                {businessCategoryOptions.map(
-                                  (option, index) => (
-                                    <option key={index} value={option}>
-                                      {option}
-                                    </option>
-                                  )
-                                )}
-                              </Field>
-                            </span>
-                            <ErrorMessage
-                              name="businessCategory"
-                              component="div"
-                              className="error"
-                            />
-                          </div>
-                        )}
-                        {/* Step 3 Finish Button */}
-                        <div
-                          className={`form_group ${
-                            currentStep === 2 ? "visible" : "hidden"
-                          }`}
-                        >
-                          <div className="btn l_flex">
-                            <button
-                              type="submit"
-                              className="main_btn l_flex"
-                              disabled={isSubmitting}
-                            >
-                              {isSubmitting ? (
-                                <span className="a_flex">
-                                  <i className="fa fa-spinner fa-spin"></i>
-                                  Submitting...
-                                </span>
-                              ) : (
-                                <>
-                                  <span>Finish</span>
-                                  <EastIcon className="icon" />
-                                </>
-                              )}
-                            </button>
-                          </div>
+                            {isSubmitting ? (
+                              <span className="a_flex">
+                                <i className="fa fa-spinner fa-spin"></i>
+                                Submitting...
+                              </span>
+                            ) : (
+                              <>
+                                <span>Finish</span>
+                                <EastIcon className="icon" />
+                              </>
+                            )}
+                          </button>
                         </div>
-                      </div>
-                      <div className="lower_text">
-                        <Checkbox
-                          name="confirmation"
-                          checked={values.confirmation}
-                          onChange={handleChange}
-                          className="check_box"
-                        >
-                          I confirm that the information provided is accurate
-                          and truthful. I agree to comply with the event's rules
-                          and regulations and understand that submitting false
-                          information is a criminal offense.
-                        </Checkbox>{" "}
-                        <ErrorMessage
-                          name="confirmation"
-                          component="div"
-                          className="error"
-                        />
                       </div>
                     </div>
                   </div>
@@ -451,8 +473,6 @@ function ReportComponent() {
             )}
           </Formik>
         )}
-
-      
       </div>
     </div>
   );
