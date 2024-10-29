@@ -4,7 +4,7 @@ const reportSchema = new mongoose.Schema(
   {
     schoolName: { type: String, required: true },
     slug: { type: String },
-    image: { type: String },
+    images: [String],
     video: { type: String },
     status: {
       type: String,

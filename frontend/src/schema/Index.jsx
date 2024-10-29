@@ -19,6 +19,27 @@ export const registerSchema = yup.object().shape({
     .required("Confirm Password is required"),
 });
 
+export const reportSchema = yup.object().shape({
+  schoolName: yup.string().required("School name is required"),
+  images: yup
+    .array()
+    .of(yup.string())
+    .required("At least one image is required"), // At least one image must be provided
+  video: yup.string().required("Video URL is required"), // Marked as required
+  schoolLocation: yup.string().required("School location is required"), // Marked as required
+  issueType: yup
+    .array()
+    .of(yup.string())
+    .required("At least one issue type is required"), // At least one issue type must be provided
+  description: yup.string().required("Description is required"), // Marked as required
+  comment: yup.string().required("Comment is required"), // Marked as required
+  privacyPreference: yup
+    .string()
+    .oneOf(["public", "anonymous"])
+    .required("Privacy preference is required")
+    .default("public"), // Marked as required
+});
+
 export const loginSchema = yup.object().shape({
   email: yup
     .string()

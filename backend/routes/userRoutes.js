@@ -5,8 +5,74 @@ import { generateToken, isAdmin, isAuth } from "../utils.js";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import User from "../models/userModel.js";
+import { OAuth2Client } from "google-auth-library";
 
 const userRouter = express.Router();
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+//============
+// GOOGLE AUTH
+//============
+userRouter.post(
+  "/google-auth",
+  expressAsyncHandler(async (req, res) => {
+    const { token } = req.body;
+
+    try {
+      // Verify Google token
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+      const { sub: googleId, email, name } = payload;
+      const [firstName, lastName] = name.split(" ");
+
+      // Check if the user exists by email
+      let user = await User.findOne({ email });
+
+      // If the user does not exist, create a new user
+      if (!user) {
+        user = new User({
+          firstName,
+          lastName,
+          email,
+          googleId,
+          role: "user",
+          isAccountVerified: true, // Automatically verify Google accounts
+        });
+        await user.save();
+      }
+
+      // If the user is blocked, prevent login
+      if (user.isBlocked) {
+        return res.status(403).send({
+          message: "😲 This account has been blocked by Admin.",
+        });
+      }
+
+      // Generate token with the existing `generateToken` function
+      const authToken = generateToken(user);
+
+      // Send back the token and user data
+      res.send({
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        isBlocked: user.isBlocked,
+        isAccountVerified: user.isAccountVerified,
+        token: authToken,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(401).send({ message: "Google authentication failed" });
+    }
+  })
+);
 
 //============
 // ADMIN SIGN IN

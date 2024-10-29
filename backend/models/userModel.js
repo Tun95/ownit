@@ -13,21 +13,18 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     isBlocked: { type: Boolean, default: false },
-    password: { type: String, required: true },
+    password: { type: String },
+    googleId: { type: String, unique: true },
     passwordChangeAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
-    isAccountVerified: { type: Boolean, default: false },
+    isAccountVerified: { type: Boolean, default: true }, // Assume verified if Google sign-in
     accountVerificationOtp: { type: String },
     accountVerificationOtpExpires: { type: Date },
   },
   {
-    toJSON: {
-      virtuals: true,
-    },
-    toObject: {
-      virtuals: true,
-    },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
   }
 );
