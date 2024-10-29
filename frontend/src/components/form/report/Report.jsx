@@ -17,7 +17,7 @@ const issueTypeOptions = [
   "Teacher Related",
 ];
 
-const initialRegisterValues = {
+const initialReportValues = {
   privacyPreference: "",
   schoolName: "",
   schoolLocation: "",
@@ -28,7 +28,7 @@ const initialRegisterValues = {
   video: "",
 };
 
-const registerReducer = (state, action) => {
+const reportReducer = (state, action) => {
   switch (action.type) {
     case "CREATE_REQUEST":
       return { ...state, loading: true, error: "", success: false };
@@ -48,7 +48,7 @@ function ReportComponent() {
 
   const [currentStep, setCurrentStep] = useState(0);
 
-  const [, dispatch] = useReducer(registerReducer, {
+  const [, dispatch] = useReducer(reportReducer, {
     loading: false,
     error: "",
     success: false,
@@ -156,7 +156,7 @@ function ReportComponent() {
 
         {!userInfo && (
           <Formik
-            initialValues={initialRegisterValues}
+            initialValues={initialReportValues}
             validationSchema={reportSchema}
             onSubmit={handleSubmit}
           >
@@ -179,7 +179,8 @@ function ReportComponent() {
                     }`}
                   >
                     <div className="basic_information">
-                      {/* <div
+                      <div className="grid_form">
+                        {/* <div
                           className={`form_group ${
                             touched.firstName && errors.firstName ? "error" : ""
                           }`}
@@ -208,24 +209,25 @@ function ReportComponent() {
                             className="error"
                           />
                         </div> */}
-
-                      {/* Step 1 Next Button */}
-                      <div
-                        className={`form_group ${
-                          currentStep === 0 ? "visible" : "hidden"
-                        }`}
-                      >
-                        <div className="btn l_flex">
-                          <button
-                            type="button"
-                            className="main_btn l_flex"
-                            onClick={() =>
-                              handleNext(validateForm, touched, setTouched)
-                            }
-                          >
-                            <span>Next</span>
-                            <EastIcon className="icon" />
-                          </button>
+                        MY FIRST STEP
+                        {/* Step 1 Next Button */}
+                        <div
+                          className={`form_group ${
+                            currentStep === 0 ? "visible" : "hidden"
+                          }`}
+                        >
+                          <div className="btn l_flex">
+                            <button
+                              type="button"
+                              className="main_btn l_flex"
+                              onClick={() =>
+                                handleNext(validateForm, touched, setTouched)
+                              }
+                            >
+                              <span>Next</span>
+                              <EastIcon className="icon" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -238,194 +240,198 @@ function ReportComponent() {
                     }`}
                   >
                     <div className="verification_information">
-                      <div
-                        className={`form_group ${
-                          touched.schoolName && errors.schoolName ? "error" : ""
-                        }`}
-                      >
-                        <span className="input_span">
-                          {" "}
-                          <label htmlFor="schoolName">
-                            School Name:
-                            <span className="red">*</span>
-                          </label>
-                          <Field
-                            type="text"
-                            id="schoolName"
+                      <div className="grid_form">
+                        <div
+                          className={`form_group ${
+                            touched.schoolName && errors.schoolName
+                              ? "error"
+                              : ""
+                          }`}
+                        >
+                          <span className="input_span">
+                            {" "}
+                            <label htmlFor="schoolName">
+                              School Name:
+                              <span className="red">*</span>
+                            </label>
+                            <Field
+                              type="text"
+                              id="schoolName"
+                              name="schoolName"
+                              placeholder="school name"
+                              className={`input_box ${
+                                touched.schoolName && errors.schoolName
+                                  ? "error-border"
+                                  : ""
+                              }`}
+                            />
+                          </span>
+                          <ErrorMessage
                             name="schoolName"
-                            placeholder="school name"
-                            className={`input_box ${
-                              touched.schoolName && errors.schoolName
-                                ? "error-border"
-                                : ""
-                            }`}
+                            component="div"
+                            className="error"
                           />
-                        </span>
-                        <ErrorMessage
-                          name="schoolName"
-                          component="div"
-                          className="error"
-                        />
-                      </div>
-                      <div
-                        className={`form_group ${
-                          touched.schoolLocation && errors.schoolLocation
-                            ? "error"
-                            : ""
-                        }`}
-                      >
-                        <span className="input_span">
-                          {" "}
-                          <label htmlFor="schoolLocation">
-                            School Location:
-                            <span className="red">*</span>
-                          </label>
-                          <Field
-                            type="text"
-                            id="schoolLocation"
+                        </div>
+                        <div
+                          className={`form_group ${
+                            touched.schoolLocation && errors.schoolLocation
+                              ? "error"
+                              : ""
+                          }`}
+                        >
+                          <span className="input_span">
+                            {" "}
+                            <label htmlFor="schoolLocation">
+                              School Location:
+                              <span className="red">*</span>
+                            </label>
+                            <Field
+                              type="text"
+                              id="schoolLocation"
+                              name="schoolLocation"
+                              placeholder="school location"
+                              className={`input_box ${
+                                touched.schoolLocation && errors.schoolLocation
+                                  ? "error-border"
+                                  : ""
+                              }`}
+                            />
+                          </span>
+                          <ErrorMessage
                             name="schoolLocation"
-                            placeholder="school location"
-                            className={`input_box ${
-                              touched.schoolLocation && errors.schoolLocation
-                                ? "error-border"
-                                : ""
-                            }`}
+                            component="div"
+                            className="error"
                           />
-                        </span>
-                        <ErrorMessage
-                          name="schoolLocation"
-                          component="div"
-                          className="error"
-                        />
-                      </div>
+                        </div>
 
-                      {/* ISSUE TYPE */}
-                      <div
-                        className={`form_group ${
-                          touched.issueType && errors.issueType ? "error" : ""
-                        }`}
-                      >
-                        <span className="input_span">
-                          <label htmlFor="issueType">
-                            What type of issue are you reporting?:
-                            <span className="red">*</span>
-                          </label>
-                          <Field
-                            as="select"
-                            id="issueType"
-                            name="issueType"
-                            className={`input_box ${
-                              touched.issueType && errors.issueType
-                                ? "error-border"
-                                : ""
-                            }`}
-                            multiple
-                            // Handle the change event manually
-                            onChange={(event) => {
-                              const options = event.target.options;
-                              const values = [];
-                              for (let i = 0; i < options.length; i++) {
-                                if (options[i].selected) {
-                                  values.push(options[i].value);
+                        {/* ISSUE TYPE */}
+                        <div
+                          className={`form_group ${
+                            touched.issueType && errors.issueType ? "error" : ""
+                          }`}
+                        >
+                          <span className="input_span">
+                            <label htmlFor="issueType">
+                              What type of issue are you reporting?:
+                              <span className="red">*</span>
+                            </label>
+                            <Field
+                              as="select"
+                              id="issueType"
+                              name="issueType"
+                              className={`input_box ${
+                                touched.issueType && errors.issueType
+                                  ? "error-border"
+                                  : ""
+                              }`}
+                              multiple
+                              // Handle the change event manually
+                              onChange={(event) => {
+                                const options = event.target.options;
+                                const values = [];
+                                for (let i = 0; i < options.length; i++) {
+                                  if (options[i].selected) {
+                                    values.push(options[i].value);
+                                  }
                                 }
-                              }
-                              // Update the Formik state
-                              setFieldValue("issueType", values);
-                            }}
-                          >
-                            <option value="">Select Issue Type</option>
-                            {issueTypeOptions.map((option, index) => (
-                              <option key={index} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </Field>
-                        </span>
-                        <ErrorMessage
-                          name="issueType"
-                          component="div"
-                          className="error"
-                        />
-                      </div>
+                                // Update the Formik state
+                                setFieldValue("issueType", values);
+                              }}
+                            >
+                              <option value="">Select Issue Type</option>
+                              {issueTypeOptions.map((option, index) => (
+                                <option key={index} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </Field>
+                          </span>
+                          <ErrorMessage
+                            name="issueType"
+                            component="div"
+                            className="error"
+                          />
+                        </div>
 
-                      <div
-                        className={`form_group ${
-                          touched.description && errors.description
-                            ? "error"
-                            : ""
-                        }`}
-                      >
-                        <span className="input_span">
-                          {" "}
-                          <label htmlFor="description">
-                            Provide the issues in detail:
-                            <span className="red">*</span>
-                          </label>
-                          <Field
-                            type="text"
-                            id="description"
+                        <div
+                          className={`form_group ${
+                            touched.description && errors.description
+                              ? "error"
+                              : ""
+                          }`}
+                        >
+                          <span className="input_span">
+                            {" "}
+                            <label htmlFor="description">
+                              Provide the issues in detail:
+                              <span className="red">*</span>
+                            </label>
+                            <Field
+                              type="text"
+                              id="description"
+                              name="description"
+                              placeholder="details here"
+                              className={`input_box ${
+                                touched.description && errors.description
+                                  ? "error-border"
+                                  : ""
+                              }`}
+                            />
+                          </span>
+                          <ErrorMessage
                             name="description"
-                            placeholder="details here"
-                            className={`input_box ${
-                              touched.description && errors.description
-                                ? "error-border"
-                                : ""
-                            }`}
+                            component="div"
+                            className="error"
                           />
-                        </span>
-                        <ErrorMessage
-                          name="description"
-                          component="div"
-                          className="error"
-                        />
-                      </div>
-                      <div
-                        className={`form_group ${
-                          touched.comment && errors.comment ? "error" : ""
-                        }`}
-                      >
-                        <span className="input_span">
-                          {" "}
-                          <label htmlFor="comment">
-                            Do you have any suggestion or comment about
-                            improving the state of the school?:
-                            <span className="red">*</span>
-                          </label>
-                          <Field
-                            type="text"
-                            id="comment"
+                        </div>
+                        <div
+                          className={`form_group ${
+                            touched.comment && errors.comment ? "error" : ""
+                          }`}
+                        >
+                          <span className="input_span">
+                            {" "}
+                            <label htmlFor="comment">
+                              Do you have any suggestion or comment about
+                              improving the state of the school?:
+                              <span className="red">*</span>
+                            </label>
+                            <Field
+                              type="text"
+                              id="comment"
+                              name="comment"
+                              placeholder="details here"
+                              className={`input_box ${
+                                touched.comment && errors.comment
+                                  ? "error-border"
+                                  : ""
+                              }`}
+                            />
+                          </span>
+                          <ErrorMessage
                             name="comment"
-                            placeholder="details here"
-                            className={`input_box ${
-                              touched.comment && errors.comment
-                                ? "error-border"
-                                : ""
-                            }`}
+                            component="div"
+                            className="error"
                           />
-                        </span>
-                        <ErrorMessage
-                          name="comment"
-                          component="div"
-                          className="error"
-                        />
-                      </div>
-                      {/* Step 2 Next Button */}
-                      <div
-                        className={`form_group ${
-                          currentStep === 1 ? "visible" : "hidden"
-                        }`}
-                      >
-                        <div className="btn l_flex">
-                          <button
-                            type="button"
-                            className="main_btn l_flex"
-                            onClick={() =>
-                              handleNext(validateForm, touched, setTouched)
-                            }
-                          >
-                            <span>Next</span>
-                            <EastIcon className="icon" />
-                          </button>
+                        </div>
+                        {/* Step 2 Next Button */}
+                        <div
+                          className={`form_group ${
+                            currentStep === 1 ? "visible" : "hidden"
+                          }`}
+                        >
+                          <div className="btn l_flex">
+                            <button
+                              type="button"
+                              className="main_btn l_flex"
+                              onClick={() =>
+                                handleNext(validateForm, touched, setTouched)
+                              }
+                            >
+                              <span>Next</span>
+                              <EastIcon className="icon" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -438,32 +444,32 @@ function ReportComponent() {
                     }`}
                   >
                     <div className="competition _information">
-                      
-                      
-                      {/* Step 3 Finish Button */}
-                      <div
-                        className={`form_group ${
-                          currentStep === 2 ? "visible" : "hidden"
-                        }`}
-                      >
-                        <div className="btn l_flex">
-                          <button
-                            type="submit"
-                            className="main_btn l_flex"
-                            disabled={isSubmitting}
-                          >
-                            {isSubmitting ? (
-                              <span className="a_flex">
-                                <i className="fa fa-spinner fa-spin"></i>
-                                Submitting...
-                              </span>
-                            ) : (
-                              <>
-                                <span>Finish</span>
-                                <EastIcon className="icon" />
-                              </>
-                            )}
-                          </button>
+                      <div className="grid_form">
+                        {/* Step 3 Finish Button */}
+                        <div
+                          className={`form_group ${
+                            currentStep === 2 ? "visible" : "hidden"
+                          }`}
+                        >
+                          <div className="btn l_flex">
+                            <button
+                              type="submit"
+                              className="main_btn l_flex"
+                              disabled={isSubmitting}
+                            >
+                              {isSubmitting ? (
+                                <span className="a_flex">
+                                  <i className="fa fa-spinner fa-spin"></i>
+                                  Submitting...
+                                </span>
+                              ) : (
+                                <>
+                                  <span>Finish</span>
+                                  <EastIcon className="icon" />
+                                </>
+                              )}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>

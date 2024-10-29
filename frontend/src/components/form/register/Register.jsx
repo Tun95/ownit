@@ -121,7 +121,7 @@ function RegisterComponent() {
   //const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
   return (
-    <GoogleOAuthProvider clientId="408401850346-16eidpftjjqfk57md8ocfv0ieg7800d3.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="317693244184-k275i0nekg5mc5237n41clan8tj92d79.apps.googleusercontent.com">
       <div>
         <Box className="menu_modal login_menu">
           <div className="otp_created_pending_login  header_box">
@@ -264,7 +264,7 @@ function RegisterComponent() {
                         <div className="google_btn">
                           {" "}
                           <GoogleLogin
-                            clientId="408401850346-16eidpftjjqfk57md8ocfv0ieg7800d3.apps.googleusercontent.com"
+                            clientId="317693244184-k275i0nekg5mc5237n41clan8tj92d79.apps.googleusercontent.com"
                             buttonText="Sign up with Google"
                             onSuccess={handleGoogleLoginSuccess}
                             onFailure={() =>

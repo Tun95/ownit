@@ -1,0 +1,147 @@
+.register_component {
+  padding: 40px 0px;
+  margin-top: 50px;
+  .content {
+    .steps {
+      .steps_box {
+        padding: 0px 40px;
+      }
+      /* Custom styles for the active step */
+      .steps_box .ant-steps-item-active .ant-steps-item-icon {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+
+      .ant-steps-item
+        > .ant-steps-item-container
+        > .ant-steps-item-content
+        > .ant-steps-item-title::after,
+      .ant-steps-item
+        > .ant-steps-item-container
+        > .ant-steps-item-tail::after {
+        background: transparent !important;
+      }
+
+      .steps_box .ant-steps-item-active .ant-steps-title {
+        color: var(--color-primary);
+      }
+
+      /* Custom styles for the active step */
+      .steps_box .ant-steps-item-active .ant-steps-item-title {
+        color: var(--color-primary); /* Change this to your desired color */
+      }
+
+      /* Custom styles for completed steps */
+      .steps_box .ant-steps-item-finish .ant-steps-item-icon {
+        background-color: var(--color-dark);
+      }
+
+      .steps_box .ant-steps-item-finish .ant-steps-item-icon .ant-steps-icon {
+        color: var(--color-primary) !important;
+      }
+
+      .steps_box .ant-steps-item-finish .ant-steps-title {
+        color: var(--color-primary);
+      }
+    }
+    .inner_form {
+      .visible {
+        display: block;
+      }
+      .hidden {
+        display: none;
+      }
+      .grid_form {
+        padding: 30px 20px;
+        display: grid;
+        margin: 30px 0px;
+        grid-template-columns: repeat(1fr);
+        width: 100%;
+        column-gap: 10%;
+        row-gap: 20px;
+        .input_span {
+          padding-right: 10px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          label {
+            font-size: 15px;
+            color: var(--color-gray);
+            text-wrap: nowrap;
+          }
+          input {
+            padding: 10px;
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--color-gray);
+            border-radius: 6px;
+          }
+          select {
+            border: none;
+            width: 100%;
+            padding: 10px;
+            outline: none;
+            background: transparent;
+          }
+        }
+        .btn {
+          width: 100%;
+          .main_btn {
+            width: 100%;
+            gap: 10px;
+            font-size: 15px;
+            padding: 15px 20px;
+            .icon {
+              font-size: 20px;
+            }
+          }
+        }
+      }
+      .lower_text {
+        .check_box {
+          .ant-checkbox-checked .ant-checkbox-inner {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary); // Change checkbox border color
+            position: relative;
+            bottom: 8px;
+          }
+
+          .ant-checkbox-inner {
+            border-color: var(--color-primary);
+            position: relative;
+            bottom: 8px;
+            /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+            @media screen and (max-width: 662px) {
+              bottom: 20px;
+            }
+            /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+            @media screen and (max-width: 456px) {
+              bottom: 30px;
+            }
+          }
+
+          .ant-checkbox-wrapper {
+            color: var(--color-primary);
+          }
+        }
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 900px) {
+          padding: 0px 20px;
+        }
+      }
+    }
+
+    /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+    @media screen and (max-width: 900px) {
+      width: 100%;
+      .inner_form {
+        .grid_form {
+          grid-template-columns: 1fr;
+          .mobile {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

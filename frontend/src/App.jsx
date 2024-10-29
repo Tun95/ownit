@@ -13,6 +13,7 @@ import RegisterScreen from "./screens/formscreens/registerscreen/RegisterScreen"
 import LoginScreen from "./screens/formscreens/loginscreen/LoginScreen";
 import OtpScreen from "./screens/formscreens/otpscreen/OtpScreen";
 import CreatedScreen from "./screens/formscreens/createdscreen/CreatedScreen";
+import ReportScreen from "./screens/formscreens/reportscreen/ReportScreen";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/otp" element={<OtpScreen />} /> {/* VALIDATION */}
           <Route path="/created" element={<CreatedScreen />} />
           {/* VALIDATION */}
+          <Route path="/report" element={<ReportScreen />} />
         </Routes>
       </div>
     </>
