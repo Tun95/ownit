@@ -150,8 +150,8 @@ reportRouter.get(
 //====================
 reportRouter.put(
   "/:id",
-  isAuth,
-  isAdmin,
+  // isAuth,
+  // isAdmin,
   expressAsyncHandler(async (req, res) => {
     try {
       const reportId = req.params.id;

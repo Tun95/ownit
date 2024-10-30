@@ -73,7 +73,7 @@ const TableData = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="tableCell">ID</TableCell>
-                <TableCell className="tableCell">Email</TableCell>
+                <TableCell className="tableCell">User</TableCell>
                 <TableCell className="tableCell">Date</TableCell>
                 <TableCell className="tableCell">Role</TableCell>
                 <TableCell className="tableCell">Status</TableCell>
@@ -83,7 +83,9 @@ const TableData = () => {
               {users?.users?.map((user) => (
                 <TableRow key={user._id}>
                   <TableCell className="tableCell">{user._id}</TableCell>
-                  <TableCell className="tableCell">{user.email}</TableCell>
+                  <TableCell className="tableCell">
+                    {user.lastName} {user.firstName}
+                  </TableCell>
                   <TableCell className="tableCell">
                     {new Date(user.createdAt)?.toISOString()?.substring(0, 10)}
                   </TableCell>

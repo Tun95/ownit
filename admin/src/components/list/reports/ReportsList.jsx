@@ -39,7 +39,9 @@ const columns = [
     renderCell: (params) => {
       return (
         <>
-          <div className="cellWidthImg">{params.row?.user?.email}</div>
+          <div className="cellWidthImg">
+            {params.row?.user?.lastName} {params.row?.user?.firstName}
+          </div>
         </>
       );
     },

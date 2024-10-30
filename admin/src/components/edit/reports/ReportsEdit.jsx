@@ -7,14 +7,25 @@ import { toast } from "react-toastify";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import CloseIcon from "@mui/icons-material/Close";
-import photo from "../../../assets/others/photo.jpg";
+//import photo from "../../../assets/others/photo.jpg";
 import { request } from "../../../base url/BaseUrl";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import ReactPlayer from "react-player";
 import PhotoViewer from "photoviewer";
 import SearchIcon from "@mui/icons-material/Search";
+import Slider from "react-slick";
 
 const statusListOptions = ["pending", "approved", "disapproved"];
+
+// Slider settings
+const settings = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+};
 
 // Initial state and action types for reducer
 const initialState = {
@@ -110,22 +121,17 @@ function ReportsEdit() {
     }
   };
 
-  // Function to open the PhotoViewer
-  const openPhotoViewer = (imageUrl) => {
-    const items = [
-      {
-        src: imageUrl,
-        title: "Image",
-      },
-    ];
-
-    const options = {
-      index: 0,
+  // Handle image click to open PhotoViewer
+  const openPhotoViewer = (images, index) => {
+    const photoViewerOptions = {
+      index: index,
+      title: true,
     };
-
-    new PhotoViewer(items, options);
+    const photoViewer = new PhotoViewer(images, photoViewerOptions);
+    photoViewer.show();
   };
 
+  console.log(report.images);
   return (
     <>
       <Helmet>
@@ -167,26 +173,49 @@ function ReportsEdit() {
                               <tbody>
                                 <tr className="product_img_text f_flex">
                                   <td className="imageCell l_flex">
-                                    <div
-                                      className="drop_zone running_mate l_flex"
-                                      onClick={() =>
-                                        report?.image &&
-                                        openPhotoViewer(report?.image)
-                                      }
-                                    >
-                                      <div className="productImg ">
-                                        <img
-                                          src={
-                                            report?.image
-                                              ? report?.image
-                                              : photo
-                                          }
-                                          alt=""
-                                          className="img"
-                                        />
-                                      </div>
-                                      <div className="icon_bg l_flex">
-                                        <SearchIcon className="icon" />
+                                    <div className="images">
+                                      <div className="style_img">
+                                        <Slider
+                                          {...settings}
+                                          className="large_img"
+                                        >
+                                          {report?.images?.map(
+                                            (image, index) => (
+                                              <div
+                                                key={index}
+                                                className="img_large"
+                                                onClick={() =>
+                                                  openPhotoViewer(
+                                                    report.images.map(
+                                                      (img) => ({ src: img })
+                                                    ),
+                                                    index
+                                                  )
+                                                }
+                                              >
+                                                <img
+                                                  src={image}
+                                                  alt={`Image ${index}`}
+                                                />
+                                              </div>
+                                            )
+                                          )}
+                                        </Slider>
+                                        <div
+                                          className="icon_search l_flex"
+                                          onClick={() => {
+                                            if (report?.images?.length) {
+                                              openPhotoViewer(
+                                                report.images.map((image) => ({
+                                                  src: image,
+                                                })),
+                                                0 // Open the first image by default or handle based on your requirement
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          <SearchIcon className="icon" />
+                                        </div>
                                       </div>
                                     </div>
                                   </td>
@@ -223,7 +252,10 @@ function ReportsEdit() {
                                       <label htmlFor="user">
                                         Submitted By:
                                       </label>
-                                      <span>{report?.user?.email}</span>
+                                      <span>
+                                        {report?.user?.lastName}{" "}
+                                        {report?.user?.firstName}
+                                      </span>
                                     </div>
                                   </td>
                                 </tr>
@@ -233,8 +265,8 @@ function ReportsEdit() {
                         </div>{" "}
                         <div className="video_content">
                           <ReactPlayer
-                            url={report.video} 
-                            controls={true} 
+                            url={report.video}
+                            controls={true}
                             width="100%"
                             height="auto"
                           />
