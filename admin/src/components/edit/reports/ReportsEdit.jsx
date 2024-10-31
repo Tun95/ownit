@@ -162,14 +162,32 @@ function ReportsEdit() {
                             <table className="productTable">
                               <tbody>
                                 <tr className="product_img_text ">
-                                  <td className="imageCell ">
-                                    <div className="images a_flex">
-                                      {report?.images?.map((image, index) => (
-                                        <div key={index} className="style_img">
-                                          <div className="img_large a_flex">
-                                            <img
-                                              src={image}
-                                              alt={`Image ${index + 1}`}
+                                  {report.images && (
+                                    <td className="imageCell ">
+                                      <div className="images a_flex">
+                                        {report?.images?.map((image, index) => (
+                                          <div
+                                            key={index}
+                                            className="style_img"
+                                          >
+                                            <div className="img_large a_flex">
+                                              <img
+                                                src={image}
+                                                alt={`Image ${index + 1}`}
+                                                onClick={() =>
+                                                  openPhotoViewer(
+                                                    report.images.map(
+                                                      (img) => ({
+                                                        src: img,
+                                                      })
+                                                    ),
+                                                    index
+                                                  )
+                                                }
+                                              />
+                                            </div>
+                                            <div
+                                              className="icon_search l_flex"
                                               onClick={() =>
                                                 openPhotoViewer(
                                                   report.images.map((img) => ({
@@ -178,25 +196,14 @@ function ReportsEdit() {
                                                   index
                                                 )
                                               }
-                                            />
+                                            >
+                                              <SearchIcon className="icon" />
+                                            </div>
                                           </div>
-                                          <div
-                                            className="icon_search l_flex"
-                                            onClick={() =>
-                                              openPhotoViewer(
-                                                report.images.map((img) => ({
-                                                  src: img,
-                                                })),
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <SearchIcon className="icon" />
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </td>
+                                        ))}
+                                      </div>
+                                    </td>
+                                  )}
                                   <td className="textCell f_flex">
                                     <div>
                                       <label htmlFor="schoolName">

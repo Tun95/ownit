@@ -1,7 +1,25 @@
 import "./styles.scss";
 import s3 from "../../../assets/home/s3.png";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../../utilities/utils/Utils";
 
 function Intiative() {
+  const navigate = useNavigate();
+  const { state: appState } = useAppContext();
+  const { userInfo } = appState;
+
+  //========
+  //REDIRECT
+  //========
+  const reportHandler = () => {
+    if (!userInfo) {
+      toast.error("You need to log in to proceed", {});
+      navigate("/login?redirect=/report");
+    } else {
+      navigate("/report");
+    }
+  };
   return (
     <div className="initiative">
       <div className="container">
@@ -62,7 +80,7 @@ function Intiative() {
                 </ul>
               </div>
               <div className="btn">
-                <button className="main_btn">
+                <button className="main_btn" onClick={reportHandler}>
                   <small>Report an Issue</small>
                 </button>
               </div>

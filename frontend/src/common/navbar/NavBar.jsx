@@ -61,7 +61,11 @@ function NavBar() {
                   <img src={me} alt="user" />
                 </div>
                 <div className="link a_flex">
-                  <small>{userInfo && userInfo.email}</small>
+                  {userInfo && (
+                    <small>
+                      {userInfo.lastName} {userInfo.firstName}
+                    </small>
+                  )}
                 </div>
                 <div className="logout" onClick={signoutHandler}>
                   <LogoutOutlinedIcon className="icon" />

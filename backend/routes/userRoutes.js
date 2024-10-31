@@ -768,7 +768,7 @@ userRouter.post(
         <body>
         <p>Hello ${user.firstName},</p>
           <p>We received a request to reset your password for your account at ${
-            process.env.SHOP_NAME
+            process.env.WEB_NAME
           }. If you did not request this, please ignore this email.</p>
           <p>To reset your password, click the button below:</p>
           <a href=${`${process.env.SUB_DOMAIN}/${user.id}/new-password/${token}`} style="display: inline-block; margin: 10px 0; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Reset Password</a>
@@ -778,7 +778,7 @@ userRouter.post(
           <p>If you have any questions or need further assistance, please contact our support team at ${
             process.env.EMAIL_ADDRESS
           }.</p>
-          <p>Best regards,<br/>${process.env.SHOP_NAME} Team</p>
+          <p>Best regards,<br/>${process.env.WEB_NAME} Team</p>
           <hr/>
           <div class="footer">
             <p class="footer_info">For more information, visit our website:</p>
@@ -822,7 +822,7 @@ userRouter.post(
       });
 
       const mailOptions = {
-        from: `${process.env.SHOP_NAME} ${process.env.EMAIL_ADDRESS}`,
+        from: `${process.env.WEB_NAME} ${process.env.EMAIL_ADDRESS}`,
         to: email,
         subject: "Reset Password",
         html: resetURL,
