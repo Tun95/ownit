@@ -207,6 +207,7 @@ function ReportComponent() {
     } catch (err) {
       dispatch({ type: "UPLOAD_VIDEO_FAIL", payload: getError(err) });
       toast.error(getError(err), { position: "bottom-center" });
+      e.target.value = ""; // Reset the file input to allow re-selection of the same video
     }
   };
 
