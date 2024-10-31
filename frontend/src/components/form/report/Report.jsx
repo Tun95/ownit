@@ -22,7 +22,7 @@ const issueTypeOptions = [
 ];
 
 const initialReportValues = {
-  privacyPreference: "public",
+  privacyPreference: "",
   schoolName: "",
   schoolLocation: "",
   issueType: [],
@@ -165,7 +165,7 @@ function ReportComponent() {
   //============
   //TOGGLE BOX
   //============
-  const [openBox, setOpenBox] = useState("public");
+  const [openBox, setOpenBox] = useState("");
 
   const toggleBox = (method, setFieldValue) => {
     if (openBox === method) return;

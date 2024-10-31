@@ -70,6 +70,7 @@ function UserEdit() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // FETCHING
   const fetchData = async () => {
@@ -79,10 +80,11 @@ function UserEdit() {
         headers: { Authorization: `Bearer ${userInfo?.token}` },
       });
 
-      setFirstName(data.firstName);
-      setLastName(data.lastName);
-      setEmail(data.email);
+      setFirstName(data.firstName || "");
+      setLastName(data.lastName || "");
+      setEmail(data.email || "");
       setRole(data.role || "");
+      setIsAdmin(data.isAdmin);
 
       dispatch({ type: "FETCH_SUCCESS", payload: data });
     } catch (err) {
@@ -107,6 +109,7 @@ function UserEdit() {
           lastName,
           email,
           role,
+          isAdmin,
         },
         {
           headers: { Authorization: `Bearer ${userInfo?.token}` },
@@ -189,6 +192,20 @@ function UserEdit() {
                           ))}
                         </select>
                       </div>
+                      {userInfo.isAdmin && (
+                        <div className="formInput formUserType d_flex">
+                          <span className="checkBox a_flex ">
+                            <input
+                              type="checkbox"
+                              checked={isAdmin}
+                              id="isAdmin"
+                              disabled={user.id === userInfo._id}
+                              onChange={(e) => setIsAdmin(e.target.checked)}
+                            />
+                            <label htmlFor="isAdmin">IsAdmin</label>
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="bottom_btn mt a_flex">

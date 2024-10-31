@@ -589,12 +589,17 @@ userRouter.delete(
       return res.status(404).send({ message: "User Not Found" });
     }
 
-    if (user.role === "admin") {
+    // Prevent any user from deleting themselves
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).send({ message: "Cannot delete yourself" });
+    }
+
+    // Restrict deletion of admin users unless the requester is Super Admin
+    if (user.role === "admin" && !req.user.isAdmin) {
       return res.status(400).send({ message: "Cannot Delete Admin User" });
     }
 
     try {
-      // Use deleteOne to delete the user
       await User.deleteOne({ _id: req.params.id });
       res.send({ message: "User Deleted Successfully" });
     } catch (error) {
@@ -619,7 +624,13 @@ userRouter.put(
       return res.status(404).send({ message: "User Not Found" });
     }
 
-    if (user.role === "admin") {
+    // Prevent any user from blocking themselves
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).send({ message: "Cannot block yourself" });
+    }
+
+    // Restrict blocking of admin users unless the requester is Super Admin
+    if (user.role === "admin" && !req.user.isAdmin) {
       return res.status(400).send({ message: "Cannot Block Admin User" });
     }
 
@@ -652,7 +663,13 @@ userRouter.put(
       return res.status(404).send({ message: "User Not Found" });
     }
 
-    if (user.role === "admin") {
+    // Prevent any user from unblocking themselves
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).send({ message: "Cannot unblock yourself" });
+    }
+
+    // Restrict unblocking of admin users unless the requester is Super Admin
+    if (user.role === "admin" && !req.user.isAdmin) {
       return res.status(400).send({ message: "Cannot Unblock Admin User" });
     }
 
@@ -685,6 +702,7 @@ userRouter.put(
         user.lastName = req.body.lastName || user.lastName;
         user.email = req.body.email || user.email;
         user.role = req.body.role || user.role;
+        user.isAdmin = Boolean(req.body.isAdmin);
         user.isBlocked =
           req.body.isBlocked !== undefined
             ? Boolean(req.body.isBlocked)
@@ -711,7 +729,6 @@ userRouter.put(
 userRouter.post(
   "/password-token",
   expressAsyncHandler(async (req, res) => {
-  
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
     const tiktok = process.env.TIKTOK_PROFILE_LINK;

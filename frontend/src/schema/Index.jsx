@@ -34,8 +34,8 @@ export const reportSchema = yup.object().shape({
   privacyPreference: yup
     .string()
     .oneOf(["public", "anonymous"])
-    .required("Privacy preference is required")
-    .default("public"), // Marked as required
+    .required("Privacy preference is required"),
+  // .default("public"), // Marked as required
 
   // STEP 2
   schoolName: yup.string().required("School name is required"),
