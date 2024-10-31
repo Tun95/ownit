@@ -32,7 +32,6 @@ const initialReportValues = {
   video: "",
 };
 
-
 const reportReducer = (state, action) => {
   switch (action.type) {
     case "CREATE_REQUEST":
@@ -298,7 +297,12 @@ function ReportComponent() {
     <div className="register_component l_flex">
       <div className="content ">
         <div className="steps l_flex">
-          <Steps className="steps_box" size="small" current={currentStep}>
+          <Steps
+            className="steps_box"
+            size="small"
+            direction="horizontal"
+            current={currentStep}
+          >
             <Steps.Step
               title="Personal Information"
               onClick={() => handleStepClick(0)}

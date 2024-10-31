@@ -7,6 +7,19 @@
       .steps_box {
         padding: 0px 40px;
         width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 575px) {
+          padding: 0px 0px;
+        }
+      }
+      .steps_box .ant-steps-item-icon {
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 575px) {
+          margin-right: 5px;
+        }
       }
       /* Custom styles for the active step */
       .steps_box .ant-steps-item-active .ant-steps-item-icon {
@@ -124,6 +137,10 @@
               font-size: 20px;
             }
           }
+        }
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 575px) {
+          padding-top: 10px;
         }
       }
       .basic_information {
