@@ -815,7 +815,7 @@ userRouter.post(
         service: process.env.MAIL_SERVICE,
         auth: {
           user: process.env.EMAIL_ADDRESS,
-          pass: process.env.GMAIL_PASS,
+          pass: process.env.EMAIL_PASS,
         },
       });
 

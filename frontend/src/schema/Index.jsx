@@ -88,6 +88,28 @@ export const otpSchema = yup.object().shape({
     .length(6, "OTP must be exactly 6 digits"),
 });
 
+export const forgetPasswordSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter a valid email address")
+    .required("Email is required*"),
+});
+
+export const newPasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(/[\W_]/, "Password must contain at least one special character")
+    .required("password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), undefined], "Passwords must match")
+    .required("Confirm Password is required"),
+});
+
 // Email Message validation schema
 export const emailMessageSchema = yup.object().shape({
   subject: yup.string().required("Subject is required"),

@@ -50,7 +50,7 @@ function LoginComponent() {
       toast.success("Login successfully");
       setTimeout(() => {
         actions.resetForm();
-      }, 2000);
+      }, 1000);
       navigate(redirect);
     } catch (err) {
       toast.error(getError(err));
@@ -149,7 +149,7 @@ function LoginComponent() {
                           <Checkbox>Remember me</Checkbox>
                         </div>
                         <div className="forgot_pass">
-                          <Link to={"/password-reset"}>Forget PassWord?</Link>
+                          <Link to={"/lost-password"}>Forgot PassWord?</Link>
                         </div>
                       </div>
                     </div>
