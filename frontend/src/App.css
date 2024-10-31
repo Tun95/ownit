@@ -73,7 +73,7 @@ body {
 
 .container {
   width: var(--container-width-lg);
-  max-width: 1600px;
+  max-width: 1200px;
   margin: auto;
 }
 

@@ -12,6 +12,7 @@ import s1 from "../../../assets/report/s1.png";
 import s2 from "../../../assets/report/s2.png";
 import { Autocomplete, TextField } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 const issueTypeOptions = [
   "Infrastructure",
@@ -21,13 +22,13 @@ const issueTypeOptions = [
 ];
 
 const initialReportValues = {
-  privacyPreference: "",
+  privacyPreference: "public",
   schoolName: "",
   schoolLocation: "",
-  issueType: "",
+  issueType: [],
   description: "",
   comment: "",
-  images: "",
+  images: [],
   video: "",
 };
 
@@ -39,10 +40,34 @@ const reportReducer = (state, action) => {
       return { ...state, loading: false, success: true };
     case "CREATE_FAIL":
       return { ...state, loading: false, error: action.payload || "" };
+
+    case "UPLOAD_IMAGE_REQUEST":
+      return { ...state, loadingImageUpload: true, errorImageUpload: "" };
+    case "UPLOAD_IMAGE_SUCCESS":
+      return { ...state, loadingImageUpload: false, errorImageUpload: "" };
+    case "UPLOAD_IMAGE_FAIL":
+      return {
+        ...state,
+        loadingImageUpload: false,
+        errorImageUpload: action.payload,
+      };
+
+    case "UPLOAD_VIDEO_REQUEST":
+      return { ...state, loadingVideoUpload: true, errorVideoUpload: "" };
+    case "UPLOAD_VIDEO_SUCCESS":
+      return { ...state, loadingVideoUpload: false, errorVideoUpload: "" };
+    case "UPLOAD_VIDEO_FAIL":
+      return {
+        ...state,
+        loadingVideoUpload: false,
+        errorVideoUpload: action.payload,
+      };
+
     default:
       return state;
   }
 };
+
 function ReportComponent() {
   const navigate = useNavigate();
 
@@ -51,63 +76,47 @@ function ReportComponent() {
 
   const [currentStep, setCurrentStep] = useState(0);
 
-  const [, dispatch] = useReducer(reportReducer, {
-    loading: false,
-    error: "",
-    success: false,
-  });
-
-  useEffect(() => {
-    if (userInfo) {
-      setCurrentStep(3); // Set step to 3 if userInfo exists
+  const [{ loadingImageUpload, loadingVideoUpload }, dispatch] = useReducer(
+    reportReducer,
+    {
+      loading: false,
+      loadingImageUpload: false,
+      loadingVideoUpload: false,
+      error: "",
+      success: false,
     }
-  }, [userInfo]);
+  );
 
-  const handleSubmit = async (values, actions) => {
+  const [images, setImages] = useState([]);
+  console.log("IMAGES:", images);
+
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    dispatch({ type: "CREATE_REQUEST" }); // Start loading state
     try {
-      dispatch({ type: "CREATE_REQUEST" });
+      const reportData = {
+        ...values,
+        images: images,
+      };
 
-      const formData = new FormData();
-
-      // Iterate through values and append to formData
-      for (const key in values) {
-        const value = values[key];
-
-        // Only append non-null values
-        if (value !== null && value !== undefined) {
-          if (typeof value === "boolean") {
-            formData.append(key, String(value)); // Convert boolean to string
-          } else {
-            formData.append(key, value); // Append string or File
-          }
-        }
-      }
-
-      const response = await axios.post(`${request}/api/reports`, formData, {
+      // Make the API call to create a new report
+      const { data } = await axios.post(`${request}/api/reports`, reportData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${userInfo.token}`, // Include the user's token for authentication
         },
       });
 
-      dispatch({ type: "CREATE_SUCCESS", payload: response.data });
-
-      toast.success("Report Submitted Successfully!", {
+      // Dispatch success action
+      dispatch({ type: "CREATE_SUCCESS", payload: data });
+      toast.success("Report created successfully!", {
         position: "bottom-center",
       });
-
-      actions.resetForm();
-      setCurrentStep(3);
       navigate("/");
-    } catch (err) {
-      dispatch({
-        type: "CREATE_FAIL",
-        payload: await getError(err),
-      });
-      toast.error(await getError(err), {
-        position: "bottom-center",
-      });
+    } catch (error) {
+      dispatch({ type: "CREATE_FAIL", payload: getError(error) });
+      setErrors({ submit: getError(error) }); // Set form errors to display feedback
+      toast.error(getError(error), { position: "bottom-center" }); // Show error message
     } finally {
-      actions.setSubmitting(false);
+      setSubmitting(false); // End loading state
     }
   };
 
@@ -158,13 +167,132 @@ function ReportComponent() {
   //============
   const [openBox, setOpenBox] = useState("public");
 
-  const toggleBox = (method) => {
-    if (openBox === method) {
-      // Clicking on the currently open box; do nothing
-      return;
-    }
+  const toggleBox = (method, setFieldValue) => {
+    if (openBox === method) return;
     setOpenBox(method);
+    setFieldValue("privacyPreference", method); // Update Formik field value
   };
+
+  //=================
+  // VIDEO UPLOAD HANDLER
+  //=================
+  const [videoFileName, setVideoFileName] = useState("");
+
+  const uploadVideoHandler = async (e, setFieldValue) => {
+    const file = e.target.files[0];
+    if (!file) {
+      return toast.error("No video selected", { position: "bottom-center" });
+    }
+
+    const bodyFormData = new FormData();
+    bodyFormData.append("file", file);
+
+    try {
+      dispatch({ type: "UPLOAD_VIDEO_REQUEST" });
+      const { data } = await axios.post(
+        `${request}/api/upload/video`,
+        bodyFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: "UPLOAD_VIDEO_SUCCESS" });
+      const videoUrl = data.secure_url;
+      setFieldValue("video", videoUrl);
+      setVideoFileName(file.name); // Store the file name
+      toast.success("Video uploaded successfully. Click update to apply it", {
+        position: "bottom-center",
+      });
+    } catch (err) {
+      dispatch({ type: "UPLOAD_VIDEO_FAIL", payload: getError(err) });
+      toast.error(getError(err), { position: "bottom-center" });
+    }
+  };
+
+  const removeVideo = (setFieldValue) => {
+    setFieldValue("video", ""); // Clear the video URL in Formik state
+    setVideoFileName(""); // Clear the file name
+    toast.success("Video removed successfully", { position: "bottom-center" });
+  };
+
+  //=================
+  // IMAGES UPLOAD
+  //=================
+  const uploadFileHandler = async (e, setFieldValue, values) => {
+    const files = Array.from(e.target.files);
+    const currentImages = values.images || []; // Safely fallback to empty array
+
+    // Check if the total count (existing + new) exceeds 10
+    if (currentImages.length + files.length > 10) {
+      return toast.error("You can upload a maximum of 10 images", {
+        position: "bottom-center",
+      });
+    }
+
+    if (!files.length) {
+      return toast.error("No files selected", { position: "bottom-center" });
+    }
+
+    dispatch({ type: "UPLOAD_IMAGE_REQUEST" });
+
+    try {
+      const uploadedImages = await Promise.all(
+        files.map(async (file) => {
+          const bodyFormData = new FormData();
+          bodyFormData.append("file", file);
+
+          const { data } = await axios.post(
+            `${request}/api/upload/original`,
+            bodyFormData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                authorization: `Bearer ${userInfo.token}`,
+              },
+            }
+          );
+          return data.secure_url;
+        })
+      );
+
+      dispatch({ type: "UPLOAD_IMAGE_SUCCESS" });
+      setImages((prevImages) => [...prevImages, ...uploadedImages]);
+
+      // Update Formik field value with the uploaded images
+      if (typeof setFieldValue === "function") {
+        setFieldValue("images", [...currentImages, ...uploadedImages]);
+      } else {
+        console.error("setFieldValue is not a function");
+      }
+
+      toast.success("Images uploaded successfully", {
+        position: "bottom-center",
+      });
+    } catch (err) {
+      toast.error(getError(err), { position: "bottom-center" });
+      dispatch({ type: "UPLOAD_IMAGE_FAIL" });
+    } finally {
+      e.target.value = ""; // Reset file input
+    }
+  };
+
+  //DELETE IMAGES
+  const deleteFileHandler = async (fileName) => {
+    setImages(images.filter((x) => x !== fileName));
+    toast.success("Image removed successfully. Click update to apply it", {
+      position: "bottom-center",
+    });
+  };
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login?redirect=/report");
+    }
+  }, [navigate, userInfo]);
+
   return (
     <div className="register_component l_flex">
       <div className="content ">
@@ -205,17 +333,16 @@ function ReportComponent() {
                       <div className="step_description_text">
                         <div className="top_text">
                           <small>
-                            <p>Pick and option you prefer</p>
+                            <p>Pick an option you prefer</p>
                           </small>
                         </div>
                         <div className="lower_text">
                           <p>
-                            Would you like to include your name or you prefer to
-                            report anonymous
+                            Would you like to include your name or remain
+                            anonymous?
                           </p>
                         </div>
                       </div>
-                      {/* LABELS */}
                       <div className="labels l_flex">
                         <div className="labels_box f_flex">
                           <label
@@ -225,9 +352,9 @@ function ReportComponent() {
                                 : "privacy_label"
                             }
                             htmlFor="anonymous"
-                            onClick={() => {
-                              toggleBox("anonymous");
-                            }}
+                            onClick={() =>
+                              toggleBox("anonymous", setFieldValue)
+                            }
                           >
                             <div className="public_anony_box">
                               <div className="img l_flex">
@@ -242,7 +369,7 @@ function ReportComponent() {
                                 <p>I want to remain anonymous</p>
                               </div>
                             </div>
-                          </label>{" "}
+                          </label>
                           <label
                             className={
                               openBox === "public"
@@ -250,9 +377,7 @@ function ReportComponent() {
                                 : "privacy_label"
                             }
                             htmlFor="public"
-                            onClick={() => {
-                              toggleBox("public");
-                            }}
+                            onClick={() => toggleBox("public", setFieldValue)}
                           >
                             <div className="public_anony_box">
                               <div className="img l_flex">
@@ -267,15 +392,15 @@ function ReportComponent() {
                                 <p>I want to include my name</p>
                               </div>
                             </div>
-                          </label>{" "}
+                          </label>
                         </div>
                       </div>
-                      {/* Step 1 Next Button */}
-                      <div
-                        className={`form_group ${
-                          currentStep === 0 ? "visible" : "hidden"
-                        }`}
-                      >
+                      <ErrorMessage
+                        name="privacyPreference"
+                        component="div"
+                        className="error"
+                      />
+                      <div className="form_group visible">
                         <div className="btn l_flex">
                           <button
                             type="button"
@@ -467,7 +592,7 @@ function ReportComponent() {
                             type="text"
                             id="comment"
                             name="comment"
-                            placeholder="details here"
+                            placeholder="suggestions here"
                             className={`input_box ${
                               touched.comment && errors.comment
                                 ? "error-border"
@@ -482,11 +607,7 @@ function ReportComponent() {
                         />
                       </div>
                       {/* Step 2 Next Button */}
-                      <div
-                        className={`form_group ${
-                          currentStep === 1 ? "visible" : "hidden"
-                        }`}
-                      >
+                      <div className="form_group">
                         <div className="btn l_flex">
                           <button
                             type="button"
@@ -514,6 +635,7 @@ function ReportComponent() {
                           </small>
                         </div>
                       </div>
+
                       {/* IMAGE UPLOAD */}
                       <div className="image_vid_uploads_btn">
                         <div className="label">
@@ -523,24 +645,61 @@ function ReportComponent() {
                             </p>
                           </span>
                         </div>
-                        <div className="upload_images_vid"></div>
+                        {/* MAP IMAGES NAME HERE WITH CLOSE TO REMOVE */}
+                        <div className="upload_images_vid f_flex">
+                          {images.map((x) => (
+                            <div key={x} className="drop_zone">
+                              <img src={x} alt="" className="images" />
+                              <div className="icon_bg l_flex">
+                                <CloseIcon
+                                  onClick={() => deleteFileHandler(x)}
+                                  className="icon"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                         <div className="img_vid_btn">
-                          <label htmlFor="file" className="label_btn">
+                          <label
+                            htmlFor="images"
+                            className={`label_btn ${
+                              loadingImageUpload ? "disbled" : ""
+                            }`}
+                          >
                             <input
                               type="file"
-                              id="file"
+                              id="images"
+                              multiple
                               style={{ display: "none" }}
+                              onChange={(e) => {
+                                uploadFileHandler(e, setFieldValue, values); // Pass setFieldValue and values correctly
+                              }}
                             />
                             <span className="uplaod_icon_btn a_flex">
-                              <FileUploadOutlinedIcon className="icon" />
-                              <small className="text">Upload</small>
+                              {loadingImageUpload ? (
+                                <>
+                                  <i className="fa fa-spinner fa-spin"></i>
+                                  <small className="text">Uploading...</small>
+                                </>
+                              ) : (
+                                <>
+                                  <FileUploadOutlinedIcon className="icon" />
+                                  <small className="text">Upload</small>
+                                </>
+                              )}
                             </span>
                           </label>
                           <small className="hint">
                             <p>*Upload up to 10 files. Max 100mb per file</p>
                           </small>
                         </div>
+                        <ErrorMessage
+                          name="images"
+                          component="div"
+                          className="error"
+                        />
                       </div>
+
                       {/* VIDEO UPLOAD */}
                       <div className="image_vid_uploads_btn">
                         <div className="label">
@@ -550,31 +709,59 @@ function ReportComponent() {
                             </p>
                           </span>
                         </div>
-                        <div className="upload_images_vid"></div>
+                        {/* SHOW VIDEO NAME HERE WITH CLOSE TO REMOVE */}
+                        {/* Show the video file name and close button */}
+                        {videoFileName && (
+                          <div className="upload_images_vid ">
+                            <span className="span_vid a_flex">
+                              <span>{videoFileName}</span>
+                              <button
+                                type="button"
+                                className="close_btn l_flex"
+                                onClick={() => removeVideo(setFieldValue)}
+                              >
+                                <CloseIcon className="icon" />
+                              </button>
+                            </span>
+                          </div>
+                        )}
                         <div className="img_vid_btn">
-                          <label htmlFor="file" className="label_btn">
+                          <label htmlFor="video" className="label_btn">
                             <input
                               type="file"
-                              id="file"
+                              id="video"
                               style={{ display: "none" }}
+                              onChange={(e) =>
+                                uploadVideoHandler(e, setFieldValue)
+                              }
                             />
                             <span className="uplaod_icon_btn a_flex">
-                              <FileUploadOutlinedIcon className="icon" />
-                              <small className="text">Upload</small>
+                              {loadingVideoUpload ? (
+                                <>
+                                  <i className="fa fa-spinner fa-spin"></i>
+                                  <small className="text">Uploading...</small>
+                                </>
+                              ) : (
+                                <>
+                                  <FileUploadOutlinedIcon className="icon" />
+                                  <small className="text">Upload</small>
+                                </>
+                              )}
                             </span>
                           </label>
                           <small className="hint">
-                            <p>*Upload 1 files. Max 10mb </p>
+                            <p>*Upload 1 file. Max 10mb</p>
                           </small>
                         </div>
+                        <ErrorMessage
+                          name="video"
+                          component="div"
+                          className="error"
+                        />
                       </div>
 
                       {/* Step 3 Finish Button */}
-                      <div
-                        className={`form_group ${
-                          currentStep === 2 ? "visible" : "hidden"
-                        }`}
-                      >
+                      <div className="form_group">
                         <div className="btn l_flex">
                           <button
                             type="submit"
@@ -587,9 +774,7 @@ function ReportComponent() {
                                 Submitting...
                               </span>
                             ) : (
-                              <>
-                                <span>Submit</span>
-                              </>
+                              <span>Submit</span>
                             )}
                           </button>
                         </div>

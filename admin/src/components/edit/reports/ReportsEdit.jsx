@@ -13,19 +13,8 @@ import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import ReactPlayer from "react-player";
 import PhotoViewer from "photoviewer";
 import SearchIcon from "@mui/icons-material/Search";
-import Slider from "react-slick";
 
 const statusListOptions = ["pending", "approved", "disapproved"];
-
-// Slider settings
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-};
 
 // Initial state and action types for reducer
 const initialState = {
@@ -126,12 +115,13 @@ function ReportsEdit() {
     const photoViewerOptions = {
       index: index,
       title: true,
+      zIndex: 1050,
     };
     const photoViewer = new PhotoViewer(images, photoViewerOptions);
     photoViewer.show();
   };
 
-  console.log(report.images);
+  console.log("REPORT:", report);
   return (
     <>
       <Helmet>
@@ -171,52 +161,40 @@ function ReportsEdit() {
                           <div className="product_right light_shadow">
                             <table className="productTable">
                               <tbody>
-                                <tr className="product_img_text f_flex">
-                                  <td className="imageCell l_flex">
-                                    <div className="images">
-                                      <div className="style_img">
-                                        <Slider
-                                          {...settings}
-                                          className="large_img"
-                                        >
-                                          {report?.images?.map(
-                                            (image, index) => (
-                                              <div
-                                                key={index}
-                                                className="img_large"
-                                                onClick={() =>
-                                                  openPhotoViewer(
-                                                    report.images.map(
-                                                      (img) => ({ src: img })
-                                                    ),
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                <img
-                                                  src={image}
-                                                  alt={`Image ${index}`}
-                                                />
-                                              </div>
-                                            )
-                                          )}
-                                        </Slider>
-                                        <div
-                                          className="icon_search l_flex"
-                                          onClick={() => {
-                                            if (report?.images?.length) {
+                                <tr className="product_img_text ">
+                                  <td className="imageCell ">
+                                    <div className="images a_flex">
+                                      {report?.images?.map((image, index) => (
+                                        <div key={index} className="style_img">
+                                          <div className="img_large a_flex">
+                                            <img
+                                              src={image}
+                                              alt={`Image ${index + 1}`}
+                                              onClick={() =>
+                                                openPhotoViewer(
+                                                  report.images.map((img) => ({
+                                                    src: img,
+                                                  })),
+                                                  index
+                                                )
+                                              }
+                                            />
+                                          </div>
+                                          <div
+                                            className="icon_search l_flex"
+                                            onClick={() =>
                                               openPhotoViewer(
-                                                report.images.map((image) => ({
-                                                  src: image,
+                                                report.images.map((img) => ({
+                                                  src: img,
                                                 })),
-                                                0 // Open the first image by default or handle based on your requirement
-                                              );
+                                                index
+                                              )
                                             }
-                                          }}
-                                        >
-                                          <SearchIcon className="icon" />
+                                          >
+                                            <SearchIcon className="icon" />
+                                          </div>
                                         </div>
-                                      </div>
+                                      ))}
                                     </div>
                                   </td>
                                   <td className="textCell f_flex">
@@ -263,14 +241,17 @@ function ReportsEdit() {
                             </table>
                           </div>
                         </div>{" "}
-                        <div className="video_content">
-                          <ReactPlayer
-                            url={report.video}
-                            controls={true}
-                            width="100%"
-                            height="auto"
-                          />
-                        </div>
+                        {report.video && (
+                          <div className="video_content">
+                            <ReactPlayer
+                              url={report.video}
+                              controls={true}
+                              width="100%"
+                              height="100%"
+                              className="video"
+                            />
+                          </div>
+                        )}
                         <div className="status_box box">
                           <div className="form-group">
                             <label htmlFor="status">Status: </label>
@@ -299,7 +280,7 @@ function ReportsEdit() {
                             </small>
                           </div>
                           <div className="form-group">
-                            <label htmlFor="comment">Comment: </label>
+                            <label htmlFor="comment">Suggestion: </label>
                             <small>
                               <p>{report?.comment}</p>
                             </small>

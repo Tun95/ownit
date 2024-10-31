@@ -48,13 +48,22 @@ export const reportSchema = yup.object().shape({
   description: yup.string().required("Description is required"), // Marked as required
   comment: yup.string().required("Comment is required"), // Marked as required
 
-  // STEP3
+  // STEP 3
   images: yup
     .array()
     .of(yup.string())
-    .min(1, "At least one image is required") // Ensures at least one image is selected
+    .min(1, "At least one image and max of 10 is required") // Ensures at least one image is selected
+    .max(10, "You can upload a maximum of 10 images") // Sets a maximum of 10 images
     .required("At least one image is required"),
-  video: yup.string().required("Video URL is required"), // Marked as required
+  video: yup
+    .string()
+    .nullable()
+    .notRequired()
+    .test(
+      "single-video",
+      "Only one video can be uploaded",
+      (value) => value === null || typeof value === "string"
+    ),
 });
 
 export const loginSchema = yup.object().shape({

@@ -16,7 +16,7 @@ dotenv.config();
 mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGODB_URI, {
-    connectTimeoutMS: 10000,
+    connectTimeoutMS: 120000,
   })
   .then(() => {
     console.log("connected to db");

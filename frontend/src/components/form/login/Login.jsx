@@ -51,7 +51,7 @@ function LoginComponent() {
       setTimeout(() => {
         actions.resetForm();
       }, 2000);
-      navigate("/");
+      navigate(redirect);
     } catch (err) {
       toast.error(getError(err));
     }

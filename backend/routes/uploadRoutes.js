@@ -6,9 +6,17 @@ import sharp from "sharp";
 
 const upload = multer();
 
+const uploadSize = multer({
+  limits: { fileSize: 100 * 1024 * 1024 }, // Limit file size to 100MB
+});
+
+const videoUpload = multer({
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
+});
+
 const uploadRouter = express.Router();
 
-
+// UPLOAD COMPRESSED IMAGE FILE
 uploadRouter.post("/", upload.single("file"), async (req, res) => {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -77,6 +85,108 @@ uploadRouter.post("/", upload.single("file"), async (req, res) => {
     res.set("Cache-Control", "public, max-age=86400"); // Cache for 1 day
     res.send({ ...result, optimizedUrl });
   } catch (error) {
+    res.status(500).send({ message: "Upload failed", error: error.message });
+  }
+});
+
+// UPLOAD ORIGINAL IMAGE FILE
+uploadRouter.post("/original", uploadSize.single("file"), async (req, res) => {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  // Check file type
+  const fileTypes = ["image/png", "image/jpg", "image/jpeg"];
+  if (!fileTypes.includes(req.file.mimetype)) {
+    return res.status(400).send({
+      message: "Invalid file type. Only PNG, JPG, and JPEG are allowed.",
+    });
+  }
+
+  try {
+    // Upload to Cloudinary without resizing or conversion
+    const streamUpload = (buffer) => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { resource_type: "image" },
+          (error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
+            }
+          }
+        );
+        streamifier.createReadStream(buffer).pipe(stream);
+      });
+    };
+    const result = await streamUpload(req.file.buffer);
+
+    res.set("Cache-Control", "public, max-age=86400"); // Cache for 1 day
+    res.send(result);
+  } catch (error) {
+    // Handle file size limit errors
+    if (
+      error instanceof multer.MulterError &&
+      error.code === "LIMIT_FILE_SIZE"
+    ) {
+      return res
+        .status(400)
+        .send({ message: "File size exceeds the 100MB limit." });
+    }
+    res.status(500).send({ message: "Upload failed", error: error.message });
+  }
+});
+
+// UPLOAD ORIGINAL VIDEO FILE
+uploadRouter.post("/video", videoUpload.single("file"), async (req, res) => {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  // Check file type
+  const fileTypes = ["video/mp4", "video/avi", "video/mkv"];
+  if (!req.file || !fileTypes.includes(req.file.mimetype)) {
+    return res.status(400).send({
+      message: "Invalid file type. Only MP4, AVI, and MKV formats are allowed.",
+    });
+  }
+
+  try {
+    // Upload to Cloudinary without resizing or conversion
+    const streamUpload = (buffer) => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { resource_type: "video" },
+          (error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
+            }
+          }
+        );
+        streamifier.createReadStream(buffer).pipe(stream);
+      });
+    };
+    const result = await streamUpload(req.file.buffer);
+
+    res.set("Cache-Control", "public, max-age=86400"); // Cache for 1 day
+    res.send(result);
+  } catch (error) {
+    // Handle file size limit errors
+    if (
+      error instanceof multer.MulterError &&
+      error.code === "LIMIT_FILE_SIZE"
+    ) {
+      return res
+        .status(400)
+        .send({ message: "File size exceeds the 10MB limit." });
+    }
     res.status(500).send({ message: "Upload failed", error: error.message });
   }
 });
