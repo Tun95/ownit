@@ -32,6 +32,7 @@ const initialReportValues = {
   video: "",
 };
 
+
 const reportReducer = (state, action) => {
   switch (action.type) {
     case "CREATE_REQUEST":
