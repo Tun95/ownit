@@ -4,6 +4,7 @@
   .content {
     width: 700px;
     .steps {
+      width: 100%;
       .steps_box {
         padding: 0px 40px;
         width: 100%;
@@ -13,7 +14,12 @@
 
         /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
         @media screen and (max-width: 575px) {
-          padding: 0px 0px;
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          .mobile {
+            display: none;
+          }
         }
       }
       .steps_box .ant-steps-item-icon {

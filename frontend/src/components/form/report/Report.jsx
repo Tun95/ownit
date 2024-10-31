@@ -302,11 +302,19 @@ function ReportComponent() {
             current={currentStep}
           >
             <Steps.Step
-              title="Personal Information"
+              title={
+                <span>
+                  Personal <span className="mobile">Information</span>
+                </span>
+              }
               onClick={() => handleStepClick(0)}
             />
             <Steps.Step
-              title="School Information"
+              title={
+                <span>
+                  School <span className="mobile">Information</span>
+                </span>
+              }
               onClick={() => handleStepClick(1)}
             />
             <Steps.Step title="Uploads" onClick={() => handleStepClick(2)} />
