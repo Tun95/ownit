@@ -156,28 +156,39 @@ uploadRouter.post("/video", videoUpload.single("file"), async (req, res) => {
     });
   }
 
-  try {
-    // Upload to Cloudinary without resizing or conversion
-    const streamUpload = (buffer) => {
-      return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { resource_type: "video" },
-          (error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
+  // Function to upload to Cloudinary
+  const streamUpload = (buffer) => {
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { resource_type: "video" },
+        (error, result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(error);
           }
-        );
-        streamifier.createReadStream(buffer).pipe(stream);
-      });
-    };
+        }
+      );
+      streamifier.createReadStream(buffer).pipe(stream);
+    });
+  };
+
+  try {
+    const startTime = Date.now();
     const result = await streamUpload(req.file.buffer);
+    const endTime = Date.now();
+    console.log(`Upload duration: ${endTime - startTime} ms`);
 
     res.set("Cache-Control", "public, max-age=86400"); // Cache for 1 day
     res.send(result);
   } catch (error) {
+    console.error("Upload error:", error);
+    // Handle timeout errors specifically
+    if (error.name === "TimeoutError") {
+      return res.status(408).send({
+        message: "Request Timeout. The server took too long to respond.",
+      });
+    }
     // Handle file size limit errors
     if (
       error instanceof multer.MulterError &&

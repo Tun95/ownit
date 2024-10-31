@@ -2,7 +2,7 @@ import { reportSchema } from "../../../schema/Index";
 import "./styles.scss";
 import { Formik, ErrorMessage, Form, Field } from "formik";
 import { Steps } from "antd";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -210,10 +210,14 @@ function ReportComponent() {
       e.target.value = ""; // Reset the file input to allow re-selection of the same video
     }
   };
+  const fileInputRef = useRef(null);
 
   const removeVideo = (setFieldValue) => {
     setFieldValue("video", ""); // Clear the video URL in Formik state
     setVideoFileName(""); // Clear the file name
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset the file input value
+    }
     toast.success("Video removed successfully", { position: "bottom-center" });
   };
 
@@ -742,6 +746,7 @@ function ReportComponent() {
                             <input
                               type="file"
                               id="video"
+                              ref={fileInputRef} // Attach ref here
                               style={{ display: "none" }}
                               onChange={(e) =>
                                 uploadVideoHandler(e, setFieldValue)

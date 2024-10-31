@@ -16,7 +16,7 @@ dotenv.config();
 mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGODB_URI, {
-    connectTimeoutMS: 500000,
+    connectTimeoutMS: 1000000,
   })
   .then(() => {
     console.log("connected to db");
@@ -57,8 +57,10 @@ app.use((err, req, res, next) => {
 });
 
 const server = createServer(app);
-
 const port = process.env.PORT || 5000;
+
+// Increase timeout settings
+server.setTimeout(1000000); // 5 minutes
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

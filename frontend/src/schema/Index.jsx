@@ -55,15 +55,7 @@ export const reportSchema = yup.object().shape({
     .min(1, "At least one image and max of 10 is required") // Ensures at least one image is selected
     .max(10, "You can upload a maximum of 10 images") // Sets a maximum of 10 images
     .required("At least one image is required"),
-  video: yup
-    .string()
-    .nullable()
-    .notRequired()
-    .test(
-      "single-video",
-      "Only one video can be uploaded",
-      (value) => value === null || typeof value === "string"
-    ),
+  video: yup.string().nullable().notRequired(),
 });
 
 export const loginSchema = yup.object().shape({
