@@ -711,9 +711,7 @@ userRouter.put(
 userRouter.post(
   "/password-token",
   expressAsyncHandler(async (req, res) => {
-    // const settings = await Settings.findOne({});
-    // const { facebook, twitter, whatsapp } = settings || {};
-
+  
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
     const tiktok = process.env.TIKTOK_PROFILE_LINK;

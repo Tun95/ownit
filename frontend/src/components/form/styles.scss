@@ -121,6 +121,12 @@
           .remember_forgot_pass {
             flex-direction: row;
             flex-wrap: wrap;
+            a {
+              &:hover {
+                transition: var(--transition);
+                color: var(--color-green);
+              }
+            }
           }
           /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
           @media (max-width: 575px) {
