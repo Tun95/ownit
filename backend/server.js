@@ -60,7 +60,7 @@ const server = createServer(app);
 const port = process.env.PORT || 5000;
 
 // Increase timeout settings
-server.setTimeout(1000000); // 5 minutes
+server.setTimeout(1000000); // 10 minutes
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
