@@ -5,6 +5,7 @@ import Reporting from "../../components/home/reporting/Reporting";
 import Intiative from "../../components/home/initiative/Intiative";
 import SubmitComponent from "../../components/home/submit/Submit";
 import Footer from "../../common/footer/Footer";
+import NavBar from "../../common/navbar/NavBar";
 
 function HomeScreen() {
   return (
@@ -12,6 +13,7 @@ function HomeScreen() {
       <Helmet>
         <title>Home</title>
       </Helmet>
+      <NavBar />
       <div className="home_content">
         <Intro />
         <Citizen />

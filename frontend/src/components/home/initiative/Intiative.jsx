@@ -21,7 +21,7 @@ function Intiative() {
     }
   };
   return (
-    <div className="initiative">
+    <div className="initiative" id="how-it-works">
       <div className="container">
         <div className="content">
           {" "}

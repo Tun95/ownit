@@ -8,8 +8,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { request } from "../../../base url/BaseUrl";
 import { useNavigate } from "react-router-dom";
-import s1 from "../../../assets/report/s1.png";
-import s2 from "../../../assets/report/s2.png";
 import { Autocomplete, TextField } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -363,7 +361,7 @@ function ReportComponent() {
                           >
                             <div className="public_anony_box">
                               <div className="img l_flex">
-                                <img src={s1} alt="anonymous" />
+                                <i className="ri-spy-line icon"></i>
                               </div>
                               <div className="title">
                                 <small>
@@ -386,7 +384,7 @@ function ReportComponent() {
                           >
                             <div className="public_anony_box">
                               <div className="img l_flex">
-                                <img src={s2} alt="public" />
+                                <i className="ri-eye-2-fill icon"></i>
                               </div>
                               <div className="title">
                                 <small>

@@ -99,36 +99,41 @@ function Sidebar() {
                       <span>Home</span>
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      onClick={toggleDrawer(anchor, false)}
-                      to="/about"
-                      className="a_flex"
-                    >
-                      <InfoOutlinedIcon className="icon" />
-                      <span>About Us</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={toggleDrawer(anchor, false)}
-                      to="/how-it-works"
-                      className="a_flex"
-                    >
-                      <SettingsApplicationsOutlinedIcon className="icon" />
-                      <span>How it works</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={toggleDrawer(anchor, false)}
-                      to="/what-we-do"
-                      className="a_flex"
-                    >
-                      <AssuredWorkloadOutlinedIcon className="icon" />
-                      <span>What we do</span>
-                    </Link>
-                  </li>
+                  {!userInfo && (
+                    <>
+                      {" "}
+                      <li>
+                        <Link
+                          onClick={toggleDrawer(anchor, false)}
+                          to="/about"
+                          className="a_flex"
+                        >
+                          <InfoOutlinedIcon className="icon" />
+                          <span>About Us</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          onClick={toggleDrawer(anchor, false)}
+                          to="/how-it-works"
+                          className="a_flex"
+                        >
+                          <SettingsApplicationsOutlinedIcon className="icon" />
+                          <span>How it works</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          onClick={toggleDrawer(anchor, false)}
+                          to="/what-we-do"
+                          className="a_flex"
+                        >
+                          <AssuredWorkloadOutlinedIcon className="icon" />
+                          <span>What we do</span>
+                        </Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
                 {userInfo && (
                   <span>

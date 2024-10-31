@@ -6,7 +6,7 @@ import r4 from "../../../assets/home/r4.png";
 
 function Reporting() {
   return (
-    <div className="reporting">
+    <div className="reporting" id="what-we-do">
       <div className="container">
         <div className="content">
           <div className="header">

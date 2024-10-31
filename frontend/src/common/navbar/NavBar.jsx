@@ -26,19 +26,21 @@ function NavBar() {
               </Link>
             </div>
           </div>
+
           <div className="nav_links">
             <ul className="a_flex">
               <li>
-                <Link to="about">About Us</Link>
+                <a href="#about">About Us</a>
               </li>
               <li>
-                <Link to="/how-it-works">How it works</Link>
+                <a href="#how-it-works">How it works</a>
               </li>
               <li>
-                <Link to="/what-we-do">What we do</Link>
+                <a href="#what-we-do">What we do</a>
               </li>
             </ul>
           </div>
+
           <div className="register_login a_flex">
             {!userInfo ? (
               <>

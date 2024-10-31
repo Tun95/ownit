@@ -1,7 +1,7 @@
 import "./styles.scss";
 function Citizen() {
   return (
-    <div className="citizen">
+    <div className="citizen" id="about">
       <div className="container">
         <div className="content">
           <div className="header">
