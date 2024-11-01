@@ -125,6 +125,7 @@ function RegisterComponent() {
 
   const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
+  
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div>
