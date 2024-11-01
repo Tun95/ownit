@@ -32,10 +32,11 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
+
 app.use(express.json({ limit: "10mb" }));
 app.use(
   cors({
-    origin: "*",
+    origin: "https://ownit-one.vercel.app",
     methods: "GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE",
     credentials: true,
   })
