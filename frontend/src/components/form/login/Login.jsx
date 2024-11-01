@@ -13,10 +13,9 @@ import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import g1 from "../../../assets/others/g1.svg";
 
-// Initial values for the LOGIN form
 const initialLoginValues = {
   email: "",
   password: "",
@@ -39,9 +38,6 @@ function LoginComponent() {
     setPasswordIcon(passwordIcon === eyeOff ? eye : eyeOff);
   };
 
-  //============
-  // GOOGLE AUTH
-  //============
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
       const { data } = await axios.post(`${request}/api/users/google-auth`, {
@@ -61,7 +57,6 @@ function LoginComponent() {
     }
   };
 
-  // LOGIN HANDLE
   const handleSubmit = async (values, actions) => {
     try {
       const { data } = await axios.post(`${request}/api/users/signin`, {
@@ -89,11 +84,17 @@ function LoginComponent() {
 
   const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
+  // Initialize Google login for custom button
+  const googleLogin = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: () => console.error("Google Sign-In failed"),
+  });
+
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div>
         <Box className="menu_modal login_menu">
-          <div className="otp_created_pending_login  header_box">
+          <div className="otp_created_pending_login header_box">
             <div className="menu_header">
               <div className="left">
                 <h2>Login to Edquity</h2>
@@ -118,8 +119,7 @@ function LoginComponent() {
                           }`}
                         >
                           <label htmlFor="email">
-                            Email
-                            <span className="red">*</span>
+                            Email <span className="red">*</span>
                           </label>
                           <Field
                             type="text"
@@ -199,29 +199,15 @@ function LoginComponent() {
                             )}
                           </button>
                         </div>
-                        {/* GOOGLE BTN HERE */}
+                        {/* Custom Google Sign-In Button */}
                         <div className="google_btn">
-                          <GoogleLogin
-                            clientId={clientId}
-                            buttonText="Sign up with Google"
-                            onSuccess={handleGoogleLoginSuccess}
-                            onFailure={() =>
-                              console.error("Google Sign-In failed")
-                            }
-                            cookiePolicy={"single_host_origin"}
-                          />
-                        </div>
-                        {/* CUSTOM BUTTON */}
-                        <div className="google_btn">
-                          <div className="btn l_flex">
-                            <button
-                              className="google_button l_flex"
-                              type="submit"
-                            >
-                              <img src={g1} alt="google" />
-                              <p className="text">Sign in with Google</p>
-                            </button>
-                          </div>
+                          <button
+                            className="google_button l_flex"
+                            onClick={googleLogin}
+                          >
+                            <img src={g1} alt="google" />
+                            <p className="text">Sign in with Google</p>
+                          </button>
                         </div>
                         <div className="text_details l_flex">
                           <small>
