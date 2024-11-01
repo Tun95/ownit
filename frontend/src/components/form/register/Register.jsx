@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import PropTypes from "prop-types";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import g1 from "../../../assets/others/g1.svg";
 
 //REGISTER DROPDOWN MENU
 const initialRegisterValues = {
@@ -25,6 +26,8 @@ const initialRegisterValues = {
 
 function RegisterComponent() {
   const navigate = useNavigate();
+  const { state: appState, dispatch: ctxDispatch } = useAppContext();
+  const { userInfo } = appState;
 
   // Toggle password visibility
   const [passwordType, setPasswordType] = useState("password");
@@ -53,6 +56,7 @@ function RegisterComponent() {
         token: credentialResponse.credential,
       });
 
+      ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
       navigate("/");
       toast.success("Welcome back!", {
@@ -113,19 +117,16 @@ function RegisterComponent() {
     }
   };
 
-  const { state: appState } = useAppContext();
-  const { userInfo } = appState;
-
   useEffect(() => {
     if (userInfo) {
       navigate("/");
     }
   }, [navigate, userInfo]);
 
-  //const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
+  const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
   return (
-    <GoogleOAuthProvider clientId="317693244184-k275i0nekg5mc5237n41clan8tj92d79.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={clientId}>
       <div>
         <Box className="menu_modal login_menu">
           <div className="otp_created_pending_login  header_box">
@@ -318,7 +319,7 @@ function RegisterComponent() {
                         <div className="google_btn">
                           {" "}
                           <GoogleLogin
-                            clientId="317693244184-k275i0nekg5mc5237n41clan8tj92d79.apps.googleusercontent.com"
+                            clientId={clientId}
                             buttonText="Sign up with Google"
                             onSuccess={handleGoogleLoginSuccess}
                             onFailure={() =>
@@ -326,6 +327,12 @@ function RegisterComponent() {
                             }
                             cookiePolicy={"single_host_origin"}
                           />
+                          <div className="btn l_flex">
+                            <button className="google_button l_flex" type="submit">
+                              <img src={g1} alt="google" />
+                              <p className="text">Sign up with Google</p>
+                            </button>
+                          </div>
                         </div>
 
                         <div className="text_details l_flex">

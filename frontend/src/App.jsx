@@ -21,6 +21,28 @@ import ForgetPasswordScreen from "./screens/formscreens/forgetpasswordscreen/For
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
 function App() {
+  // const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
+
+  // useEffect(() => {
+  //   const loadGoogleAPI = () => {
+  //     const script = document.createElement("script");
+  //     script.src =
+  //       "https://apis.google.com/js/platform.js?onload=onLoadCallback";
+  //     script.async = true;
+  //     document.body.appendChild(script);
+  //   };
+
+  //   window.onLoadCallback = () => {
+  //     window.gapi.load("auth2", () => {
+  //       window.gapi.auth2.init({
+  //         client_id: clientId,
+  //       });
+  //     });
+  //   };
+
+  //   loadGoogleAPI();
+  // }, [clientId]);
+
   ReactGA.initialize(import.meta.env.VITE_REACT_APP_GOOGLE_TRACKING, {
     debug: true,
     titleCase: false,
