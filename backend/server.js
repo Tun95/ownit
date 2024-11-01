@@ -10,6 +10,7 @@ import sendEmailRouter from "./routes/emailMsgRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import reportRouter from "./routes/reportRoutes.js";
 import generalRouter from "./routes/generalRoutes.js";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -37,6 +38,13 @@ app.use(
     origin: "*",
     methods: "GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE",
     credentials: true,
+  })
+);
+
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: { policy: "same-origin" },
+    crossOriginEmbedderPolicy: { policy: "require-corp" },
   })
 );
 

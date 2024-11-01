@@ -210,7 +210,9 @@ function LoginComponent() {
                             }
                             cookiePolicy={"single_host_origin"}
                           />
-
+                        </div>
+                        {/* CUSTOM BUTTON */}
+                        <div className="google_btn">
                           <div className="btn l_flex">
                             <button
                               className="google_button l_flex"
