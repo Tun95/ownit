@@ -5,7 +5,7 @@ import { eye } from "react-icons-kit/feather/eye";
 import Box from "@mui/material/Box";
 import { registerSchema } from "../../../schema/Index";
 import { Formik, ErrorMessage, Form, Field } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles.scss";
 import axios from "axios";
 import { request } from "../../../base url/BaseUrl";
@@ -29,11 +29,16 @@ function RegisterComponent() {
   const { state: appState, dispatch: ctxDispatch } = useAppContext();
   const { userInfo } = appState;
 
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get("redirect") || "/";
+
   // Toggle password visibility
   const [passwordType, setPasswordType] = useState("password");
   const [passwordIcon, setPasswordIcon] = useState(eyeOff);
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");
   const [confirmPasswordIcon, setConfirmPasswordIcon] = useState(eyeOff);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleToggle = (field) => {
     if (field === "password") {
@@ -50,12 +55,16 @@ function RegisterComponent() {
   const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
   const handleGoogleSignIn = () => {
+    setIsGoogleLoading(true);
+
     if (window.google) {
       window.google.accounts.id.initialize({
         client_id: clientId,
         callback: handleGoogleLoginSuccess,
       });
-      window.google.accounts.id.prompt();
+      window.google.accounts.id.prompt(() => {
+        setIsGoogleLoading(false);
+      });
     }
   };
 
@@ -70,14 +79,16 @@ function RegisterComponent() {
 
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/");
       toast.success("Account created successfully!", {
         position: "bottom-center",
       });
+      navigate(redirect);
     } catch (err) {
       toast.error(getError(err), {
         position: "bottom-center",
       });
+    } finally {
+      setIsGoogleLoading(false); // Set loading state to false after completion
     }
   };
 
@@ -131,9 +142,9 @@ function RegisterComponent() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate(redirect);
     }
-  }, [navigate, userInfo]);
+  }, [navigate, redirect, userInfo]);
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
@@ -331,17 +342,6 @@ function RegisterComponent() {
                 )}
               </Formik>
               <div className="form_lower_actions">
-                {/* GOOGLE BTN HERE */}
-                {/* <div className="google_btn">
-                  {" "}
-                  <GoogleLogin
-                    clientId={clientId}
-                    buttonText="Sign up with Google"
-                    onSuccess={handleGoogleLoginSuccess}
-                    onFailure={() => console.error("Google Sign-In failed")}
-                    cookiePolicy={"single_host_origin"}
-                  />
-                </div> */}
                 {/* Custom Google Sign-In Button */}
                 <div className="google_btn">
                   {" "}
@@ -352,9 +352,17 @@ function RegisterComponent() {
                       type="button"
                       onClick={handleGoogleSignIn}
                     >
-                      {" "}
-                      <img src={g1} alt="google" />{" "}
-                      <p className="text">Sign up with Google</p>{" "}
+                      {isGoogleLoading ? (
+                        <span className="a_flex">
+                          <i className="fa fa-spinner fa-spin"></i>
+                          Signing up...
+                        </span>
+                      ) : (
+                        <>
+                          <img src={g1} alt="google" />
+                          <p className="text">Sign up with Google</p>
+                        </>
+                      )}
                     </button>{" "}
                   </div>{" "}
                 </div>

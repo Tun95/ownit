@@ -33,6 +33,7 @@ function LoginComponent() {
 
   const [passwordType, setPasswordType] = useState("password");
   const [passwordIcon, setPasswordIcon] = useState(eyeOff);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleToggle = () => {
     setPasswordType(passwordType === "password" ? "text" : "password");
@@ -42,12 +43,16 @@ function LoginComponent() {
   const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
   const handleGoogleSignIn = () => {
+    setIsGoogleLoading(true);
+
     if (window.google) {
       window.google.accounts.id.initialize({
         client_id: clientId,
         callback: handleGoogleLoginSuccess,
       });
-      window.google.accounts.id.prompt();
+      window.google.accounts.id.prompt(() => {
+        setIsGoogleLoading(false);
+      });
     }
   };
 
@@ -62,14 +67,17 @@ function LoginComponent() {
 
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/");
+
       toast.success("Welcome back!", {
         position: "bottom-center",
       });
+      navigate(redirect);
     } catch (err) {
       toast.error(getError(err), {
         position: "bottom-center",
       });
+    } finally {
+      setIsGoogleLoading(false); // Set loading state to false after completion
     }
   };
 
@@ -215,16 +223,6 @@ function LoginComponent() {
                 )}
               </Formik>
               <div className="form_lower_actions">
-                {/* GOOGLE BTN HERE */}
-                {/* <div className="google_btn">
-                  <GoogleLogin
-                    clientId={clientId}
-                    buttonText="Sign up with Google"
-                    onSuccess={handleGoogleLoginSuccess}
-                    onFailure={() => console.error("Google Sign-In failed")}
-                    cookiePolicy={"single_host_origin"}
-                  />
-                </div> */}
                 {/* Custom Google Sign-In Button */}
                 <div className="google_btn">
                   {" "}
@@ -235,9 +233,17 @@ function LoginComponent() {
                       type="button"
                       onClick={handleGoogleSignIn}
                     >
-                      {" "}
-                      <img src={g1} alt="google" />{" "}
-                      <p className="text">Sign in with Google</p>{" "}
+                      {isGoogleLoading ? (
+                        <span className="a_flex">
+                          <i className="fa fa-spinner fa-spin"></i>
+                          Signing in...
+                        </span>
+                      ) : (
+                        <>
+                          <img src={g1} alt="google" />
+                          <p className="text">Sign in with Google</p>
+                        </>
+                      )}
                     </button>{" "}
                   </div>{" "}
                 </div>
