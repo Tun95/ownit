@@ -49,14 +49,15 @@ reportRouter.put(
         .json({ message: 'Invalid action. Use "approve" or "disapprove".' });
     }
 
+    // Determine the new status based on the action
     const newStatus = action === "approve" ? "approved" : "disapproved";
 
     try {
       const result = await Report.updateMany(
-        { _id: { $in: reportIds }, status: "pending" },
+        { _id: { $in: reportIds } }, // Allow updates regardless of current status
         { $set: { status: newStatus } }
       );
-      
+
       console.log("UpdateMany result:", result); // Log the result
 
       res.status(200).json({
