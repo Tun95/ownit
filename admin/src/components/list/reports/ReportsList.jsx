@@ -28,6 +28,8 @@ const issueTypeOptions = [
 
 const statusListOptions = ["pending", "approved", "disapproved"];
 
+const statusUpdateOptions = ["approved", "disapproved"];
+
 const columns = [
   { field: "schoolName", headerName: "School Name", width: 220 },
   { field: "schoolLocation", headerName: "School Location", width: 220 },
@@ -101,8 +103,24 @@ const reducer = (state, action) => {
     case "DELETE_SUCCESS":
       return { ...state, loadingDelete: false, successDelete: true };
     case "DELETE_FAIL":
-    case "DELETE_RESET":
       return { ...state, loadingDelete: false, successDelete: false };
+    case "STATUS_UPDATE_REQUEST":
+      return { ...state, loadingUpdate: true };
+    case "STATUS_UPDATE_SUCCESS":
+      return {
+        ...state,
+        loadingUpdate: false,
+        successUpdate: true,
+        reports: state.reports.map((report) =>
+          report._id === action.payload._id
+            ? { ...report, status: action.payload.status }
+            : report
+        ),
+      };
+    case "STATUS_UPDATE_FAIL":
+      return { ...state, loadingUpdate: false, error: action.payload };
+    case "STATUS_UPDATE_RESET":
+      return { ...state, successUpdate: false };
     default:
       return state;
   }
@@ -117,18 +135,32 @@ const ReportsListComponent = () => {
   const issueType = sp.get("issueType") || "all";
   const privacyPreference = sp.get("privacyPreference") || "all";
   const [page, setPage] = useState(1);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedReportId, setSelectedReportId] = useState(null);
   const limit = 10;
 
   const { state: appState } = useAppContext();
   const { userInfo } = appState;
 
-  const [{ loading, error, reports, countReports, successDelete }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: "",
-      reports: [],
-      countReports: 0,
-    });
+  const [
+    {
+      loading,
+      error,
+      reports,
+      countReports,
+      successDelete,
+      loadingUpdate,
+      successUpdate,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+    reports: [],
+    countReports: 0,
+    loadingUpdate: false,
+    successUpdate: false,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,6 +188,9 @@ const ReportsListComponent = () => {
     if (successDelete) {
       dispatch({ type: "DELETE_RESET" });
     }
+    if (successUpdate) {
+      dispatch({ type: "STATUS_UPDATE_RESET" });
+    }
     fetchData();
   }, [
     status,
@@ -163,6 +198,7 @@ const ReportsListComponent = () => {
     privacyPreference,
     searchQuery,
     successDelete,
+    successUpdate,
     userInfo,
     page,
   ]);
@@ -178,6 +214,7 @@ const ReportsListComponent = () => {
     return `/reports?searchQuery=${filterSearchQuery}&status=${filterStatus}&issueType=${filterIssueType}&privacyPreference=${filterPrivacyPreference}`;
   };
 
+  // DELETE HANDLER
   const deleteHandler = async (report) => {
     if (window.confirm("Are you sure to delete this report?")) {
       try {
@@ -236,6 +273,42 @@ const ReportsListComponent = () => {
     };
 
     navigate(getFilterUrl(newFilters));
+  };
+
+  // UPDATE STATUS HANDLER
+  const handleStatusUpdate = async () => {
+    console.log("Selected Report IDs:", selectedReportId);
+    console.log("Selected Status:", selectedStatus);
+
+    // Ensure selectedReportId is an array
+    const reportIds = Array.isArray(selectedReportId)
+      ? selectedReportId
+      : [selectedReportId];
+
+    if (!reportIds.length || !selectedStatus) {
+      toast.error("Please select a report and status to update.");
+      return;
+    }
+
+    try {
+      dispatch({ type: "STATUS_UPDATE_REQUEST" });
+      const { data } = await axios.put(
+        `${request}/api/reports/update-status`,
+        {
+          reportIds, // Now this will be the full array
+          action: selectedStatus === "approved" ? "approve" : "disapprove",
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo?.token}` },
+        }
+      );
+
+      toast.success("Status updated successfully");
+      dispatch({ type: "STATUS_UPDATE_SUCCESS", payload: data });
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: "STATUS_UPDATE_FAIL", payload: getError(err) });
+    }
   };
 
   const actionColumn = [
@@ -334,6 +407,41 @@ const ReportsListComponent = () => {
                     Clear All
                   </button>
                 </div>
+                <div></div>
+
+                {/* STATUS UPDATE SECTION */}
+                <div className="form_box">
+                  <div className="select_btn a_flex">
+                    <div className="select_span">
+                      <label htmlFor="updatestatus">Update Status:</label>
+                      <select
+                        name="updatestatus"
+                        className="select"
+                        value={selectedStatus}
+                        onChange={(e) => setSelectedStatus(e.target.value)}
+                      >
+                        <option value="">Select Status</option>
+                        {statusUpdateOptions.map((item, index) => (
+                          <option value={item} key={index}>
+                            {item.charAt(0).toUpperCase() + item.slice(1)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="update_btn">
+                      <button className="main_btn" onClick={handleStatusUpdate}>
+                        {loadingUpdate ? (
+                          <span className="a_flex">
+                            <i className="fa fa-spinner fa-spin"></i>
+                            Updating...
+                          </span>
+                        ) : (
+                          "Update Status"
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -345,6 +453,7 @@ const ReportsListComponent = () => {
             ) : (
               <DataGrid
                 className="datagrid"
+                getRowId={(row) => row._id}
                 rows={reports}
                 columns={columns.concat(actionColumn)}
                 pageSize={10}
@@ -355,7 +464,10 @@ const ReportsListComponent = () => {
                 page={page - 1}
                 onPageChange={(newPage) => setPage(newPage + 1)}
                 checkboxSelection
-                getRowId={(row) => row._id}
+                onRowSelectionModelChange={(ids) => {
+                  console.log("Row Selection IDs:", ids);
+                  setSelectedReportId(ids.length ? ids : null); // Set to all selected IDs
+                }}
                 disableSelectionOnClick
               />
             )}

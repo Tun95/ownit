@@ -30,6 +30,24 @@ const columns = [
       );
     },
   },
+  {
+    field: "isAdmin",
+    headerName: "isAdmin",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <>
+          <div className={`cellWithAdminSellerStatus ${params.row.isBlocked}`}>
+            {params.row.isAdmin === true ? (
+              <span className="yes">YES</span>
+            ) : (
+              <span className="no">NO</span>
+            )}
+          </div>
+        </>
+      );
+    },
+  },
   { field: "role", headerName: "Role", width: 100 },
   {
     field: "isAccountVerified",

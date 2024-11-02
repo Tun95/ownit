@@ -159,6 +159,19 @@
       height: 35px;
     }
   }
+  .select_btn {
+    align-items: last baseline;
+    gap: 20px;
+    .select_span {
+      width: 100%;
+      .select {
+        width: 100%;
+      }
+    }
+    .main_btn {
+      height: 39px;
+    }
+  }
 
   .order_table {
     margin-bottom: 0;
