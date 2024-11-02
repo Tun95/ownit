@@ -13,7 +13,7 @@ import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import g1 from "../../../assets/others/g1.svg";
 
 // Initial values for the LOGIN form
@@ -37,6 +37,18 @@ function LoginComponent() {
   const handleToggle = () => {
     setPasswordType(passwordType === "password" ? "text" : "password");
     setPasswordIcon(passwordIcon === eyeOff ? eye : eyeOff);
+  };
+
+  const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
+
+  const handleGoogleSignIn = () => {
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleGoogleLoginSuccess,
+      });
+      window.google.accounts.id.prompt();
+    }
   };
 
   //============
@@ -87,10 +99,6 @@ function LoginComponent() {
     }
   }, [navigate, redirect, userInfo]);
 
-  const clientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
-
-
-  
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div>
@@ -201,46 +209,50 @@ function LoginComponent() {
                             )}
                           </button>
                         </div>
-                        {/* GOOGLE BTN HERE */}
-                        <div className="google_btn">
-                          <GoogleLogin
-                            clientId={clientId}
-                            buttonText="Sign up with Google"
-                            onSuccess={handleGoogleLoginSuccess}
-                            onFailure={() =>
-                              console.error("Google Sign-In failed")
-                            }
-                            cookiePolicy={"single_host_origin"}
-                          />
-                        </div>
-                        {/* CUSTOM BUTTON */}
-                        <div className="google_btn">
-                          <div className="btn l_flex">
-                            <button
-                              className="google_button l_flex"
-                              type="submit"
-                            >
-                              <img src={g1} alt="google" />
-                              <p className="text">Sign in with Google</p>
-                            </button>
-                          </div>
-                        </div>
-                        <div className="text_details l_flex">
-                          <small>
-                            Don&apos;t have an account? &nbsp;
-                            <span
-                              onClick={() => navigate("/register")}
-                              className="green onClick_span"
-                            >
-                              SIGN UP
-                            </span>
-                          </small>
-                        </div>
                       </div>
                     </div>
                   </Form>
                 )}
               </Formik>
+              <div className="form_lower_actions">
+                {/* GOOGLE BTN HERE */}
+                {/* <div className="google_btn">
+                  <GoogleLogin
+                    clientId={clientId}
+                    buttonText="Sign up with Google"
+                    onSuccess={handleGoogleLoginSuccess}
+                    onFailure={() => console.error("Google Sign-In failed")}
+                    cookiePolicy={"single_host_origin"}
+                  />
+                </div> */}
+                {/* Custom Google Sign-In Button */}
+                <div className="google_btn">
+                  {" "}
+                  <div className="btn l_flex">
+                    {" "}
+                    <button
+                      className="google_button l_flex"
+                      type="button"
+                      onClick={handleGoogleSignIn}
+                    >
+                      {" "}
+                      <img src={g1} alt="google" />{" "}
+                      <p className="text">Sign in with Google</p>{" "}
+                    </button>{" "}
+                  </div>{" "}
+                </div>
+                <div className="text_details l_flex">
+                  <small>
+                    Don&apos;t have an account? &nbsp;
+                    <span
+                      onClick={() => navigate("/register")}
+                      className="green onClick_span"
+                    >
+                      SIGN UP
+                    </span>
+                  </small>
+                </div>
+              </div>
             </div>
           </div>
         </Box>

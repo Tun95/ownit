@@ -13,7 +13,7 @@ function NavBar() {
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
-    window.location.href = "/";
+    window.location.href = "/login";
   };
   return (
     <div className="nav_bar">

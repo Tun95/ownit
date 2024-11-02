@@ -37,7 +37,7 @@ function Sidebar() {
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   // Navigate to Register with Drawer Close
@@ -103,34 +103,34 @@ function Sidebar() {
                     <>
                       {" "}
                       <li>
-                        <Link
+                        <a
                           onClick={toggleDrawer(anchor, false)}
-                          to="/about"
+                          href="/#about"
                           className="a_flex"
                         >
                           <InfoOutlinedIcon className="icon" />
                           <span>About Us</span>
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link
+                        <a
                           onClick={toggleDrawer(anchor, false)}
-                          to="/how-it-works"
+                          href="/#how-it-works"
                           className="a_flex"
                         >
                           <SettingsApplicationsOutlinedIcon className="icon" />
                           <span>How it works</span>
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link
+                        <a
                           onClick={toggleDrawer(anchor, false)}
-                          to="/what-we-do"
+                          href="/#what-we-do"
                           className="a_flex"
                         >
                           <AssuredWorkloadOutlinedIcon className="icon" />
                           <span>What we do</span>
-                        </Link>
+                        </a>
                       </li>
                     </>
                   )}
