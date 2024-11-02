@@ -24,6 +24,7 @@ const initialRegisterValues = {
   confirmPassword: "",
 };
 
+
 function RegisterComponent() {
   const navigate = useNavigate();
   const { state: appState, dispatch: ctxDispatch } = useAppContext();
