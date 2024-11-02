@@ -11,8 +11,8 @@ const generalRouter = express.Router();
 //===========
 generalRouter.get(
   "/summary",
-  // isAuth,
-  // isAdmin,
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     try {
       // Total registered users

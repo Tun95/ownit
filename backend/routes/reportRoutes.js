@@ -27,6 +27,50 @@ reportRouter.post(
   })
 );
 
+//=================
+// Approve/Disapprove Reports
+//=================
+reportRouter.post(
+  "/update-status",
+  expressAsyncHandler(async (req, res) => {
+    const { reportIds, action } = req.body; // reportIds is an array of report IDs, action is 'approve' or 'disapprove'
+
+    if (!reportIds || !Array.isArray(reportIds) || !action) {
+      return res.status(400).json({
+        message: "Invalid request. Please provide report IDs and action.",
+      });
+    }
+
+    // Check if the action is valid
+    if (!["approve", "disapprove"].includes(action)) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid action. Use "approve" or "disapprove".' });
+    }
+
+    // Set the new status based on the action
+    const newStatus = action === "approve" ? "approved" : "disapproved";
+
+    try {
+      // Update only reports with a 'pending' status
+      const result = await Report.updateMany(
+        { _id: { $in: reportIds }, status: "pending" },
+        { $set: { status: newStatus } }
+      );
+
+      // Send the number of reports updated back to the client
+      res.status(200).json({
+        message: `${result.modifiedCount} reports were successfully ${
+          newStatus === "approved" ? "approved" : "disapproved"
+        }.`,
+      });
+    } catch (error) {
+      console.error("Error updating report status:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  })
+);
+
 //====================
 // Fetch all reports
 //====================
