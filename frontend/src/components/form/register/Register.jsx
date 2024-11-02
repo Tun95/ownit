@@ -88,7 +88,7 @@ function RegisterComponent() {
         position: "bottom-center",
       });
     } finally {
-      setIsGoogleLoading(false); // Set loading state to false after completion
+      setIsGoogleLoading(false);
     }
   };
 
