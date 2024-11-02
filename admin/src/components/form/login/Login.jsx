@@ -182,7 +182,7 @@ function LoginComponent() {
                           )}
                         </button>
                       </div>
-                      <div className="text_details l_flex">
+                      {/* <div className="text_details l_flex">
                         <small>
                           Dont have an account? &nbsp;
                           <span
@@ -192,7 +192,7 @@ function LoginComponent() {
                             Register
                           </span>
                         </small>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </Form>

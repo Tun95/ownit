@@ -12,7 +12,7 @@ import { Route, Routes } from "react-router-dom";
 import NotFoundScreen from "./utilities/404 error/PageNotFound";
 import AdminRoute from "./utilities/protectedRoute/AdminRoute";
 import DashboardScreen from "./screens/dashboardscreen/DashboardScreen";
-import RegisterScreen from "./screens/formscreens/registerscreen/RegisterScreen";
+//import RegisterScreen from "./screens/formscreens/registerscreen/RegisterScreen";
 import LoginScreen from "./screens/formscreens/loginscreen/LoginScreen";
 import OtpScreen from "./screens/formscreens/otpscreen/OtpScreen";
 import CreatedScreen from "./screens/formscreens/createdscreen/CreatedScreen";
@@ -41,7 +41,7 @@ function App() {
             }
           />
           {/* VALIDATION */}
-          <Route path="/register" element={<RegisterScreen />} />
+          {/* <Route path="/register" element={<RegisterScreen />} /> */}
           <Route path="/login" element={<LoginScreen />} />{" "}
           <Route path="/otp" element={<OtpScreen />} /> {/* VALIDATION */}
           <Route path="/created" element={<CreatedScreen />} />
