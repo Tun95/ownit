@@ -32,6 +32,8 @@ reportRouter.post(
 //=================
 reportRouter.put(
   "/update-status",
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     console.log(req.body); // Log the request body for debugging
 
@@ -195,8 +197,8 @@ reportRouter.get(
 //====================
 reportRouter.put(
   "/:id",
-  // isAuth,
-  // isAdmin,
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     try {
       const reportId = req.params.id;
