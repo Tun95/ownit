@@ -44,10 +44,12 @@
           }
           .img {
             position: relative;
-            height: 200px;
+            height: 230px;
             img {
               position: absolute;
               bottom: 0;
+              width: 100%;
+              max-width: 185px;
             }
           }
         }
