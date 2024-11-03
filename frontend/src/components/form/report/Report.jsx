@@ -88,6 +88,7 @@ function ReportComponent() {
   const [images, setImages] = useState([]);
   console.log("IMAGES:", images);
 
+  // SUBMIT HANDLER
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     dispatch({ type: "CREATE_REQUEST" }); // Start loading state
     try {
@@ -114,7 +115,7 @@ function ReportComponent() {
       setErrors({ submit: getError(error) }); // Set form errors to display feedback
       toast.error(getError(error), { position: "bottom-center" }); // Show error message
     } finally {
-      setSubmitting(false); // End loading state
+      setSubmitting(false);
     }
   };
 
