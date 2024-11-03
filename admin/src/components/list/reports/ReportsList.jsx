@@ -274,7 +274,7 @@ const ReportsListComponent = () => {
 
     navigate(getFilterUrl(newFilters));
   };
-  
+
 
   // UPDATE STATUS HANDLER
   const handleStatusUpdate = async () => {
@@ -286,7 +286,7 @@ const ReportsListComponent = () => {
       ? selectedReportId
       : [selectedReportId];
 
-    if (!reportIds.length || !selectedStatus) {
+    if (!selectedReportId || !selectedStatus) {
       toast.error("Please select a report and status to update.");
       return;
     }
