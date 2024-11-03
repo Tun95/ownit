@@ -105,7 +105,7 @@ function ReportComponent() {
 
       // Dispatch success action
       dispatch({ type: "CREATE_SUCCESS", payload: data });
-      toast.success("Report created successfully!", {
+      toast.success("Report submitted successfully!", {
         position: "bottom-center",
       });
       navigate("/");
