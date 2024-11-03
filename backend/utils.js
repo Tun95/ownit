@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 
 export const generateToken = (user) => {
+  // Determine the token expiration time based on the user role
+  const expiresIn = user.role === "admin" ? "2h" : "24h"; // 2 hours for admins, 24 hours for users
+
   return jwt.sign(
     {
       _id: user._id,
@@ -15,7 +18,7 @@ export const generateToken = (user) => {
     },
     process.env.JWT_SECRET || "somethingsecret",
     {
-      expiresIn: "30d",
+      expiresIn, // Use the determined expiration time
     }
   );
 };
