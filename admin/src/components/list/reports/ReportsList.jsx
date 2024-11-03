@@ -274,6 +274,7 @@ const ReportsListComponent = () => {
 
     navigate(getFilterUrl(newFilters));
   };
+  
 
   // UPDATE STATUS HANDLER
   const handleStatusUpdate = async () => {
