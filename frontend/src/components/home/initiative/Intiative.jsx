@@ -22,8 +22,8 @@ function Intiative() {
   };
   return (
     <div className="initiative" id="how-it-works">
-      <div className="container">
-        <div className="content">
+      <div className="container l_flex">
+        <div className="content ">
           {" "}
           <div className="header">
             <div className="head">

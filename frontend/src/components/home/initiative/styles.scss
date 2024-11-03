@@ -1,72 +1,81 @@
 .initiative {
   padding: 60px 0px;
-  .content {
-    .lower_list_img {
-      margin-top: 10px;
-      .list_btn {
-        width: 50%;
-        .list {
-          ul {
-            li {
-              gap: 20px;
-              margin-bottom: 40px;
-              .count {
-                border: 1px solid var(--color-gray);
-                width: 30px;
-                height: 30px;
-                min-width: 30px;
-                min-height: 30px;
-                border-radius: 50%;
-                font-size: 13px;
-              }
-              .head_text {
-                .head {
-                  margin-bottom: 10px;
-                  color: var(--color-dark-gray);
+  .container {
+    flex-direction: column;
+    align-items: center;
+    .content {
+      width: 80%;
+      .lower_list_img {
+        margin-top: 10px;
+        gap: 0px;
+        .list_btn {
+          min-width: 300px;
+          .list {
+            ul {
+              li {
+                gap: 20px;
+                margin-bottom: 40px;
+                .count {
+                  border: 1px solid var(--color-gray);
+                  width: 30px;
+                  height: 30px;
+                  min-width: 30px;
+                  min-height: 30px;
+                  border-radius: 50%;
+                  font-size: 13px;
                 }
-              }
-              /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
-              @media screen and (max-width: 500px) {
                 .head_text {
                   .head {
-                    font-size: 15px;
-                    h3 {
-                      font-weight: 500;
-                    }
+                    margin-bottom: 10px;
+                    color: var(--color-dark-gray);
                   }
-                  .text {
-                    font-size: 14px;
+                }
+                /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+                @media screen and (max-width: 500px) {
+                  .head_text {
+                    .head {
+                      font-size: 15px;
+                      h3 {
+                        font-weight: 500;
+                      }
+                    }
+                    .text {
+                      font-size: 14px;
+                    }
                   }
                 }
               }
             }
           }
-        }
-        .btn {
-          .main_btn {
-            padding: 8px 40px;
+          .btn {
+            .main_btn {
+              padding: 8px 40px;
+            }
           }
-        }
-      }
-      .img {
-        img {
-          width: 90%;
-        }
-      }
-      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
-      @media screen and (max-width: 650px) {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 40px;
-        .list_btn {
-          width: 100%;
         }
         .img {
           display: flex;
-          justify-content: center;
-          width: 100%;
+          justify-content: flex-end;
           img {
-            width: 75%;
+            width: 55%;
+          }
+        }
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 650px) {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 40px;
+          .list_btn {
+            width: 100%;
+            min-width: 100%;
+          }
+          .img {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            img {
+              width: 75%;
+            }
           }
         }
       }

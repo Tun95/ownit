@@ -17,13 +17,18 @@
           margin-top: 10px;
           display: flex;
           justify-content: flex-end;
+          position: relative;
+          img {
+            max-width: 150px;
+          }
         }
       }
       .top {
         gap: 20px;
         height: 100%;
-        margin-bottom: 20px;
 
+        margin-bottom: 20px;
+        position: relative !important;
         .left {
           background: linear-gradient(
             111.95deg,
@@ -42,6 +47,7 @@
             height: 200px;
             img {
               position: absolute;
+              bottom: 0;
             }
           }
         }
