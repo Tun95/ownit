@@ -8,7 +8,7 @@ function Footer() {
       <div className="container">
         <div className="content c_flex">
           <div className="left">
-            <small>Ownit by Bridge Connect Arica </small>
+            <small>Edquity by Outside Lab</small>
           </div>
           <div className="right">
             <div className="icons a_flex">
