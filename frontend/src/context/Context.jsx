@@ -63,13 +63,13 @@ export function ContextProvider({ children }) {
         if (currentTime >= state.tokenExpiration) {
           toast.error("Token expired, please login again");
           dispatch({ type: USER_SIGNOUT });
-          navigate("/");
+          navigate("/login");
         }
       }
     };
 
     checkTokenExpirationOnLoad();
-  }, [state.tokenExpiration, navigate]);
+  }, []);
 
   // Check token expiration at intervals
   useEffect(() => {
@@ -79,7 +79,7 @@ export function ContextProvider({ children }) {
         if (currentTime >= state.tokenExpiration) {
           toast.error("Token expired, please login again");
           dispatch({ type: USER_SIGNOUT });
-          navigate("/");
+          navigate("/login");
         }
       }
     };
