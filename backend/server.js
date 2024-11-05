@@ -78,6 +78,7 @@ server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+
 // Ping server every 14 minutes to keep it awake
 const pingInterval = 14 * 60 * 1000; // 14 minutes in milliseconds
 setInterval(() => {
