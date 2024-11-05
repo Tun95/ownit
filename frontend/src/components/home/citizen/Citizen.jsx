@@ -1,4 +1,5 @@
 import "./styles.scss";
+
 function Citizen() {
   return (
     <div className="citizen" id="about">

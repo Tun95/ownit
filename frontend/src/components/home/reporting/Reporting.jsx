@@ -24,6 +24,9 @@ function Reporting() {
                 </p>
               </small>
             </div>
+          
+
+          
           </div>
           <div className="box">
             <div className="top f_flex">
