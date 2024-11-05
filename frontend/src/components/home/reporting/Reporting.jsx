@@ -19,9 +19,8 @@ function Reporting() {
             <div className="text">
               <small>
                 <p>
-                  You don&apos;t have to wait for the media or NGOs to come tell
-                  your story. With your smartphone, Edquity can help you
-                  spotlight the issue and draw public attention .
+                  We work with you and other stakeholders to ensure every child
+                  can access quality basic education. Here is how we do it.
                 </p>
               </small>
             </div>
