@@ -15,7 +15,7 @@ sendEmailRouter.post(
 
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
-    const tiktok = process.env.TIKTOK_PROFILE_LINK;
+    const twitter = process.env.TWITTER_PROFILE_LINK;
 
     try {
       // Retrieve all email addresses from the database
@@ -114,22 +114,22 @@ sendEmailRouter.post(
                 <a href=${facebook} class="social-icon">
                   <img
                     class="icons"
-                    src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1693399098/facebook_e2bdv6.png"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788740/facebook_e2bdv6_xjbjcj.png"
                     alt="Facebook"
                   />
                 </a>
                 <a href=${instagram} class="social-icon">
                   <img
                     class="icons instagram"
-                    src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681997/instagram_iznt7t.png"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/insta_xnz8ru.png"
                     alt="Instagram"
                   />
                 </a>
-                <a href=${tiktok} class="social-icon">
+                <a href=${twitter} class="social-icon">
                   <img
                     class="icons tik"
-                    src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681756/tiktok_y8dkwy.png"
-                    alt="Tiktok"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/twit_gbrknm.png"
+                    alt="Twitter"
                   />
                 </a>
               </div>

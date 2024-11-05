@@ -263,7 +263,7 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
-    const tiktok = process.env.TIKTOK_PROFILE_LINK;
+    const twitter = process.env.TWITTER_PROFILE_LINK;
 
     const { firstName, lastName, email, password, role } = req.body;
 
@@ -303,15 +303,32 @@ userRouter.post(
           }
           .footer_info { color: #666; margin: 10px 0; }
           .footer { margin-top: 20px; }
-          .social-icons {
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-          }
-          .social-icon { margin: 0 5px; font-size: 24px; color: #333; }
-          .icons { width: 25px; height: 25px; }
-          .instagram { margin-top: 2px; width: 22px; height: 22px; }
-          .tik { width: 27px; height: 27px; }
+            .social-icons {
+                  margin-top: 10px;
+                  display: flex;
+                  align-items: center;
+                }
+           .social-icon {
+                  margin: 0 5px;
+                  font-size: 24px;
+                  color: #333;
+                  display: flex;
+                  gap: 10px;
+                }
+                .icons{
+                  width:23px;
+                  height: 23px;
+                }
+                .instagram{
+                  margin-top:2px;
+                  width:20px;
+                  height: 20px;
+                  padding:0px 6px;
+                  }
+                .tik{
+                  width: 23px;
+                  height: 23px;
+                  }
         </style>
       </head>
       <body>
@@ -328,17 +345,29 @@ userRouter.post(
         <div class="footer">
           <p class="footer_info">For more information, visit our website:</p>
           <p class="footer_info url_link"><a href="${process.env.SUB_DOMAIN}">${process.env.SUB_DOMAIN}</a></p>
-          <div class="social-icons">
-            <a href="${facebook}" class="social-icon">
-              <img class="icons" src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1693399098/facebook_e2bdv6.png" alt="Facebook" />
-            </a>
-            <a href="${instagram}" class="social-icon">
-              <img class="icons instagram" src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681997/instagram_iznt7t.png" alt="Instagram" />
-            </a>
-            <a href="${tiktok}" class="social-icon">
-              <img class="icons tik" src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681756/tiktok_y8dkwy.png" alt="Tiktok" />
-            </a>
-          </div>
+           <div class="social-icons d_flex">
+                <a href=${facebook} class="social-icon">
+                  <img
+                    class="icons"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788740/facebook_e2bdv6_xjbjcj.png"
+                    alt="Facebook"
+                  />
+                </a>
+                <a href=${instagram} class="social-icon">
+                  <img
+                    class="icons instagram"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/insta_xnz8ru.png"
+                    alt="Instagram"
+                  />
+                </a>
+                <a href=${twitter} class="social-icon">
+                  <img
+                    class="icons tik"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/twit_gbrknm.png"
+                    alt="Twitter"
+                  />
+                </a>
+              </div>
         </div>
       </body>
       </html>
@@ -382,6 +411,7 @@ userRouter.post(
 userRouter.post(
   "/otp-verification",
   expressAsyncHandler(async (req, res) => {
+    const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
     const twitter = process.env.TWITTER_PROFILE_LINK;
     const webName = process.env.WEB_NAME;
@@ -421,15 +451,32 @@ userRouter.post(
             }
             .footer_info { color: #666; margin: 10px 0; }
             .footer { margin-top: 20px; }
-            .social-icons {
-              margin-top: 10px;
-              display: flex;
-              align-items: center;
-            }
-            .social-icon { margin: 0 5px; font-size: 24px; color: #333; }
-            .icons { width:25px; height: 25px; }
-            .instagram { margin-top:2px; width:22px; height: 22px; }
-            .tik { width: 27px; height: 27px; }
+              .social-icons {
+                  margin-top: 10px;
+                  display: flex;
+                  align-items: center;
+                }
+            .social-icon {
+                  margin: 0 5px;
+                  font-size: 24px;
+                  color: #333;
+                  display: flex;
+                  gap: 10px;
+                }
+                .icons{
+                  width:23px;
+                  height: 23px;
+                }
+                .instagram{
+                  margin-top:2px;
+                  width:20px;
+                  height: 20px;
+                  padding:0px 6px;
+                  }
+                .tik{
+                  width: 23px;
+                  height: 23px;
+                  }
           </style>
         </head>
         <body>
@@ -445,14 +492,29 @@ userRouter.post(
           <div class="footer">
             <p class="footer_info">For more information, visit our website:</p>
             <p class="footer_info url_link"><a href="${process.env.SUB_DOMAIN}">${process.env.SUB_DOMAIN}</a></p>
-            <div class="social-icons">
-              <a href="${instagram}" class="social-icon">
-                <img class="icons instagram" src="https://res.cloudinary.com/dg8xwnidx/image/upload/v1727319068/insta_uybvdz.png" alt="Instagram" />
-              </a>
-              <a href="${twitter}" class="social-icon">
-                <img class="icons tik" src="https://res.cloudinary.com/dg8xwnidx/image/upload/v1727319068/x_zd4uas.png" alt="Twitter" />
-              </a>
-            </div>
+             <div class="social-icons d_flex">
+                <a href=${facebook} class="social-icon">
+                  <img
+                    class="icons"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788740/facebook_e2bdv6_xjbjcj.png"
+                    alt="Facebook"
+                  />
+                </a>
+                <a href=${instagram} class="social-icon">
+                  <img
+                    class="icons instagram"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/insta_xnz8ru.png"
+                    alt="Instagram"
+                  />
+                </a>
+                <a href=${twitter} class="social-icon">
+                  <img
+                    class="icons tik"
+                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/twit_gbrknm.png"
+                    alt="Twitter"
+                  />
+                </a>
+              </div>
           </div>
         </body>
         </html>

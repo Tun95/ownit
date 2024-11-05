@@ -13,7 +13,7 @@ function Footer() {
           <div className="right">
             <div className="icons a_flex">
               <a
-                href="https://facebook.com"
+                href="https://facebook.com/bridgeconnectng"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="l_flex"
@@ -21,7 +21,7 @@ function Footer() {
                 <FacebookOutlinedIcon className="icon" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/bridgeconnectng"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="l_flex"
