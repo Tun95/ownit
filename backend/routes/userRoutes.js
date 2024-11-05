@@ -373,6 +373,7 @@ userRouter.post(
       </html>
     `;
 
+    
     // Configure Nodemailer transport
     const smtpTransport = nodemailer.createTransport({
       service: process.env.MAIL_SERVICE,
