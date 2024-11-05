@@ -11,6 +11,7 @@ import userRouter from "./routes/userRoutes.js";
 import reportRouter from "./routes/reportRoutes.js";
 import generalRouter from "./routes/generalRoutes.js";
 import helmet from "helmet";
+import fetch from "node-fetch"; // Import fetch for making HTTP requests
 
 dotenv.config();
 
@@ -48,6 +49,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.status(200).send("Server is alive");
+});
+
 app.use("/api/upload", uploadRouter);
 app.use("/api/message", sendEmailRouter);
 app.use("/api/users", userRouter);
@@ -72,3 +77,17 @@ server.setTimeout(1000000); // 10 minutes
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// Ping server every 14 minutes to keep it awake
+const pingInterval = 14 * 60 * 1000; // 14 minutes in milliseconds
+setInterval(() => {
+  fetch(process.env.BACKEND_BASE_URL)
+    .then((res) => {
+      if (res.ok) {
+        console.log("Ping successful");
+      } else {
+        console.log("Ping failed");
+      }
+    })
+    .catch((error) => console.log("Ping error:", error));
+}, pingInterval);
