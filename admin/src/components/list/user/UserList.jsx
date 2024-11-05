@@ -179,7 +179,7 @@ function UserListComponent() {
         dispatch({ type: "FETCH_SUCCESS", payload: data });
         window.scrollTo(0, 0);
       } catch (error) {
-        dispatch({ type: "FETCH_FAIL", payload: error });
+        dispatch({ type: "FETCH_FAIL", payload: getError(error) });
       }
     };
     if (successUnBlock || successBlock || successDelete) {
