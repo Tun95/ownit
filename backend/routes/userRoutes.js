@@ -263,7 +263,7 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
-    const twitter = process.env.TWITTER_PROFILE_LINK;
+    const webName = process.env.WEB_NAME;
 
     const { firstName, lastName, email, password, role } = req.body;
 
@@ -284,96 +284,180 @@ userRouter.post(
     const otp = await newUser.createAccountVerificationOtp();
     const createdUser = await newUser.save();
 
-    // Prepare the email content
-    const emailMessage = `
-      <html>
-      <head>
+    const emailMessage = `<html >
+       <head>
         <style>
-          body { font-family: Arial, sans-serif; }
-          h1 { color: #007BFF; }
-          p { margin-bottom: 16px; }
-          a { text-decoration: none; }
-          .anchor {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #FFFFFF !important;
-            text-decoration: none;
-            border-radius: 4px;
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
-          .footer_info { color: #666; margin: 10px 0; }
-          .footer { margin-top: 20px; }
-            .social-icons {
-                  margin-top: 10px;
-                  display: flex;
-                  align-items: center;
-                }
-           .social-icon {
-                  margin: 0 5px;
-                  font-size: 24px;
-                  color: #333;
-                  display: flex;
-                  gap: 10px;
-                }
-                .icons{
-                  width:23px;
-                  height: 23px;
-                }
-                .instagram{
-                  margin-top:2px;
-                  width:20px;
-                  height: 20px;
-                  padding:0px 6px;
-                  }
-                .tik{
-                  width: 23px;
-                  height: 23px;
-                  }
+          .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+          }
+          a { text-decoration: none; }
+         
+          .a_flex {
+            display: flex;
+            align-items: center;
+          }
+       
+          .header {
+            background-color: #00463e;
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+         
+          .logo_img {
+            width: 100px;
+          }
+          .head {
+            flex-direction: column;
+          }
+         .email{
+            width:200px
+          }
+          .message_text {
+            padding: 0px 10px;
+          }
+          .message_text p {
+            color: #434343;
+            font-size: 15px;
+          }
+          .message_text .otp_box {
+            margin: -18px 0px;
+          }
+          .otp_box h2 {
+            background-color: #e7e7e7;
+            color: #3462fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            letter-spacing: 3px;
+            width: fit-content;
+          }
+          .out_greeting h5 {
+            line-height: 2px;
+            font-size: 15px;
+            color: #222222;
+          }
+          .footer {
+            border-top: 1px solid #a5a5a5;
+          }
+          .footer img {
+            width: 30px;
+          }
+          .footer p{
+            font-size: 16px;
+          }
         </style>
       </head>
       <body>
-        <h1>Email Verification</h1>
-        <p>Hello ${newUser.firstName},</p>
-        <p>You have received this email because you have been requested to verify your account.</p>
-        <p>Your verification code is: <strong>${otp}</strong></p>
-        <p>Your password is: <strong>${password}</strong></p>
-        <p>If you did not request this verification, you can safely ignore this email.</p>
-        <p>This verification code is valid for the next 10 minutes.</p>
-        <p>Thank you,</p>
-        <p>${process.env.WEB_NAME} Team</p>
-        <hr/>
-        <div class="footer">
-          <p class="footer_info">For more information, visit our website:</p>
-          <p class="footer_info url_link"><a href="${process.env.SUB_DOMAIN}">${process.env.SUB_DOMAIN}</a></p>
-           <div class="social-icons d_flex">
-                <a href=${facebook} class="social-icon">
-                  <img
-                    class="icons"
-                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788740/facebook_e2bdv6_xjbjcj.png"
-                    alt="Facebook"
-                  />
-                </a>
-                <a href=${instagram} class="social-icon">
-                  <img
-                    class="icons instagram"
-                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/insta_xnz8ru.png"
-                    alt="Instagram"
-                  />
-                </a>
-                <a href=${twitter} class="social-icon">
-                  <img
-                    class="icons tik"
-                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/twit_gbrknm.png"
-                    alt="Twitter"
-                  />
-                </a>
+        <div class="container">
+          <div class="header">
+            <table role="presentation" width="100%">
+            <tr>
+              <td align="center">
+                <img
+                  src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730887212/logo_oodxma.png"
+                  alt="logo"
+                  width="100"
+                  style="display: block;"
+                />
+              </td>
+            </tr>
+          </table>
+          </div>
+          <div class="body_text">
+            <div class="head ">
+             <table role="presentation" width="100%">
+              <tr>
+              <td align="center">
+                <img
+                  src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/ed1_xpf1zq.png"
+                  alt="email"
+                  class="email"
+                />
+               </td>
+              
+              </tr>
+              <tr>
+                <td align="center">
+                 <div class="head_text">
+                 <h2>Account Verification</h2>
+                 </div>
+                </td> 
+               </tr>
+             </table>
+            </div>
+            <div class="message_text">
+              <div class="greetings">
+                <h3>Hi ${newUser.firstName},</h3>
               </div>
+              <div class="text">
+                <p>
+                  You have received this email because you have been requested to
+                  verify your account.
+                </p>
+                <table role="presentation" width="100%" style="padding: -10px 0px; margin: -15px 0px;">
+                 <tr>
+                  <td align="center"  style="padding: -10px 0px; margin: -15px 0px;">
+                   <div class="otp_box">
+                    <h2>${otp}</h2>
+                   </div>
+                  </td>
+                  </tr>
+                 </table>
+               <p>Your password is: <strong>${password}</strong></p>
+                <p>
+                  If you did not request this verification, you can safely ignore
+                  this email.
+                </p>
+                <p>This verification code is valid for the next 10 minutes.</p>
+              </div>
+              <div class="out_greeting">
+                <h5>Regards,</h5>
+                <h5 class="closing">The ${webName} Team.</h5>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <table role="presentation" width="100%">
+              <tr>
+                <td align="left" style="padding: 10px;">
+                  <p style="margin: 0;">Edquity by Outside Lab</p>
+                </td>
+                <td align="right" style="padding: 10px;">
+                  <a href="${facebook}" style="margin-right: 10px;">
+                    <img
+                      src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886760/face_z4zb3n.png"
+                      alt="Facebook"
+                      width="30"
+                      style="display: inline-block; vertical-align: middle;"
+                    />
+                  </a>
+                  <a href="${instagram}">
+                    <img
+                      src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/insta_olwhmd.png"
+                      alt="Instagram"
+                      width="30"
+                      style="display: inline-block; vertical-align: middle;"
+                    />
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </div>
+
         </div>
       </body>
-      </html>
-    `;
+    </html>`;
 
-    
     // Configure Nodemailer transport
     const smtpTransport = nodemailer.createTransport({
       service: process.env.MAIL_SERVICE,
@@ -414,7 +498,6 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
-    const twitter = process.env.TWITTER_PROFILE_LINK;
     const webName = process.env.WEB_NAME;
 
     try {
@@ -433,93 +516,178 @@ userRouter.post(
       const verificationOtp = await user.createAccountVerificationOtp();
       await user.save();
 
-      // HTML message
-      const emailMessage = `
-        <html>
-        <head>
-          <style>
-            body { font-family: Arial, sans-serif; }
-            h1 { color: #007BFF; }
-            p { margin-bottom: 16px; }
-            a { text-decoration: none; }
-            .anchor {
-              display: inline-block;
-              padding: 10px 20px;
-              background-color: #007BFF;
-              color: #FFFFFF !important;
-              text-decoration: none;
-              border-radius: 4px;
-            }
-            .footer_info { color: #666; margin: 10px 0; }
-            .footer { margin-top: 20px; }
-              .social-icons {
-                  margin-top: 10px;
-                  display: flex;
-                  align-items: center;
-                }
-            .social-icon {
-                  margin: 0 5px;
-                  font-size: 24px;
-                  color: #333;
-                  display: flex;
-                  gap: 10px;
-                }
-                .icons{
-                  width:23px;
-                  height: 23px;
-                }
-                .instagram{
-                  margin-top:2px;
-                  width:20px;
-                  height: 20px;
-                  padding:0px 6px;
+      const emailMessage = `<html >
+              <head>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
                   }
-                .tik{
-                  width: 23px;
-                  height: 23px;
+                  .container {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: auto;
                   }
-          </style>
-        </head>
-        <body>
-          <h1>Email Verification</h1>
-          <p>Hello ${user.firstName},</p>
-          <p>You have received this email because you have been requested to verify your account.</p>
-          <p>Your verification code is: <strong>${verificationOtp}</strong></p>
-          <p>If you did not request this verification, you can safely ignore this email.</p>
-          <p>This verification code is valid for the next 10 minutes.</p>
-          <p>Thank you,</p>
-          <p>${webName} Team</p>
-          <hr/>
-          <div class="footer">
-            <p class="footer_info">For more information, visit our website:</p>
-            <p class="footer_info url_link"><a href="${process.env.SUB_DOMAIN}">${process.env.SUB_DOMAIN}</a></p>
-             <div class="social-icons d_flex">
-                <a href=${facebook} class="social-icon">
-                  <img
-                    class="icons"
-                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788740/facebook_e2bdv6_xjbjcj.png"
-                    alt="Facebook"
-                  />
-                </a>
-                <a href=${instagram} class="social-icon">
-                  <img
-                    class="icons instagram"
-                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/insta_xnz8ru.png"
-                    alt="Instagram"
-                  />
-                </a>
-                <a href=${twitter} class="social-icon">
-                  <img
-                    class="icons tik"
-                    src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730788019/twit_gbrknm.png"
-                    alt="Twitter"
-                  />
-                </a>
-              </div>
-          </div>
-        </body>
-        </html>
-      `;
+                  a { text-decoration: none; }
+                 
+                  .a_flex {
+                    display: flex;
+                    align-items: center;
+                  }
+               
+                  .header {
+                    background-color: #00463e;
+                    height: 50px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                 
+                  .logo_img {
+                    width: 100px;
+                  }
+                  .head {
+                    flex-direction: column;
+                  }
+                 .email{
+                    width:200px
+                  }
+                  .message_text {
+                    padding: 0px 10px;
+                  }
+                  .message_text p {
+                    color: #434343;
+                    font-size: 15px;
+                  }
+                  .message_text .otp_box {
+                    margin: -18px 0px;
+                  }
+                  .otp_box h2 {
+                    background-color: #e7e7e7;
+                    color: #3462fa;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    letter-spacing: 3px;
+                    width: fit-content;
+                  }
+                  .out_greeting h5 {
+                    line-height: 2px;
+                    font-size: 15px;
+                    color: #222222;
+                  }
+                  .footer {
+                    border-top: 1px solid #a5a5a5;
+                  }
+                  .footer img {
+                    width: 30px;
+                  }
+                  .footer p{
+                    font-size: 16px;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <table role="presentation" width="100%">
+                    <tr>
+                      <td align="center">
+                        <img
+                          src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730887212/logo_oodxma.png"
+                          alt="logo"
+                          width="100"
+                          style="display: block;"
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                  </div>
+                  <div class="body_text">
+                    <div class="head ">
+                     <table role="presentation" width="100%">
+                      <tr>
+                      <td align="center">
+                        <img
+                          src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/ed1_xpf1zq.png"
+                          alt="email"
+                          class="email"
+                        />
+                       </td>
+                      
+                      </tr>
+                      <tr>
+                        <td align="center">
+                         <div class="head_text">
+                         <h2>Email Verification</h2>
+                         </div>
+                        </td> 
+                       </tr>
+                     </table>
+                    </div>
+                    <div class="message_text">
+                      <div class="greetings">
+                        <h3>Hi ${user.firstName},</h3>
+                      </div>
+                      <div class="text">
+                        <p>
+                          You have received this email because you have been requested to
+                          verify your account.
+                        </p>
+                        <table role="presentation" width="100%" style="padding: -10px 0px; margin: -15px 0px;">
+                         <tr>
+                          <td align="center"  style="padding: -10px 0px; margin: -15px 0px;">
+                           <div class="otp_box">
+                            <h2>${verificationOtp}</h2>
+                           </div>
+                          </td>
+                          </tr>
+                         </table>
+                        <p>
+                          If you did not request this verification, you can safely ignore
+                          this email.
+                        </p>
+                        <p>This verification code is valid for the next 10 minutes.</p>
+                      </div>
+                      <div class="out_greeting">
+                        <h5>Regards,</h5>
+                        <h5 class="closing">The ${webName} Team.</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="footer">
+                    <table role="presentation" width="100%">
+                      <tr>
+                        <td align="left" style="padding: 10px;">
+                          <p style="margin: 0;">Edquity by Outside Lab</p>
+                        </td>
+                        <td align="right" style="padding: 10px;">
+                          <a href="${facebook}" style="margin-right: 10px;">
+                            <img
+                              src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886760/face_z4zb3n.png"
+                              alt="Facebook"
+                              width="30"
+                              style="display: inline-block; vertical-align: middle;"
+                            />
+                          </a>
+                          <a href="${instagram}">
+                            <img
+                              src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/insta_olwhmd.png"
+                              alt="Instagram"
+                              width="30"
+                              style="display: inline-block; vertical-align: middle;"
+                            />
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                </div>
+              </body>
+            </html>`;
 
       // Configure Nodemailer transport
       const smtpTransport = nodemailer.createTransport({
@@ -801,6 +969,7 @@ userRouter.post(
     const facebook = process.env.FACEBOOK_PROFILE_LINK;
     const instagram = process.env.INSTAGRAM_PROFILE_LINK;
     const tiktok = process.env.TIKTOK_PROFILE_LINK;
+    const webName = process.env.WEB_NAME;
 
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -810,92 +979,175 @@ userRouter.post(
       await user.save();
 
       // HTML message
-      const resetURL = `
-      <html>
-          <head>
-            <style>
-                .footer_info {
-                  color: #666;
-                  margin: 10px 0;
-                }
-                 
-               .footer {
-                  margin-top: 20px;
+      const resetURL = `<html >
+                <head>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                  }
+                  .container {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: auto;
+                  }
+                  a { text-decoration: none; }
                   
-                }
-                .social-icons {
-                  margin-top: 10px;
-                  display: flex;
-                  align-items: center;
-                }
-                .social-icon {
-                  margin: 0 5px;
-                  font-size: 24px;
-                  color: #333;
-                  text-decoration: none;
-                }
-                .icons{
-                  width:25px;
-                  height: 25px;
-                }
-                 .instagram{
-                  margin-top:2px;
-                  width:22px;
-                  height: 22px;
+                  .a_flex {
+                    display: flex;
+                    align-items: center;
                   }
-                .tik{
-                  width: 27px;
-                  height: 27px;
+                
+                  .header {
+                    background-color: #00463e;
+                    height: 50px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                   }
-            </style>
-          </head>
-        <body>
-        <p>Hello ${user.firstName},</p>
-          <p>We received a request to reset your password for your account at ${
-            process.env.WEB_NAME
-          }. If you did not request this, please ignore this email.</p>
-          <p>To reset your password, click the button below:</p>
-          <a href=${`${process.env.SUB_DOMAIN}/${user.id}/new-password/${token}`} style="display: inline-block; margin: 10px 0; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Reset Password</a>
-          <p style="color: #777; font-size: 14px;">Please note that this link will expire in 10 minutes for security reasons.</p>
-          <p>If the button above doesn't work, you can also copy and paste the following URL into your web browser:</p>
-          <p>${`${process.env.SUB_DOMAIN}/${user.id}/new-password/${token}`}</p>
-          <p>If you have any questions or need further assistance, please contact our support team at ${
-            process.env.EMAIL_ADDRESS
-          }.</p>
-          <p>Best regards,<br/>${process.env.WEB_NAME} Team</p>
-          <hr/>
-          <div class="footer">
-            <p class="footer_info">For more information, visit our website:</p>
-            <p class="footer_info url_link"><a href="${
-              process.env.SUB_DOMAIN
-            }">${process.env.SUB_DOMAIN}</a></p>
-            <div class="social-icons">
-            <a href=${facebook} class="social-icon">
-              <img
-                class="icons"
-                src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1693399098/facebook_e2bdv6.png"
-                alt="Facebook"
-              />
-            </a>
-            <a href=${instagram} class="social-icon">
-              <img
-                class="icons instagram"
-                src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681997/instagram_iznt7t.png"
-                alt="Instagram"
-              />
-            </a>
-            <a href=${tiktok} class="social-icon">
-              <img
-                class="icons tik"
-                src="https://res.cloudinary.com/dstj5eqcd/image/upload/v1715681756/tiktok_y8dkwy.png"
-                alt="Tiktok"
-              />
-            </a>
-          </div>
-          </div>
-        </body>
-     </html>     
-      `;
+                  
+                  .logo_img {
+                    width: 100px;
+                  }
+                  .head {
+                    flex-direction: column;
+                    margin-top: 20px;
+                  }
+                  .email{
+                    width:200px
+                  }
+                  .message_text {
+                    padding: 0px 10px;
+                  }
+                  .message_text p {
+                    color: #434343;
+                    font-size: 15px;
+                  }
+                  .message_text .otp_box {
+                    margin: -18px 0px;
+                  }
+                  .otp_box h2 {
+                    background-color: #e7e7e7;
+                    color: #3462fa;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    letter-spacing: 3px;
+                    width: fit-content;
+                  }
+                  .out_greeting h5 {
+                    line-height: 2px;
+                    font-size: 15px;
+                    color: #222222;
+                  }
+                  .footer {
+                    border-top: 1px solid #a5a5a5;
+                  }
+                  .footer img {
+                    width: 30px;
+                  }
+                  .footer p{
+                    font-size: 16px;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <table role="presentation" width="100%">
+                    <tr>
+                      <td align="center">
+                        <img
+                          src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730887212/logo_oodxma.png"
+                          alt="logo"
+                          width="100"
+                          style="display: block;"
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                  </div>
+                  <div class="body_text">
+                    <div class="head ">
+                      <table role="presentation" width="100%">
+                      <tr>
+                      <td align="center">
+                        <img
+                          src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/ed2_rwigks.png"
+                          alt="email"
+                          class="email"
+                        />
+                        </td>
+                      
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <div class="head_text">
+                          <h2>Reset Your Password</h2>
+                          </div>
+                        </td> 
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="message_text">
+                      <div class="greetings">
+                        <h3>Hi ${user.firstName},</h3>
+                      </div>
+                      <div class="text">
+                        <p>
+                          You recently requested to reset your password. If you did not make this request, Kindly ignore this email.
+                        </p>
+                      
+                        <p>
+                         To reset your password, please click the button below.
+                        </p>
+                        <table role="presentation" width="100%" style="padding: -10px 0px; margin: -15px 0px;">
+                         <tr>
+                          <td align="center"  style="padding: -10px 0px; margin: -15px 0px;">
+                           <a href=${`${process.env.SUB_DOMAIN}/${user.id}/new-password/${token}`} style="display: inline-block; margin: 8px 0; padding: 8px 30px; background-color: #00eacd; color: #000B09; text-decoration: none; border-radius: 4px;">Reset Password</a>
+                         </td>
+                        </tr>
+                       </table>
+                        </div>
+                      <div class="out_greeting">
+                        <h5>Regards,</h5>
+                        <h5 class="closing">The ${webName} Team.</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="footer">
+                    <table role="presentation" width="100%">
+                      <tr>
+                        <td align="left" style="padding: 10px;">
+                          <p style="margin: 0;">Edquity by Outside Lab</p>
+                        </td>
+                        <td align="right" style="padding: 10px;">
+                          <a href="${facebook}" style="margin-right: 10px;">
+                            <img
+                              src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886760/face_z4zb3n.png"
+                              alt="Facebook"
+                              width="30"
+                              style="display: inline-block; vertical-align: middle;"
+                            />
+                          </a>
+                          <a href="${instagram}">
+                            <img
+                              src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/insta_olwhmd.png"
+                              alt="Instagram"
+                              width="30"
+                              style="display: inline-block; vertical-align: middle;"
+                            />
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                </div>
+              </body>
+            </html>`;
 
       const smtpTransport = nodemailer.createTransport({
         service: process.env.MAIL_SERVICE,
