@@ -10,6 +10,7 @@ sendEmailRouter.post(
   "/send",
   // isAuth,
   // isAdmin,
+  
   expressAsyncHandler(async (req, res) => {
     const { subject, message } = req.body;
 
