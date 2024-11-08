@@ -115,7 +115,7 @@ function OtpVerificationComponent() {
       );
 
       const { data } = await axios.put(
-        `${request}/api/users/verify-otp`,
+        `${request}/api/users/verify-user-otp`,
         { otp: values.otp },
         { headers: { Authorization: `Bearer ${temporaryUserInfo.token}` } }
       );
