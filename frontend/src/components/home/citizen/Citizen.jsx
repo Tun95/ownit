@@ -13,14 +13,11 @@ function Citizen() {
               </h1>
             </div>
             <div className="text">
-              <small>
-                <p>
-                  Why wait! When you can take ownership with Edquity.
-                  Subheadline: You don&apos;t have to wait for the media or NGOs to
-                  come tell your story. With your smartphone, Edquity can help
-                  you spotlight the issue and draw public attention
-                </p>
-              </small>
+              <p>
+                You don&apos;t have to wait for the media or NGOs to come tell
+                your story. With your smartphone, Edquity can help you spotlight
+                the issue and draw public attention
+              </p>
             </div>
           </div>
         </div>

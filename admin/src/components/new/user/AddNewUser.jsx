@@ -95,7 +95,7 @@ function AddNewUser() {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         type="firstName"
-                        placeholder="tunji"
+                        placeholder="first name"
                       />
                     </div>
                     <div className="formInput">
@@ -104,7 +104,7 @@ function AddNewUser() {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         type="lastName"
-                        placeholder="akande"
+                        placeholder="last name"
                       />
                     </div>
                     <div className="formInput">
@@ -113,7 +113,7 @@ function AddNewUser() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="email"
-                        placeholder="tunji@gmail.com"
+                        placeholder="example@mail.com"
                       />
                     </div>
                     <div className="formInput">

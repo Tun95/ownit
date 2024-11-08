@@ -13,20 +13,15 @@ function Reporting() {
             <div className="head">
               <h1>
                 We don&apos;t just stop at{" "}
-                <span className="green"> REPORTING</span>
+                <span className="green reporting_sh"> reporting</span>
               </h1>
             </div>
             <div className="text">
-              <small>
-                <p>
-                  We work with you and other stakeholders to ensure every child
-                  can access quality basic education. Here is how we do it.
-                </p>
-              </small>
+              <p>
+                We work with you and other stakeholders to ensure every child
+                can access quality basic education. Here is how we do it.
+              </p>
             </div>
-          
-
-          
           </div>
           <div className="box">
             <div className="top f_flex">

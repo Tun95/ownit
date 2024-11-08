@@ -143,7 +143,7 @@ function LoginComponent() {
                             type="text"
                             id="email"
                             name="email"
-                            placeholder="daha@gmail.com"
+                            placeholder="example@mail.com"
                             className={`input_box ${
                               touched.email && errors.email
                                 ? "error-border"
@@ -196,7 +196,7 @@ function LoginComponent() {
                             <Checkbox>Remember me</Checkbox>
                           </div>
                           <div className="forgot_pass">
-                            <Link to={"/lost-password"}>Forgot PassWord?</Link>
+                            <Link to={"/lost-password"}>Forgot Password?</Link>
                           </div>
                         </div>
                       </div>
@@ -254,7 +254,7 @@ function LoginComponent() {
                       onClick={() => navigate("/register")}
                       className="green onClick_span"
                     >
-                      SIGN UP
+                      Sign up
                     </span>
                   </small>
                 </div>

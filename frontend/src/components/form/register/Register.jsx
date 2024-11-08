@@ -24,7 +24,6 @@ const initialRegisterValues = {
   confirmPassword: "",
 };
 
-
 function RegisterComponent() {
   const navigate = useNavigate();
   const { state: appState, dispatch: ctxDispatch } = useAppContext();
@@ -233,7 +232,7 @@ function RegisterComponent() {
                             type="text"
                             id="email"
                             name="email"
-                            placeholder="daha@gmail.com"
+                            placeholder="example@mail.com"
                             className={`input_box ${
                               touched.email && errors.email
                                 ? "error-border"

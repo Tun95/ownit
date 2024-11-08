@@ -28,19 +28,16 @@ function Intro() {
             <div className="left">
               <div className="title">
                 <h1>
-                  Own the Change Make Public Schools Better with{" "}
+                  Own the Change-Make Public Schools Better with{" "}
                   <span className="green">Edquity</span>
                 </h1>
               </div>
               <div className="desc_text">
-                <small>
-                  <p>
-                    Spotted an issue in your local school? Whether it&apos;s
-                    broken infrastructure, overcrowded classrooms, e.t.c Edquity
-                    helps you report it so the right authorities can take
-                    action.
-                  </p>
-                </small>
+                <p>
+                  Spotted an issue in your local school? Whether it&apos;s
+                  broken infrastructure, overcrowded classrooms, e.t.c Edquity
+                  helps you report it so the right authorities can take action.
+                </p>
               </div>
               <div className="btn">
                 <button className="main_btn" onClick={reportHandler}>

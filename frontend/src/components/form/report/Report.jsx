@@ -379,7 +379,7 @@ function ReportComponent() {
                               </div>
                               <div className="title">
                                 <small>
-                                  <p>Anonymous</p>
+                                  <p>Private</p>
                                 </small>
                               </div>
                               <div className="prefered_text">
@@ -570,16 +570,15 @@ function ReportComponent() {
                         }`}
                       >
                         <span className="input_span">
-                          {" "}
                           <label htmlFor="description">
                             Provide the issues in detail:
                             <span className="red">*</span>
                           </label>
                           <Field
-                            type="text"
+                            as="textarea"
                             id="description"
                             name="description"
-                            placeholder="details here"
+                            placeholder="Your details here..."
                             className={`input_box ${
                               touched.description && errors.description
                                 ? "error-border"
@@ -593,23 +592,23 @@ function ReportComponent() {
                           className="error"
                         />
                       </div>
+
                       <div
                         className={`form_group ${
                           touched.comment && errors.comment ? "error" : ""
                         }`}
                       >
                         <span className="input_span">
-                          {" "}
                           <label htmlFor="comment">
                             Do you have any suggestion or comment about
                             improving the state of the school?:
                             <span className="red">*</span>
                           </label>
                           <Field
-                            type="text"
+                            as="textarea"
                             id="comment"
                             name="comment"
-                            placeholder="suggestions here"
+                            placeholder="Your suggestions here..."
                             className={`input_box ${
                               touched.comment && errors.comment
                                 ? "error-border"
@@ -623,6 +622,7 @@ function ReportComponent() {
                           className="error"
                         />
                       </div>
+
                       {/* Step 2 Next Button */}
                       <div className="form_group">
                         <div className="btn l_flex">

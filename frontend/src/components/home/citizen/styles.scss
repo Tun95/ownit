@@ -10,6 +10,12 @@
   width: 100%;
   .head {
     width: 500px;
+    .reporting_sh {
+      background-color: var(--color-green);
+      color: var(--color-white);
+      padding: 0px 20px;
+      border-radius: 4px;
+    }
   }
   /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
   @media screen and (max-width: 500px) {

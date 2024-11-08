@@ -46,7 +46,7 @@ export const reportSchema = yup.object().shape({
     .min(1, "At least one issue type is required") // Enforces at least one selection
     .required("At least one issue type is required"),
   description: yup.string().required("Description is required"), // Marked as required
-  comment: yup.string().required("Comment is required"), // Marked as required
+  comment: yup.string().required("Suggestions or comment is required"), // Marked as required
 
   // STEP 3
   images: yup

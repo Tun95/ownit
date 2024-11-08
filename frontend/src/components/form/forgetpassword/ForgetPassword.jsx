@@ -89,7 +89,7 @@ function ForgetPassword() {
                           type="text"
                           id="email"
                           name="email"
-                          placeholder="daha@gmail.com"
+                          placeholder="example@mail.com"
                           className={`input_box ${
                             touched.email && errors.email ? "error-border" : ""
                           }`}
