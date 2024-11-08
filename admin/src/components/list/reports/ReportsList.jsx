@@ -9,8 +9,11 @@ import { request } from "../../../base url/BaseUrl";
 import LoadingBox from "../../../utilities/message loading/LoadingBox";
 import MessageBox from "../../../utilities/message loading/MessageBox";
 import ReactTimeAgo from "react-time-ago";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 import SearchIcon from "@mui/icons-material/Search";
+import { saveAs } from "file-saver";
+
 // Format numbers with commas (e.g., 2,300,454)
 const formatNumberWithCommas = (num) => {
   const validNumber = isNaN(num) || num === null || num === undefined ? 0 : num;
@@ -121,6 +124,13 @@ const reducer = (state, action) => {
       return { ...state, loadingUpdate: false, error: action.payload };
     case "STATUS_UPDATE_RESET":
       return { ...state, successUpdate: false };
+
+    case "EXPORT_REQUEST":
+      return { ...state, loadingExport: true };
+    case "EXPORT_SUCCESS":
+      return { ...state, loadingExport: false };
+    case "EXPORT_FAIL":
+      return { ...state, loadingExport: false, error: action.payload };
     default:
       return state;
   }
@@ -151,6 +161,7 @@ const ReportsListComponent = () => {
       successDelete,
       loadingUpdate,
       successUpdate,
+      loadingExport,
     },
     dispatch,
   ] = useReducer(reducer, {
@@ -160,6 +171,7 @@ const ReportsListComponent = () => {
     countReports: 0,
     loadingUpdate: false,
     successUpdate: false,
+    loadingExport: false,
   });
 
   useEffect(() => {
@@ -275,7 +287,6 @@ const ReportsListComponent = () => {
     navigate(getFilterUrl(newFilters));
   };
 
-
   // UPDATE STATUS HANDLER
   const handleStatusUpdate = async () => {
     console.log("Selected Report IDs:", selectedReportId);
@@ -309,6 +320,63 @@ const ReportsListComponent = () => {
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: "STATUS_UPDATE_FAIL", payload: getError(err) });
+    }
+  };
+
+  // Export function to handle CSV download
+  const handleExportAll = async () => {
+    dispatch({ type: "EXPORT_REQUEST" });
+
+    try {
+      const { data } = await axios.get(`${request}/api/reports/export`, {
+        headers: { Authorization: `Bearer ${userInfo?.token}` },
+      });
+
+      if (data.reports && data.reports.length > 0) {
+        // Create CSV from report data
+        const csvContent = data.reports.map((report) => {
+          const images = report.images
+            ? report.images.join(" | ")
+            : "No images";
+          const video = report.video ? report.video : "No video";
+          const submittedBy = report.user
+            ? `${report.user.firstName} ${report.user.lastName}`
+            : "Anonymous";
+
+          // Wrap issue types in quotes to handle commas in the list
+          const issueType = `"${report.issueType.join(", ")}"`;
+
+          return [
+            report.schoolName,
+            report.schoolLocation,
+            issueType,
+            submittedBy,
+            new Date(report.createdAt).toLocaleDateString(),
+            report.status,
+            images,
+            video,
+          ].join(",");
+        });
+
+        // Add headers for the CSV file
+        csvContent.unshift(
+          "School Name,School Location,Issue Type,Submitted By,Date,Approval Status,Images,Video"
+        );
+        const csvBlob = new Blob([csvContent.join("\n")], { type: "text/csv" });
+
+        // Save CSV file
+        saveAs(csvBlob, "reports_export.csv");
+        dispatch({ type: "EXPORT_SUCCESS" });
+      } else {
+        toast.info("No data available to export.");
+        dispatch({
+          type: "EXPORT_FAIL",
+          payload: "No data available to export.",
+        });
+      }
+    } catch (error) {
+      dispatch({ type: "EXPORT_FAIL", payload: error.message });
+      toast.error(getError(error));
     }
   };
 
@@ -408,16 +476,14 @@ const ReportsListComponent = () => {
                     Clear All
                   </button>
                 </div>
-                <div></div>
-
                 {/* STATUS UPDATE SECTION */}
-                <div className="form_box">
+                <div className="form_box lower_form_box">
                   <div className="select_btn a_flex">
                     <div className="select_span">
                       <label htmlFor="updatestatus">Update Status:</label>
                       <select
                         name="updatestatus"
-                        className="select"
+                        className="select select_status_up"
                         value={selectedStatus}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                       >
@@ -441,6 +507,29 @@ const ReportsListComponent = () => {
                         )}
                       </button>
                     </div>
+                  </div>
+                </div>
+
+                {/* EXPORT BUTTON */}
+                <div className="export_button">
+                  <div className="clear_btn l_flex">
+                    <button
+                      className="main_btn a_flex"
+                      onClick={handleExportAll}
+                      disabled={loadingExport} // Disable the button while exporting
+                    >
+                      {loadingExport ? (
+                        <span className="a_flex">
+                          <i className="fa fa-spinner fa-spin"></i>
+                          Exporting...
+                        </span>
+                      ) : (
+                        <>
+                          <span>Export All</span>
+                          <FileDownloadOutlinedIcon className="icon" />
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>

@@ -74,7 +74,6 @@ reportRouter.put(
   })
 );
 
-
 //====================
 // Fetch all reports
 //====================
@@ -151,6 +150,36 @@ reportRouter.get(
     } catch (error) {
       console.error("Error fetching reports:", error);
       res.status(500).json({ message: "Internal Server Error" });
+    }
+  })
+);
+
+// Backend route for exporting all reports
+reportRouter.get(
+  "/export",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const { searchQuery, status, issueType, privacyPreference } = req.query;
+
+      // Define filters based on request query parameters
+      const filterConditions = {};
+      if (searchQuery && searchQuery !== "all")
+        filterConditions.schoolName = new RegExp(searchQuery, "i");
+      if (status && status !== "all") filterConditions.status = status;
+      if (issueType && issueType !== "all")
+        filterConditions.issueType = issueType;
+      if (privacyPreference && privacyPreference !== "all")
+        filterConditions.privacyPreference = privacyPreference;
+
+      const reports = await Report.find(filterConditions)
+        .select("-slug")
+        .populate("user");
+
+      res.json({ reports });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch data for export" });
     }
   })
 );

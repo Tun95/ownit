@@ -159,6 +159,25 @@
       height: 35px;
     }
   }
+  .export_button {
+    position: relative;
+    top: 19px;
+    margin-bottom: 10px;
+    .main_btn {
+      height: auto;
+      color: var(--color-gray);
+      background: transparent;
+      border: 1px solid var(--color-gray);
+      padding: 5px 12px;
+      gap: 5px;
+      .icon {
+        font-size: 18px;
+      }
+    }
+  }
+  // .lower_form_box {
+  //   border-top: 1px solid var(--color-gray);
+  // }
   .select_btn {
     align-items: last baseline;
     gap: 20px;
@@ -167,9 +186,11 @@
       .select {
         width: 100%;
       }
+      .select_status_up {
+        padding: 7px 10px;
+      }
     }
     .main_btn {
-      height: 39px;
       background-color: var(--color-blue);
     }
   }
