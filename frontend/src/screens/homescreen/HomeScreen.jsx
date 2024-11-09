@@ -6,6 +6,7 @@ import Intiative from "../../components/home/initiative/Intiative";
 import SubmitComponent from "../../components/home/submit/Submit";
 import Footer from "../../common/footer/Footer";
 import NavBar from "../../common/navbar/NavBar";
+import SliderComponent from "../../components/home/slider/Slider";
 
 function HomeScreen() {
   return (
@@ -19,6 +20,7 @@ function HomeScreen() {
         <Citizen />
         <Reporting />
         <Intiative />
+        <SliderComponent />
         <SubmitComponent />
         <Footer />
       </div>

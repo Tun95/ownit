@@ -75,13 +75,16 @@ reportRouter.put(
 );
 
 //====================
-// Fetch all reports
+// Fetch latest 10 reports
 //====================
 reportRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
     try {
-      const reports = await Report.find();
+      const reports = await Report.find()
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .populate("user");
       res.json(reports);
     } catch (error) {
       res.status(500).json({ message: error.message });

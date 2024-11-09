@@ -1,0 +1,123 @@
+.slider {
+  margin-bottom: 50px;
+  .header {
+    .head {
+      width: 100%;
+    }
+  }
+  .container {
+    .content {
+      height: 100%;
+      .card_box {
+        margin-top: 30px;
+        height: 100%;
+        gap: 5px;
+        .left {
+          background-color: var(--color-green);
+          color: var(--color-white);
+          min-width: 280px;
+
+          padding: 20px;
+          border-radius: 16px;
+
+          max-width: 300px;
+          .text_btn {
+            height: 100%;
+            text-align: center;
+            flex-direction: column;
+            min-height: 280px;
+            .btn {
+              margin-top: 10px;
+              .main_btn {
+                padding: 7px 30px;
+                small {
+                  font-size: 15px;
+                }
+              }
+            }
+          }
+        }
+        .right {
+          height: 100%;
+          overflow: hidden;
+          .slider_cards {
+            height: 100%;
+            .slick_slider {
+              height: 100%;
+              .slider_card {
+                padding: 20px;
+                margin: 0px 10px;
+                margin-bottom: 10px;
+                height: 100%;
+                min-height: 320px;
+                box-shadow: 0px 4px 10px 2px #c2c2c21c;
+
+                background-color: #f9fdfa;
+                border-radius: 16px;
+                .image_name_desc_school {
+                  column-gap: 10px;
+                  .img {
+                    img {
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;
+                    }
+                  }
+                  .name_dec {
+                    // line-height: 15px;
+                    .name {
+                    }
+                    .desc_school {
+                      line-height: 15px;
+                      color: var(--color-gray);
+                      font-size: 13px;
+                    }
+                  }
+                }
+                .images {
+                  gap: 10px;
+                  flex-wrap: wrap;
+                  margin: 15px 0px;
+                  .img {
+                    width: 65px;
+                    height: 65px;
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                    }
+                  }
+                }
+                .descriptions {
+                  p {
+                    font-size: 15px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 650px) {
+          flex-direction: column;
+          gap: 20px;
+          .left {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.no_review {
+  width: 100%;
+  min-height: 150px;
+  background-color: var(--color-border);
+  border-radius: 8px;
+  p {
+    font-weight: 600;
+    color: var(--color-light-gray);
+  }
+}
