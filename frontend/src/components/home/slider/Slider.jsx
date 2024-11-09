@@ -138,8 +138,6 @@ function SliderComponent() {
     return () => window.removeEventListener("resize", handleResize);
   }, [reports.length]);
 
-  console.log(reports);
-
   const settings = {
     dots: false,
     infinite: false,
