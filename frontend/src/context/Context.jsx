@@ -107,6 +107,19 @@ export function ContextProvider({ children }) {
     setCurrentMenu(menu);
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleOpenModal = (item) => {
+    setSelectedItem(item); // Store the selected item
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedItem(null); // Reset selected item when closing the modal
+  };
+
   const value = {
     state,
     dispatch,
@@ -115,6 +128,10 @@ export function ContextProvider({ children }) {
     onClose,
     currentMenu,
     setMenu,
+    isModalOpen,
+    handleOpenModal,
+    handleCloseModal,
+    selectedItem,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

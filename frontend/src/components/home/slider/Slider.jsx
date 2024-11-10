@@ -8,6 +8,7 @@ import axios from "axios";
 import { request } from "../../../base url/BaseUrl";
 import LoadingBox from "../../../utilities/message loading/LoadingBox";
 import MessageBox from "../../../utilities/message loading/MessageBox";
+import { ReportDetailsModal } from "../../../common/modals/Modals";
 
 const List = [
   {
@@ -95,7 +96,7 @@ function SliderComponent() {
     reports: [],
   });
 
-  const { state: appState } = useAppContext();
+  const { state: appState, handleOpenModal } = useAppContext();
   const { userInfo } = appState;
 
   useEffect(() => {
@@ -148,60 +149,66 @@ function SliderComponent() {
     slidesToScroll: 1,
   };
   return (
-    <div className="slider">
-      <div className="container">
-        <div className="content">
-          <div className="header">
-            <div className="head">
-              <h1>Reports from other Champions</h1>
+    <>
+      <div className="slider">
+        <div className="container">
+          <div className="content">
+            <div className="header">
+              <div className="head">
+                <h1>Reports from other Champions</h1>
+              </div>
             </div>
-          </div>
-          <div className="card_box f_flex">
-            <div className="left ">
-              <div className="text_btn l_flex">
-                <div className="text">
-                  <h3>
-                    Join over 50+ Champions taking up the initiative to
-                    transform education
-                  </h3>
+            <div className="card_box f_flex">
+              <div className="left ">
+                <div className="text_btn l_flex">
+                  <div className="text">
+                    <h3>
+                      Join over 50+ Champions taking up the initiative to
+                      transform education
+                    </h3>
+                  </div>
+                  {!userInfo && (
+                    <div className="btn">
+                      <button
+                        className="main_btn"
+                        onClick={() => navigate("/register")}
+                      >
+                        <small>Register</small>
+                      </button>
+                    </div>
+                  )}
                 </div>
-                {!userInfo && (
-                  <div className="btn">
-                    <button
-                      className="main_btn"
-                      onClick={() => navigate("/register")}
-                    >
-                      <small>Register</small>
-                    </button>
+              </div>
+              <div className="right">
+                {List?.length === 0 && (
+                  <div className="no_review l_flex">
+                    <p>No Reports Found</p>
+                  </div>
+                )}
+                {loading ? (
+                  <LoadingBox></LoadingBox>
+                ) : error ? (
+                  <MessageBox variant="danger">{error}</MessageBox>
+                ) : (
+                  <div className="slider_cards">
+                    {" "}
+                    <Slider {...settings} className="slick_slider">
+                      {reports?.map((item, index) => (
+                        <span key={index} onClick={() => handleOpenModal(item)}>
+                          <SliderCard item={item} index={index} />
+                        </span>
+                      ))}
+                    </Slider>
                   </div>
                 )}
               </div>
             </div>
-            <div className="right">
-              {List?.length === 0 && (
-                <div className="no_review l_flex">
-                  <p>No Reports Found</p>
-                </div>
-              )}
-              {loading ? (
-                <LoadingBox></LoadingBox>
-              ) : error ? (
-                <MessageBox variant="danger">{error}</MessageBox>
-              ) : (
-                <div className="slider_cards">
-                  {" "}
-                  <Slider {...settings} className="slick_slider">
-                    {reports?.map((item, index) => (
-                      <SliderCard item={item} index={index} key={index} />
-                    ))}
-                  </Slider>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <ReportDetailsModal />
+    </>
   );
 }
 

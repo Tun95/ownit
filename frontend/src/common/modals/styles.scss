@@ -1,0 +1,109 @@
+.drawer_modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  background-color: var(--color-white);
+  overflow: hidden;
+  color: var(--color-primary-dark);
+  outline: none;
+  height: 100%;
+  border-radius: 20px;
+  z-index: 200;
+  .drawer_close_icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: var(--color-dark);
+    cursor: pointer;
+    .icon {
+      font-size: 23px;
+    }
+  }
+
+  /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+  @media screen and (max-width: 345px) {
+    border-radius: 0px;
+  }
+}
+.item_modal_drawer {
+  position: relative;
+  z-index: 200;
+  .items_menu_modal {
+    width: 600px;
+    height: auto;
+    position: relative;
+    .drawer_close_icon {
+      .span_icon {
+        width: 23px;
+        height: 23px;
+      }
+    }
+    .modal_content {
+      padding: 20px;
+      // overflow: hidden !important;
+      .image_name_desc_school {
+        gap: 20px;
+        .img {
+          img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+        }
+        .name_dec {
+          .desc_school {
+            line-height: 17px;
+            .school {
+              gap: 5px;
+              color: var(--color-gray);
+              font-size: 16px;
+              position: relative;
+              right: 3px;
+              .icon {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
+      .images {
+        gap: 10px;
+        width: 600px;
+        overflow: hidden;
+        overflow-x: scroll;
+        margin: 10px 0px;
+        margin-bottom: 15px;
+        padding-right: 150px;
+        .img {
+          img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+          }
+        }
+        /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+        @media screen and (max-width: 465px) {
+          padding-right: 300px;
+        }
+      }
+      .descriptions {
+        margin-top: 10px;
+      }
+      .suggestions {
+        margin-top: 10px;
+      }
+    }
+
+    /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+    @media screen and (max-width: 600px) {
+      width: 100%;
+    }
+    /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+    @media screen and (max-width: 345px) {
+      height: 100%;
+    }
+  }
+}
