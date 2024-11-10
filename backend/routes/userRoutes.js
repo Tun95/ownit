@@ -27,7 +27,7 @@ userRouter.post(
       });
 
       const payload = ticket.getPayload();
-      const { sub: googleId, email, name, picture } = payload; // Access the profile picture URL
+      const { sub: googleId, email, name, picture } = payload;
       const [firstName, lastName] = name.split(" ");
 
       // Check if the user exists by email
@@ -40,9 +40,9 @@ userRouter.post(
           lastName,
           email,
           googleId,
-          image: picture, // Save the profile picture URL
+          image: picture, 
           role: "user",
-          isAccountVerified: true, // Automatically verify Google accounts
+          isAccountVerified: true, 
         });
         await user.save();
       }
@@ -63,7 +63,7 @@ userRouter.post(
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        image: user.image, // Send back the profile image
+        image: user.image, 
         isAdmin: user.isAdmin,
         role: user.role,
         isBlocked: user.isBlocked,

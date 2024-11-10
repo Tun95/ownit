@@ -13,10 +13,18 @@ reportRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     try {
+      // Check if the user's account is verified
+      if (!req.user.isAccountVerified) {
+        return res.status(403).json({
+          message:
+            "Your account is not verified. Please verify your account to create a report.",
+        });
+      }
+
       const newReport = new Report({
         ...req.body,
         user: req.user._id,
-        privacyPreference: req.body.privacyPreference || "public", // Default to public if not provided
+        privacyPreference: req.body.privacyPreference || "public",
       });
 
       const report = await newReport.save();
