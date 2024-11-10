@@ -27,7 +27,7 @@ userRouter.post(
       });
 
       const payload = ticket.getPayload();
-      const { sub: googleId, email, name } = payload;
+      const { sub: googleId, email, name, picture } = payload; // Access the profile picture URL
       const [firstName, lastName] = name.split(" ");
 
       // Check if the user exists by email
@@ -40,6 +40,7 @@ userRouter.post(
           lastName,
           email,
           googleId,
+          image: picture, // Save the profile picture URL
           role: "user",
           isAccountVerified: true, // Automatically verify Google accounts
         });
@@ -62,6 +63,7 @@ userRouter.post(
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        image: user.image, // Send back the profile image
         isAdmin: user.isAdmin,
         role: user.role,
         isBlocked: user.isBlocked,
