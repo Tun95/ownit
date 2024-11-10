@@ -358,40 +358,31 @@ button:disabled {
 .control_btn .next,
 .control_btn .prev {
   position: absolute;
-  top: -47px;
-  width: 40px;
+  width: 23px;
   height: 40px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   transform: 0.5s;
+  border-radius: 3px;
   z-index: 5;
-  background: transparent;
   cursor: pointer;
-  color: var(--color-light-gray);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-green);
+  color: var(--color-white);
+}
+.control-btn button {
+  background-color: var(--color-green);
+  backdrop-filter: blur(5px);
 }
 .control_btn .prev {
-  right: 180px;
+  top: 43%;
+  left: 10px;
 }
 .control_btn .next {
-  right: 120px;
+  right: 10px;
+  bottom: 45%;
 }
 .control_btn .icon {
-  font-size: 30px;
-}
-.control_btn .next:hover,
-.control_btn .prev:hover {
-  color: var(--color-primary);
-}
-/*======= MEDIA QUERIES (SMALL DEVICES) =======*/
-@media screen and (max-width: 400px) {
-  .control_btn .prev {
-    right: 50px !important;
-  }
-  .control_btn .next {
-    right: 10px !important;
-  }
-  .control_btn .icon {
-    font-size: 20px;
-  }
+  font-size: 18px;
 }
 
 /*----- control btn -------*/

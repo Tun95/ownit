@@ -49,7 +49,7 @@ function SliderCard({ item, index }) {
             ))}
           </div>
           <div className="descriptions">
-            <TruncateMarkup lines={5}>
+            <TruncateMarkup lines={3}>
               <p>{item.description}</p>
             </TruncateMarkup>
           </div>
