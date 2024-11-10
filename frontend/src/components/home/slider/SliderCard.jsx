@@ -42,7 +42,7 @@ function SliderCard({ item, index }) {
             </div>
           </div>
           <div className="images a_flex">
-            {item.images?.slice(0, 3).map((image, idx) => (
+            {item.images?.map((image, idx) => (
               <div className="img" key={idx}>
                 <img src={image} alt={`image ${idx + 1}`} />
               </div>
