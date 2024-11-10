@@ -89,11 +89,13 @@
           padding-right: 300px;
         }
       }
-      .descriptions {
-        margin-top: 10px;
-      }
+      .descriptions,
       .suggestions {
         margin-top: 10px;
+        small {
+          color: var(--color-gray);
+          font-size: 13px;
+        }
       }
     }
 
