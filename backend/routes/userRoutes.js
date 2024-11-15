@@ -14,10 +14,78 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 //============
 // GOOGLE AUTH
 //============
+// userRouter.post(
+//   "/google-auth",
+//   expressAsyncHandler(async (req, res) => {
+//     const { token } = req.body;
+
+//     try {
+//       // Verify Google token
+//       const ticket = await client.verifyIdToken({
+//         idToken: token,
+//         audience: process.env.GOOGLE_CLIENT_ID,
+//       });
+
+//       const payload = ticket.getPayload();
+//       const { sub: googleId, email, name, picture } = payload;
+//       const [firstName, lastName] = name.split(" ");
+
+//       // Check if the user exists by email
+//       let user = await User.findOne({ email });
+
+//       // If the user does not exist, create a new user
+//       if (!user) {
+//         user = new User({
+//           firstName,
+//           lastName,
+//           email,
+//           googleId,
+//           image: picture,
+//           role: "user",
+//           isAccountVerified: true,
+//         });
+//         await user.save();
+//       }
+
+//       // If the user is blocked, prevent login
+//       if (user.isBlocked) {
+//         return res.status(403).send({
+//           message: "😲 This account has been blocked by Admin.",
+//         });
+//       }
+
+//       // Generate token with the existing `generateToken` function
+//       const authToken = generateToken(user);
+
+//       // Send back the token and user data
+//       res.send({
+//         _id: user._id,
+//         email: user.email,
+//         firstName: user.firstName,
+//         lastName: user.lastName,
+//         image: user.image,
+//         isAdmin: user.isAdmin,
+//         role: user.role,
+//         isBlocked: user.isBlocked,
+//         isAccountVerified: user.isAccountVerified,
+//         token: authToken,
+//       });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(401).send({ message: "Google authentication failed" });
+//     }
+//   })
+// );
+//============
+// GOOGLE AUTH
+//============
 userRouter.post(
   "/google-auth",
   expressAsyncHandler(async (req, res) => {
     const { token } = req.body;
+    const facebook = process.env.FACEBOOK_PROFILE_LINK;
+    const instagram = process.env.INSTAGRAM_PROFILE_LINK;
+    const webName = process.env.WEB_NAME;
 
     try {
       // Verify Google token
@@ -33,16 +101,19 @@ userRouter.post(
       // Check if the user exists by email
       let user = await User.findOne({ email });
 
+      let isNewUser = false;
+
       // If the user does not exist, create a new user
       if (!user) {
+        isNewUser = true; // Mark this as a new user
         user = new User({
           firstName,
           lastName,
           email,
           googleId,
-          image: picture, 
+          image: picture,
           role: "user",
-          isAccountVerified: true, 
+          isAccountVerified: true,
         });
         await user.save();
       }
@@ -57,13 +128,205 @@ userRouter.post(
       // Generate token with the existing `generateToken` function
       const authToken = generateToken(user);
 
+      // Send welcome email to new users
+      if (isNewUser) {
+        const emailMessage = `<html >
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+          }
+          a { text-decoration: none; }
+         
+          .a_flex {
+            display: flex;
+            align-items: center;
+          }
+       
+          .header {
+            background-color: #00463e;
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+         
+          .logo_img {
+            width: 100px;
+          }
+          .head {
+            flex-direction: column;
+          }
+         .email{
+            width:200px
+          }
+          .message_text {
+            padding: 0px 10px;
+          }
+          .message_text p {
+            color: #434343;
+            font-size: 15px;
+          }
+          .message_text .otp_box {
+            margin: -18px 0px;
+          }
+          .otp_box h2 {
+            background-color: #e7e7e7;
+            color: #3462fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            letter-spacing: 3px;
+            width: fit-content;
+          }
+          .out_greeting h5 {
+            line-height: 2px;
+            font-size: 15px;
+            color: #222222;
+          }
+          .footer {
+            border-top: 1px solid #a5a5a5;
+          }
+          .footer img {
+            width: 30px;
+          }
+          .footer p{
+            font-size: 16px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <table role="presentation" width="100%">
+            <tr>
+              <td align="center">
+                <img
+                  src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730887212/logo_oodxma.png"
+                  alt="logo"
+                  width="100"
+                  style="display: block;"
+                />
+              </td>
+            </tr>
+          </table>
+          </div>
+          <div class="body_text">
+            <div class="head ">
+             <table role="presentation" width="100%">
+              <tr>
+              <td align="center">
+                <img
+                  src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/ed1_xpf1zq.png"
+                  alt="email"
+                  class="email"
+                />
+               </td>
+              
+              </tr>
+              <tr>
+                <td align="center">
+                 <div class="head_text">
+                 <h2>Email Confirmed</h2>
+                 </div>
+                </td> 
+               </tr>
+             </table>
+            </div>
+            <div class="message_text">
+              <div class="greetings">
+                <h3>Hi ${user.firstName},</h3>
+              </div>
+              <div class="text">
+                <p>
+                  We are thrilled to inform you that your email has been successfully confirmed!
+                </p>
+                <p>
+                  You can now enjoy all the features and benefits we offer, including exclusive access to key features, special discount and personalized content.
+                </p>
+                <table role="presentation" width="100%" style="padding: -10px 0px; margin: -15px 0px;">
+                  <tr>
+                    <td align="center"  style="padding: -10px 0px; margin: -15px 0px;">
+                       <a href=${`${process.env.SUB_DOMAIN}/report`} style="display: inline-block; margin: 8px 0; padding: 8px 30px; background-color: #00eacd; color: #000B09; text-decoration: none; border-radius: 4px;">Proceed To Report</a>
+                     </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="out_greeting">
+                <h5>Regards,</h5>
+                <h5 class="closing">The ${webName} Team.</h5>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <table role="presentation" width="100%">
+              <tr>
+                <td align="left" style="padding: 10px;">
+                  <p style="margin: 0;">Edquity by Outside Lab</p>
+                </td>
+                <td align="right" style="padding: 10px;">
+                  <a href="${facebook}" style="margin-right: 10px;">
+                    <img
+                      src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886760/face_z4zb3n.png"
+                      alt="Facebook"
+                      width="30"
+                      style="display: inline-block; vertical-align: middle;"
+                    />
+                  </a>
+                  <a href="${instagram}">
+                    <img
+                      src="https://res.cloudinary.com/dtvwnonbi/image/upload/v1730886761/insta_olwhmd.png"
+                      alt="Instagram"
+                      width="30"
+                      style="display: inline-block; vertical-align: middle;"
+                    />
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </body>
+    </html>`;
+
+        // Configure Nodemailer transport
+        const smtpTransport = nodemailer.createTransport({
+          service: process.env.MAIL_SERVICE,
+          auth: {
+            user: process.env.EMAIL_ADDRESS,
+            pass: process.env.EMAIL_PASS,
+          },
+        });
+
+        // Email options
+        const mailOptions = {
+          to: user.email,
+          from: `${webName} <${process.env.EMAIL_ADDRESS}>`,
+          subject: "Welcome to Our Platform!",
+          html: emailMessage,
+        };
+
+        // Send the email
+        await smtpTransport.sendMail(mailOptions);
+        console.log("Mail sent to " + user.email);
+      }
+
       // Send back the token and user data
       res.send({
         _id: user._id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        image: user.image, 
+        image: user.image,
         isAdmin: user.isAdmin,
         role: user.role,
         isBlocked: user.isBlocked,
@@ -758,7 +1021,7 @@ userRouter.put(
 );
 
 //===============
-//OTP Verification
+//USER OTP Verification
 //===============
 userRouter.put(
   "/verify-user-otp",

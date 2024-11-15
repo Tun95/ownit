@@ -151,21 +151,22 @@ function SliderComponent() {
                 </div>
               </div>
               <div className="right ">
-                {reports?.length === 0 && (
+                {reports?.length === 0 ? (
                   <div className="no_review l_flex">
                     <p>No Reports Found</p>
                   </div>
+                ) : (
+                  <div className="slider_cards">
+                    {" "}
+                    <Slider {...settings} className="slick_slider">
+                      {reports?.map((item, index) => (
+                        <span key={index} onClick={() => handleOpenModal(item)}>
+                          <SliderCard item={item} index={index} />
+                        </span>
+                      ))}
+                    </Slider>
+                  </div>
                 )}
-                <div className="slider_cards">
-                  {" "}
-                  <Slider {...settings} className="slick_slider">
-                    {reports?.map((item, index) => (
-                      <span key={index} onClick={() => handleOpenModal(item)}>
-                        <SliderCard item={item} index={index} />
-                      </span>
-                    ))}
-                  </Slider>
-                </div>
               </div>
             </div>
           </div>
