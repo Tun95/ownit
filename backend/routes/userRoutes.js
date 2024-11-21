@@ -424,6 +424,7 @@ userRouter.post(
 userRouter.post(
   "/signup",
   expressAsyncHandler(async (req, res) => {
+    console.log("Signup route hit");
     try {
       const userExists = await User.findOne({ email: req.body?.email });
       if (userExists) {
@@ -458,6 +459,7 @@ userRouter.post(
         password: values.password,
       });
     } catch (error) {
+      console.error("Error: ", error);
       res.status(500).send({ message: "Internal server error" });
     }
   })
