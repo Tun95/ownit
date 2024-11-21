@@ -134,6 +134,7 @@ function RegisterComponent() {
       });
     }
   };
+  
 
   useEffect(() => {
     if (userInfo) {
