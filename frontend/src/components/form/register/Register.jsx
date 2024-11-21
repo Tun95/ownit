@@ -130,10 +130,6 @@ function RegisterComponent() {
         });
       }
 
-      toast.success("An OTP Verification email has been sent to your email.");
-      setTimeout(() => {
-        actions.resetForm();
-      }, 1000);
       
     } catch (err) {
       toast.error(getError(err), {
