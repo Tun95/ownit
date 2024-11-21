@@ -354,7 +354,7 @@ userRouter.post(
         password: bcrypt.hashSync(req.body.password),
         role: "admin",
         isAdmin: isFirstAdmin, // Set isAdmin to true if this is the first admin
-        googleId: undefined, 
+        googleId: undefined,
       });
 
       const admin = await newAdmin.save();
@@ -437,7 +437,7 @@ userRouter.post(
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
         role: "user",
-        googleId: undefined,
+        googleId: "",
       });
 
       const user = await newUser.save();
