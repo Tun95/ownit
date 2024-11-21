@@ -989,7 +989,6 @@ userRouter.put(
       userFound.accountVerificationOtp = undefined;
       userFound.accountVerificationOtpExpires = undefined;
       await userFound.save();
-
       const emailMessage = `<html >
       <head>
         <style>
