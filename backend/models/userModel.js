@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
     },
     isBlocked: { type: Boolean, default: false },
     password: { type: String },
-    googleId: { type: String, unique: true },
+    googleId: { type: String, unique: true, sparse: true },
     passwordChangeAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,

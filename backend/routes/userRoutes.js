@@ -424,7 +424,6 @@ userRouter.post(
 userRouter.post(
   "/signup",
   expressAsyncHandler(async (req, res) => {
-    console.log("Signup route hit");
     try {
       const userExists = await User.findOne({ email: req.body?.email });
       if (userExists) {
@@ -437,6 +436,7 @@ userRouter.post(
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
         role: "user",
+        ...(req.body.googleId && { googleId: req.body.googleId }),
       });
 
       const user = await newUser.save();
@@ -451,12 +451,6 @@ userRouter.post(
         isBlocked: user.isBlocked,
         isAccountVerified: user.isAccountVerified,
         token: generateToken(user),
-      });
-      console.log("Payload: ", {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password,
       });
     } catch (error) {
       console.error("Error: ", error);
