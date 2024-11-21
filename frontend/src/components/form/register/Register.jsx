@@ -92,7 +92,6 @@ function RegisterComponent() {
     }
   };
 
-  
   //==================================
   //REGISTER AND VERIFICATION HANDLER
   //==================================
@@ -129,8 +128,6 @@ function RegisterComponent() {
           position: "bottom-center",
         });
       }
-
-      
     } catch (err) {
       toast.error(getError(err), {
         position: "bottom-center",
