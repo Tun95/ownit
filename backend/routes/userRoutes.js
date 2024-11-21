@@ -418,7 +418,6 @@ userRouter.post(
   })
 );
 
-
 //===========
 // USER SIGNUP
 //===========
@@ -451,6 +450,12 @@ userRouter.post(
         isBlocked: user.isBlocked,
         isAccountVerified: user.isAccountVerified,
         token: generateToken(user),
+      });
+      console.log("Payload: ", {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
       });
     } catch (error) {
       res.status(500).send({ message: "Internal server error" });
