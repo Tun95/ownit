@@ -133,6 +133,7 @@ function RegisterComponent() {
       setTimeout(() => {
         actions.resetForm();
       }, 1000);
+      
     } catch (err) {
       toast.error(getError(err), {
         position: "bottom-center",
