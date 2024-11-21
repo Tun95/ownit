@@ -23,8 +23,7 @@ import ForgetPasswordScreen from "./screens/formscreens/forgetpasswordscreen/For
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
 function App() {
- 
-
+  
   ReactGA.initialize(import.meta.env.VITE_REACT_APP_GOOGLE_TRACKING, {
     debug: true,
     titleCase: false,

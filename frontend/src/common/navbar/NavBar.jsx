@@ -15,6 +15,7 @@ function NavBar() {
     localStorage.removeItem("userInfo");
     window.location.href = "/login";
   };
+  
   return (
     <div className="nav_bar">
       <div className="container">
