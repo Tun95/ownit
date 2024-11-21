@@ -92,6 +92,7 @@ function RegisterComponent() {
     }
   };
 
+  
   //==================================
   //REGISTER AND VERIFICATION HANDLER
   //==================================
