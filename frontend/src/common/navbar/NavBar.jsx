@@ -60,7 +60,10 @@ function NavBar() {
             ) : (
               <>
                 <div className="img">
-                  <img src={userInfo ? userInfo.image : me} alt="user" />
+                  <img
+                    src={userInfo && userInfo.image ? userInfo.image : me}
+                    alt="user"
+                  />
                 </div>
                 <div className="link a_flex">
                   {userInfo && (
