@@ -8,12 +8,12 @@ import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles.scss";
 import axios from "axios";
-import { request } from "../../../base url/BaseUrl";
 import { toast } from "react-toastify";
 import { getError, useAppContext } from "../../../utilities/utils/Utils";
 import PropTypes from "prop-types";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import g1 from "../../../assets/others/g1.svg";
+import { request } from "../../../base url/BaseUrl";
 
 //REGISTER DROPDOWN MENU
 const initialRegisterValues = {
@@ -106,28 +106,28 @@ function RegisterComponent() {
 
       localStorage.setItem("temporaryUserInfo", JSON.stringify(data));
 
-      // // Send OTP verification email
-      // const otpResponse = await axios.post(
-      //   `${request}/api/users/otp-verification`,
-      //   {
-      //     email: values.email,
-      //   }
-      // );
+      // Send OTP verification email
+      const otpResponse = await axios.post(
+        `${request}/api/users/otp-verification`,
+        {
+          email: values.email,
+        }
+      );
 
-      // if (otpResponse.status === 200) {
-      //   // Redirect to OTP verification screen
-      //   setTimeout(() => {
-      //     actions.resetForm();
-      //   }, 1000);
-      //   // Pass mode as "register" in query parameters
-      //   navigate(`/otp?mode=register`);
-      //   toast.success("An OTP Verification email has been sent to your email.");
-      // } else {
-      //   // Handle error
-      //   toast.error("Failed to send verification email", {
-      //     position: "bottom-center",
-      //   });
-      // }
+      if (otpResponse.status === 200) {
+        // Redirect to OTP verification screen
+        setTimeout(() => {
+          actions.resetForm();
+        }, 1000);
+        // Pass mode as "register" in query parameters
+        navigate(`/otp?mode=register`);
+        toast.success("An OTP Verification email has been sent to your email.");
+      } else {
+        // Handle error
+        toast.error("Failed to send verification email", {
+          position: "bottom-center",
+        });
+      }
 
       toast.success("An OTP Verification email has been sent to your email.");
       setTimeout(() => {

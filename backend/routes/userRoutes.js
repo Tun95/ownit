@@ -425,6 +425,11 @@ userRouter.post(
   "/signup",
   expressAsyncHandler(async (req, res) => {
     try {
+      // Prevent new user registration
+      return res.status(403).send({
+        message: "Registration is currently disabled. Please try again later.",
+      });
+
       const userExists = await User.findOne({ email: req.body?.email });
       if (userExists) {
         return res.status(400).send({ message: "User already exists" });
