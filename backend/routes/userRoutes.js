@@ -439,7 +439,6 @@ userRouter.post(
         role: "user",
         googleId: "",
       });
-
       
       const user = await newUser.save();
       res.send({
