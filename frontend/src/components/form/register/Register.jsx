@@ -121,12 +121,7 @@ function RegisterComponent() {
         }, 1000);
         // Pass mode as "register" in query parameters
         navigate(`/otp?mode=register`);
-        toast.success(
-          "An OTP Verification email has been sent to your email.",
-          {
-            position: "bottom-center",
-          }
-        );
+        toast.success("An OTP Verification email has been sent to your email.");
       } else {
         // Handle error
         toast.error("Failed to send verification email", {
