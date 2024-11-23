@@ -150,12 +150,12 @@ function SliderComponent() {
                   )}
                 </div>
               </div>
-              <div className="right ">
-                {reports?.length === 0 ? (
-                  <div className="no_review l_flex">
-                    <p>No Reports Found</p>
-                  </div>
-                ) : (
+              {reports?.length === 0 ? (
+                <div className="no_review l_flex">
+                  <p>No Reports Found</p>
+                </div>
+              ) : (
+                <div className="right ">
                   <div className="slider_cards">
                     {" "}
                     <Slider {...settings} className="slick_slider">
@@ -166,8 +166,8 @@ function SliderComponent() {
                       ))}
                     </Slider>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
